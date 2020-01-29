@@ -1,0 +1,4 @@
+Lista de Mejoras Posibles.
+	[] Sistema de logging mas efectivo.
+	[] Optimizacion de las traducciones de las páginas (generan muchas peticiones)
+

@@ -1,0 +1,188 @@
+block table_bss
+
+div(id="FormTableBss", style="display: none; width: 1250px")
+	div.menu.fadeNucleo#DivTableBss(style="position:relative")
+		h3(tkey='TableBss')
+		table(style='table-layout: fixed;width: 100%')
+			tr
+				td(style='vertical-align:top;width:50%')
+					ul#listTablesBss.menuList
+					div
+						table(style="width:100%")
+							tr(style="height: 50px", align="center")
+								td.New
+									a.ButtonNucleo(id="NewTable", onclick='GetTable(-1)', style="color:#bf2a36; width: 80px" tkey='NewTable')
+				td(style='vertical-align:top')
+					#AddTableBss.fadeFormNucleo(style='display:none;padding-left:20px')
+						.content#DatosTableBss(style='width:inherit')
+							table(style='border-spacing: 10px 10px;width:inherit')
+								tr(style="height: 20px")
+									td(style="width: 50%;padding:10px 5px")
+										label(tkey='TableId')
+									td.New
+										input.textbox(id="IdTable", type="text" onblur='ValidateUser(this,"ErrorTableId")' onfocus='this.oldValue=this.value')
+								tr(style="height: 20px")
+									td(style="padding:5px 5px")
+										label(tkey='Description')
+									td.New
+										input.textbox#DescTable(type="text")
+								tr#RowCreationUser(style="vertical-align:center")
+									td(style="padding:5px 5px")
+										label(tkey='CreationUser')
+									td.New
+										label#LblCreationUser(style='color:black')
+								tr#RowCreationDate(style="vertical-align:center")
+									td(style="padding:5px 5px")
+										label(tkey='CreationDate')
+									td.New
+										label#LblCreationDate(style='color:black')
+								tr#RowModificationUser(style="vertical-align:center")
+									td(style="padding:5px 5px")
+										label(tkey='ModificationUser')
+									td.New
+										label#LblModificationUser(style='color:black')
+								tr#RowModificationDate(style="vertical-align:center")
+									td(style="padding:5px 5px")
+										label(tkey='ModificationDate')
+									td.New
+										label#LblModificationDate(style='color:black')
+								tr#RowValuesTable
+									td(colspan='2')
+										table.gradienttable#TableValuesBss(style='width:100%;table-layout:fixed')
+											tr(style='height:30px')
+												th(style='width:50%') NUCLEO
+												th(style='width:50%') RSSI
+											tr(style='height:20px')
+												td(align="center " style='font-size:10px;font-weight:bold') 0
+												td.New(align="center")
+													select#CbRssi0
+														option(value=0) 0
+														option(value=1) 1
+														option(value=2) 2
+														option(value=3) 3
+														option(value=4) 4
+														option(value=5) 5
+														option(value=6) 6
+														option(value=7) 7
+														option(value=8) 8
+														option(value=9) 9
+														option(value=10) 10
+														option(value=11) 11
+														option(value=12) 12
+														option(value=13) 13
+														option(value=14) 14
+														option(value=15) 15
+
+											tr(style='height:20px')
+												td(align="center" style='font-size:10px;font-weight:bold') 10
+												td.New(align="center")
+													select#CbRssi1
+														option(value=0) 0
+														option(value=1) 1
+														option(value=2) 2
+														option(value=3) 3
+														option(value=4) 4
+														option(value=5) 5
+														option(value=6) 6
+														option(value=7) 7
+														option(value=8) 8
+														option(value=9) 9
+														option(value=10) 10
+														option(value=11) 11
+														option(value=12) 12
+														option(value=13) 13
+														option(value=14) 14
+														option(value=15) 15
+
+											tr(style='height:20px')
+												td(align="center" style='font-size:10px;font-weight:bold') 20
+												td.New(align="center")
+													select#CbRssi2
+														option(value=0) 0
+														option(value=1) 1
+														option(value=2) 2
+														option(value=3) 3
+														option(value=4) 4
+														option(value=5) 5
+														option(value=6) 6
+														option(value=7) 7
+														option(value=8) 8
+														option(value=9) 9
+														option(value=10) 10
+														option(value=11) 11
+														option(value=12) 12
+														option(value=13) 13
+														option(value=14) 14
+														option(value=15) 15
+
+											tr(style='height:20px')
+												td(align="center" style='font-size:10px;font-weight:bold') 30
+												td.New(align="center")
+													select#CbRssi3
+														option(value=0) 0
+														option(value=1) 1
+														option(value=2) 2
+														option(value=3) 3
+														option(value=4) 4
+														option(value=5) 5
+														option(value=6) 6
+														option(value=7) 7
+														option(value=8) 8
+														option(value=9) 9
+														option(value=10) 10
+														option(value=11) 11
+														option(value=12) 12
+														option(value=13) 13
+														option(value=14) 14
+														option(value=15) 15
+
+											tr(style='height:20px')
+												td(align="center" style='font-size:10px;font-weight:bold') 40
+												td.New(align="center")
+													select#CbRssi4
+														option(value=0) 0
+														option(value=1) 1
+														option(value=2) 2
+														option(value=3) 3
+														option(value=4) 4
+														option(value=5) 5
+														option(value=6) 6
+														option(value=7) 7
+														option(value=8) 8
+														option(value=9) 9
+														option(value=10) 10
+														option(value=11) 11
+														option(value=12) 12
+														option(value=13) 13
+														option(value=14) 14
+														option(value=15) 15
+
+											tr(style='height:20px')
+												td(align="center" style='font-size:10px;font-weight:bold') 50
+												td.New(align="center")
+													select#CbRssi5
+														option(value=0) 0
+														option(value=1) 1
+														option(value=2) 2
+														option(value=3) 3
+														option(value=4) 4
+														option(value=5) 5
+														option(value=6) 6
+														option(value=7) 7
+														option(value=8) 8
+														option(value=9) 9
+														option(value=10) 10
+														option(value=11) 11
+														option(value=12) 12
+														option(value=13) 13
+														option(value=14) 14
+														option(value=15) 15
+
+							table(style='width:100%;border-spacing: 20px')
+								tr(style="height: 20px", align="center")
+									td.New
+										a.ButtonNucleo(id='UpdateTableButton', onclick='PostTable()' tkey='Add') 
+									td.New
+										a.ButtonNucleo(id='DeleteTableButton' onclick="DelTable()" , style="width:50px" tkey='Remove')
+									td.New
+										a.ButtonNucleo(id='CancelTableButton', onclick='GetTablesBss()' tkey='Cancel')

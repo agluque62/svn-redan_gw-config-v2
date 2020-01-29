@@ -1,0 +1,461 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"lo",
+				"log"
+			],
+			[
+				"le",
+				"length"
+			],
+			[
+				"log",
+				"logging"
+			],
+			[
+				"ori",
+				"originalUrl"
+			],
+			[
+				"s",
+				"silly"
+			],
+			[
+				"c",
+				"caller"
+			],
+			[
+				"con",
+				"console"
+			],
+			[
+				"err",
+				"error"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 157.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '6f4c264a24d933ce70df5dedcf1dcaee' + 'ebe013ee18cced0ef93d5f746d80ef60'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/local-dev/app-central",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/local-dev/app-central/lib"
+	],
+	"file_history":
+	[
+		"/D/Datos/Empresa/_SharedPrj/UlisesV5000i-dev/dev/ulises-sgm/BaseDeDatos/EmptyBdt-2597-20190508.sql",
+		"/D/Datos/Empresa/_SharedPrj/redan-v/ulises-gw-config-v2/public/javascripts/sites.js",
+		"/D/Datos/Empresa/_SharedPrj/redan-v/ulises-gw-config-v2/public/javascripts/configurations.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/local-dev/app-central/lib/gateways.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/local-dev/app-central/views/services/postParameters.jade",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/local-dev/app-central/views/services/postGateway.jade",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/local-dev/app-central/public/javascripts/hardware.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/local-dev/app-central/lib/configurations.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/local-dev/app-central/views/services/postResources.jade",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/local-dev/app-central/public/javascripts/externalResources.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/views/services/postParameters.jade",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/public/javascripts/externalResources.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/public/javascripts/hrr.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/views/layout.jade",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/lib/externalResources.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/views/services/postConfiguration.jade",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/public/lang/es.json",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/public/javascripts/gateways.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/lib/gateways.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/app.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/lib/configurations.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/lib/jsonTemplate.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/lib/tableBss.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/esquemas_bbdd/redanv-uri-actualize-size.sql",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/lib/ug5kdb.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/lib/nu-log.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/lib/historics.js",
+		"/C/Users/f7521897/AppData/Roaming/Sublime Text 3/Packages/User/Babel.sublime-settings",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/configUlises.json",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/routes/gateways/gateways.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/tests/logs-test.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/lib/hrr.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/lib/sites.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/lib/users.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/lib/hardware.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/lib/loggingDate-obs.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/routes/configurations/configurations.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/lib/version.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/lib/services.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/lib/resources.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/lib/radioDestinations.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/lib/get_cfg_report.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/routes/gateways/resources.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/routes/index.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/routes/version/version.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/routes/users/users.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/routes/tableBss/tableBss.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/routes/hrr/hrr.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/routes/sites/sites.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/routes/historics/historics.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/routes/hardware/resources.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/routes/hardware/hardware.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/routes/gateways/services.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/routes/destinations/radioDestinations.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/routes/externalResources/externalResources.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/lib/loggingDate.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/public/lang/en.json",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/public/javascripts/parametersTel.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/public/translator/lang.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/views/error.jade",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/public/javascripts/authentication.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/views/imported.jade",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/esquemas_bbdd/ug5kv2-schema.sql",
+		"/D/Datos/Empresa/_SharedPrj/UlisesG5000-dev/LocalDev/redan-gw-config-v2/views/services/resource.jade",
+		"/D/Datos/Empresa/_SharedPrj/UlisesV5000i-dev/dev/ulises-man/U5kManServer/appweb/app/views/Uv5kiman-superv.html",
+		"/D/Datos/Empresa/_SharedPrj/UlisesV5000i-dev/dev/ulises-man/U5kManServer/appweb/app/controllers/Uv5kiman-superv-ctrl.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesV5000i-dev/dev/ulises-man/U5kManServer/U5kManService.cs",
+		"/D/Datos/Empresa/_SharedPrj/UlisesV5000i-dev/dev/ulises-man/U5kManServer/appweb/app/modules/Uv5kiman.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesV5000i-dev/dev/ulises-man/U5kManServer/WebAppServer/U5kManWebAppData.cs",
+		"/D/Datos/Empresa/_SharedPrj/UlisesV5000i-dev/dev/ulises-man/U5kManServer/Procesos/MainThread.cs",
+		"/D/Datos/Empresa/_SharedPrj/UlisesV5000i-dev/dev/ulises-man/U5kManServer/appweb/app/controllers/Uv5kiman-ope-ctrl.js",
+		"/D/Datos/Empresa/_SharedPrj/UlisesV5000i-dev/dev/ulises-man/U5kManServer/appweb/simulate/std.json",
+		"/D/Datos/Empresa/_SharedPrj/UlisesV5000i-dev/dev/ulises-man/U5kManServer/appweb/styles/uv5ki-styles.css",
+		"/C/Users/f7521897/Desktop/enlaces.hojas.google.nucleo.txt",
+		"/D/Datos/Empresa/_SharedPrj/UlisesV5000i-trunk/ulises-sgm/Sacta/SactaModule.cs",
+		"/C/Users/f7521897/Desktop/gmail-mailFilters.xml",
+		"/D/Datos/Empresa/_SharedPrj/UlisesV5000i-trunk/ulises-ta/Sources/Cd40/Source/RdService/RdService.cs",
+		"/D/Datos/Empresa/_SharedPrj/UlisesV5000i-trunk/ulises-ta/Sources/Cd40/Source/RdService/RdResource.cs",
+		"/D/Datos/Empresa/_SharedPrj/UlisesV5000i-trunk/ulises-ta/Sources/Cd40/Source/RdService/RdFrecuency.cs",
+		"/D/Datos/Empresa/_SharedPrj/UlisesV5000i-trunk/ulises-ta/Sources/Cd40/Source/NodeBox/NodeBoxSrv.cs",
+		"/C/Users/f7521897/Desktop/notes-contactos.csv",
+		"/D/Datos/Empresa/_SharedPrj/UlisesV5000i-trunk/ulises-ta/Sources/Cd40/Source/Infrastructure/Code/Base/BaseCode.cs",
+		"/D/Datos/Empresa/_SharedPrj/UlisesV5000i-trunk/ulises-ta/Sources/Cd40/Source/CfgService/CfgService.cs",
+		"/D/Datos/Empresa/Visual Studio 2010/Projects/GitRepos/AtGithub/MvvmProjects/.gitignore",
+		"/D/Datos/Empresa/_SharedPrj/UlisesV5000i-trunk/ulises-ta/Sources/Cd40/Source/Test/Program.cs",
+		"/D/Datos/Empresa/_SharedPrj/UlisesV5000i-trunk/ulises-ta/Sources/Cd40/Source/Test/App.config",
+		"/D/Datos/Empresa/Temporales/2018xxxx-SactaCed/Dump20170620.sql",
+		"/D/Datos/Empresa/Temporales/2018xxxx-SactaCed/InternalsTools/SimulSacta/NLog.config",
+		"/D/Datos/Empresa/Temporales/2018xxxx-SactaCed/InternalsTools/SimulSacta/NLog.dll",
+		"/D/Datos/Empresa/Temporales/2018xxxx-SactaCed/InternalsTools/SimulSacta/sacta_dis.lua",
+		"/D/Datos/Empresa/_SharedPrj/UlisesV5000i-trunk/ulises-ta/Sources/setversion.ps1"
+	],
+	"find":
+	{
+		"height": 28.0
+	},
+	"find_in_files":
+	{
+		"height": 104.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"showcfg",
+			"$(",
+			"/aliv",
+			"alive",
+			"onload",
+			"TbRemoteUri",
+			"textbox",
+			"ValidateAtsNumber",
+			"atsn",
+			"GetHRR",
+			"ListResources",
+			"Recursos Extern",
+			"PostExtResource",
+			"generado",
+			"post",
+			"sppe",
+			"dvrrp",
+			"sppe",
+			"copy",
+			"vrrp",
+			"updateGateWayonSite",
+			"sppe",
+			"syncga",
+			"LoginSystemTrace",
+			"console.",
+			"logging.LoggingDate",
+			"logging.loggingerror",
+			"logging.LoggingDate",
+			"loggingd",
+			"logging.loggingerror",
+			"logging.LoggingDate",
+			"loggingDa",
+			"logging",
+			"logging.LoggingDate(\"Error connention to 'U5K-G' database.\");",
+			"logging",
+			"logging.loggingerror",
+			"logging.LoggingDate",
+			"logging.LoggingDate(\"Successful connection to 'U5K-G' database!\");",
+			"logging.LoggingDate(\"Error connention to 'U5K-G' database.\");",
+			"logging.LoggingDate(\"Error connection to 'U5K-G' database.\");",
+			"logging.loggingerror",
+			"logging.LoggingDate",
+			"logging.LoggingDate(\"Successful connection to 'U5K-G' database!\");",
+			"logging.LoggingDate(\"Error connection to 'U5K-G' database.\");",
+			"logging.loggingerror",
+			"logging.LoggingDate",
+			"logging.LoggingDate(\"Successful connection to 'U5K-G' database!\");",
+			"logging.LoggingDate(\"Error connection to 'U5K-G' database.\");",
+			"logging.loggingerror",
+			"logging.l",
+			"logging.LoggingDate",
+			"logging.LoggingDate(\"Successful connection to 'U5K-G' database!\");",
+			"logging.LoggingDate(\"Error connection to 'U5K-G' database.\");",
+			"logging.LoggingDate",
+			"logging.LoggingDate(\"Successful connection to 'U5K-G' database!\");",
+			"logging.LoggingDate(\"Error connection to 'U5K-G' database.\");",
+			"logging.LoggingDate",
+			"logging.LoggingDate(\"Successful connection to 'U5K-G' database!\");",
+			"logging.LoggingDate(\"Error connection to 'U5K-G' database.\");",
+			"logging.LoggingDate",
+			"logging.LoggingDate(\"Successful connection to 'U5K-G' database!\");",
+			"logging.LoggingDate(\"Error connection to 'U5K-G' database.\");",
+			"logging.LoggingDate",
+			"logging.LoggingDate(\"Successful connection to 'U5K-G' database!\");",
+			"logging.LoggingDate(\"Error connection to 'U5K-G' database.\");",
+			"logging",
+			"console",
+			"U5K-G' database",
+			"Trace",
+			"U5K-G' database",
+			"logging.LoggingDate",
+			"logging",
+			"logging.L",
+			"logging",
+			"req.met",
+			"logging",
+			"getall",
+			"loggin",
+			"logginf",
+			"getall",
+			"export",
+			"copy",
+			"det_in",
+			"insert in",
+			"det_inversion_pol",
+			"..",
+			"ats_user",
+			"TbTelATSUser",
+			"ats_use",
+			"OnChangeType",
+			"LCEN",
+			"expo",
+			"exportConfiguration",
+			"importconfigurati",
+			"importconfiguration",
+			"newGateway",
+			"#nameGw",
+			"#nameGaw",
+			"CleanResourceControls",
+			"sppe",
+			"getgateway",
+			":gateway",
+			"/gateways",
+			"sppe",
+			"post",
+			"sppe",
+			"fin",
+			"sppe",
+			"newGateway",
+			"postgateway",
+			"#sppe",
+			"#ips",
+			"lips",
+			"uri",
+			"stdc_class",
+			"ctrl.std_class",
+			"ctrl_std_class",
+			"EvaluaTxMute",
+			"ExceptionManage",
+			"_StopCfgThread"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"logging.Trace",
+			"logging.Error",
+			"logging.Trace",
+			"logging.Error",
+			"logging.Trace",
+			"logging.Error(\"Error connection to 'U5K-G' database.\");",
+			"logging.Error",
+			"logging.Trace",
+			"",
+			"logging.Error(\"Error connection to 'U5K-G' database.\");",
+			"logging.Error",
+			"logging.Trace",
+			"",
+			"logging.Error(\"Error connection to 'U5K-G' database.\");",
+			"logging.Error",
+			"logging.Trace",
+			"",
+			"logging.Error(\"Error connection to 'U5K-G' database.\");",
+			"logging.Error",
+			"logging.Trace",
+			"",
+			"logging.Error(\"Error connection to 'U5K-G' database.\");",
+			"logging.Trace",
+			"",
+			"logging.Error(\"Error connection to 'U5K-G' database.\");",
+			"logging.Trace",
+			"",
+			"logging.Error(\"Error connection to 'U5K-G' database.\");",
+			"logging.Trace",
+			"",
+			"logging.Error(\"Error connection to 'U5K-G' database.\");",
+			"logging.Trace",
+			"",
+			"logging.Error(\"Error connection to 'U5K-G' database.\");",
+			"logging.Trace"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 28.0
+	},
+	"input":
+	{
+		"height": 37.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.SublimeLinter":
+	{
+		"height": 0.0
+	},
+	"output.SublimeLinter Messages":
+	{
+		"height": 267.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "redancfg.sublime-project",
+	"replace":
+	{
+		"height": 52.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 250.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

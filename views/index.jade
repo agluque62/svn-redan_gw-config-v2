@@ -1,0 +1,22 @@
+extends layout
+
+block content
+
+	script.
+		// Variable parseadas por el servidor.
+		var username = '#{user.name}';
+		var userprofile = '#{user.perfil}';
+		var region = '#{Region}';
+		var urlbackupservice = '#{BackupServiceDomain}';
+		var LoginTimeout = '#{LoginTimeout}';
+		var version = '#{Version}';
+		$(document).ready(function(){
+			// Localizacion de las variables parseadas.
+			$('#BodyRedan').data('perfil', userprofile);
+			$('#BodyRedan').data('urlbackupservice', urlbackupservice);
+			$('#BodyRedan').data('region',region);
+			$('#BodyRedan').data('LoginTimeout',LoginTimeout);
+			$('#BodyRedan').data('version',version);
+
+			indexInitUserData(username, userprofile);
+			});

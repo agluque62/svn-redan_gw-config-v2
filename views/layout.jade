@@ -1,0 +1,622 @@
+doctype html
+html
+
+    head
+        meta(charset="UTF-8")
+        title="Ulises G 5000 R"
+        link(rel='stylesheet', href='/stylesheets/style.css')
+        link(rel="stylesheet", href="/alertifyjs/css/alertify.min.css")
+        link(rel="stylesheet", href="/alertifyjs/css/themes/semantic.css")
+
+        link(rel='stylesheet', href='/stylesheets/modal.css')
+
+        script(type='text/javascript' src='/javascripts/jquery-1.11.2.min.js')
+        script(type='text/javascript' src='/javascripts/jquery.form.min.js')
+        script(type='text/javascript' src='/translator/lang.js')
+        script(type='text/javascript' src='/javascripts/users.js')
+        script(type='text/javascript' src='/javascripts/gateways.js')
+        script(type='text/javascript' src='/javascripts/configurations.js')
+        script(type='text/javascript' src='/javascripts/hardware.js')
+        script(type='text/javascript' src='/javascripts/parametersRadio.js')
+        script(type='text/javascript' src='/javascripts/parametersTel.js')
+        script(type='text/javascript' src='/javascripts/sites.js')
+        script(type='text/javascript' src='/javascripts/radioDestinations.js')
+        script(type='text/javascript' src='/javascripts/index.js')
+        script(type='text/javascript' src='/alertifyjs/alertify.min.js')
+
+        script(type='text/javascript' src='/javascripts/jsoneditor.js')
+        script(type='text/javascript' src='/javascripts/underscore-min.js')
+        script(type='text/javascript' src='/javascripts/check-type.min.js')
+
+        script(type='text/javascript' src='/javascripts/historics.js')
+        script(type='text/javascript' src='/javascripts/backups.js')
+        script(type='text/javascript' src='/pdfmake/pdfmake.min.js')
+        script(type='text/javascript' src='/pdfmake/vfs_fonts.js')
+        script(type='text/javascript' src='/javascripts/tableBss.js')
+        script(type='text/javascript' src='/javascripts/externalResources.js')
+        script(type='text/javascript' src='/javascripts/hrr.js')
+        script(type='text/javascript' src='/javascripts/authentication.js')
+        script(type='text/javascript' src='/javascripts/version.js')
+        script(type='text/javascript' src='/javascripts/index.js')
+
+        script(type='text/javascript' src='/jspdf/jspdf.js')
+        script(type='text/javascript' src='/jspdf/jspdf.debug.js')
+        script(type='text/javascript' src='/jspdf/main.js')
+        script(type='text/javascript' src='/jspdf/jspdf.plugin.table.js')
+
+        script(type='text/javascript' src='/jspdf/split_text_to_size.js')
+        script(type='text/javascript' src='/jspdf/jspdf.plugin.autotable.js')
+
+        //script(type='text/javascript' src='/jspdf/jspdf.min.js')
+        script.
+            var actual='';
+            var actualShow='';
+            var actualAnimate='';
+            var checkCookie = false;
+            var PageLog;
+            // 20170809. Configuracion de ALERTIFY
+            alertify.defaults.transition = 'zoom';
+
+            window.onbeforeunload = function () {
+                /** 20170522 AGL No se porque esta esto. Hace que funcione mal el 
+                    LOGIN / LOGOUT  De momento lo elimino */
+                /* authentication();
+                ***************************/
+            };
+
+            function SetRegion(){
+                $('#hRegion').text($('#BodyRedan').data('region'));
+            }
+
+            function SetVersion(){
+                //$('#hVersion').text($('#BodyRedan').data('version'));
+                //$('#hVersion').text('version');
+            }   
+
+            function startTime() {
+                var ESdays = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sabado'];
+                var ENdays = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+                var today=new Date();
+                var h=today.getHours();
+                var m=today.getMinutes();
+                var s=today.getSeconds();
+
+                var y=today.getFullYear();
+                var month=today.getMonth() + 1;
+                var d=today.getDate();
+
+                var weekDay = navigator.languages[0].substr (0, 2) == 'es' ? ESdays[today.getDay()] : ENdays[today.getDay()];
+                m = checkTime(m);
+                s = checkTime(s);
+                document.getElementById('_hsolohora').innerHTML = h+":"+m+":"+s;
+                document.getElementById('_hfecha').innerHTML = d + "/" + month + "/" + y + " (" + weekDay + ")";
+                var t = setTimeout(function(){startTime()},500);
+
+                if (checkCookie)
+                    CheckCookie();
+            }
+
+            function CheckCookie(){
+                if (document.cookie.indexOf("U5K-G") < 0){
+                    checkCookie = false;
+                    //alert('Login timeout after ' + $('#Login-Operador').data('logintimeout') + ' minutes.');
+                    alertify.alert('Ulises G 5000 R', 'Login timeout after ' + $('#BodyRedan').data('logintimeout') + ' minutes.');
+                    alertify.error('Login timeout after ' + $('#BodyRedan').data('logintimeout') + ' minutes.');
+                    window.location=$('#BodyRedan').data('actualLocation');
+                }
+            }
+
+            function checkTime(i) {
+                if (i<10) {i = "0" + i};  // add zero in front of numbers < 10
+                return i;
+            }
+
+            function RefreshCookie(){
+                if (document.cookie.indexOf("U5K-G") >= 0){
+                    SetCookie('U5K-G',$('#BodyRedan').data('perfil'));
+                }
+            }
+
+            function showMaintenancePanel(maintenanceService){
+                $('#FormHistorics').fadeOut(300,function(){
+                    $('#FormStatiscs').fadeOut(300);
+                    $('#MenuFiltros').fadeOut(300,function(){
+                        $('#MenuPasarelas').fadeOut(300,function(){
+                            if (maintenanceService === 'Pasarelas'){
+                                $('#MenuPasarelas').fadeIn(300);
+                                $('#MenuPasarelas').attr('style','display:table-cell;width:11%;vertical-align: top')
+                                $('#FiltersStatics').hide();
+                                $('#FiltersHistorics').hide();
+                                $('#GotoGatewaysLocalConfiguration').show();
+                            }
+                            else{
+                                $('#MenuFiltros').fadeIn(300);
+                                $('#MenuFiltros').attr('style','display:table-cell;width:11%;vertical-align: top')
+                                $('#GotoGatewaysLocalConfiguration').hide();
+                                if (maintenanceService == "Maintenance"){
+                                    $('#FiltersStatics').hide();
+                                    $('#FiltersHistorics').show();
+                                }
+                                else{
+                                    $('#FiltersHistorics').hide();
+                                    $('#FiltersStatics').show();
+                                }
+                            }
+                        });
+                    });
+                });
+            }
+
+            function hidePrevious(form,showThis,animateThis){
+                if (actual != form){
+                    if (actual != ''){
+                        $(actualAnimate).animate({width: '5px'});
+                        $('#FormParameters').hide();
+                        $(actualShow).hide();
+                        $(actual).hide();
+                        $(actualAnimate).fadeOut(100);
+                    }
+                    actual=form;
+                    actualShow = showThis;
+                    actualAnimate = animateThis;
+                    //if ( !$(actualAnimate).is(':visible'))
+                    $(actualAnimate).animate({height: '670px'})
+                    $(actualAnimate).fadeIn(100);
+                    $(actualAnimate).animate((animateThis=='#DivGateways' || animateThis=='#DivConfigurations' || animateThis=='#DivHardware' || animateThis=='#DivTableBss') ? {width: '350px'} : {width: '145px'});
+                }
+            }
+
+            function hidePreviousHistorics(form,showThis,animateThis){
+                $(actualAnimate).show();
+
+                if (actual != ''){
+                    $(actualAnimate).animate({width: '5px'});
+                    $(actualShow).hide();
+                    $(actual).hide();
+                }
+                actual=form;
+                actualShow = showThis;
+                actualAnimate = animateThis;
+                $(actualAnimate).animate({width: '175px'});
+            }
+
+            function hidePreviousBackup(form,showThis,animateThis){
+                if (actual != ''){
+                    $(actualAnimate).animate({width: '5px'},function(){
+                        $(actualShow).hide();
+                        $(actual).hide();
+                        $(actualAnimate).fadeOut(100,function(){
+                            actual=form;
+                            actualShow = showThis;
+                            actualAnimate = animateThis;
+
+                            $(actualAnimate).fadeIn(100,function(){
+                                $(actualShow).show();
+                                $(actual).show();
+                                $(actualAnimate).animate(animateThis == '#DivLogs' ? {width: '1000px'} : {width: '375px'});
+                            });
+                        });
+                    });
+                }
+                else{
+                    actual=form;
+                    actualShow = showThis;
+                    actualAnimate = animateThis;
+
+                    $(actualAnimate).fadeIn(100,function(){
+                        $(actualShow).show();
+                        $(actual).show();
+                        $(actualAnimate).animate(animateThis == '#DivLogs' ? {width: '1000px'} : {width: '375px'});
+                    });
+                }
+            }
+
+            function hideMenu(menu,form){
+                $('#Menu').fadeOut(500,function(){
+                    $('#MenuGeneral').attr('style','display:table-column');
+                    $(menu).fadeIn(500);
+                    $(form).attr('style','display:table-cell;width:11%');
+                    
+                    if (menu == "#MenuConfiguration"){
+                        translateWord('Activate',function(result){
+                            if ($('#listaOpciones li:nth-last-child(2)').text() != result){
+                                var item = $('<li id="aplicaCambios" style="margin-top:100px"><a id="opcionAplCambios" onclick="CheckingAnyChange(\'GeneralContent\', function(){GetActiveCfgAndActivate()})">' + result + '</li>');
+                                item.insertBefore($('#listaOpciones li:last-child'));
+                            }
+                        })
+                        /*if(EnableAplicarCambios($('#BodyRedan').data('perfil')))
+                            $('#aplicaCambios').removeClass('menuListDisabled');
+                        else
+                            $('#aplicaCambios').addClass('menuListDisabled');
+                        */
+
+                        /*if (($('#BodyRedan').data('perfil') & 16) == 16){
+                            $('#MenuOpciones').attr('style','display:table-cell;width:11%');
+                            EnableOptions($('#BodyRedan').data('perfil'));
+                        }
+                        else
+                            EnableOptions($('#BodyRedan').data('perfil'));
+                            */
+                    }
+                })
+            }
+
+            function hide() {
+                /** 20170511. AGL. PERFILES */
+                //- if (Authorize($('#BodyRedan').data('perfil'),[ccAdminProfMsc])==false) {
+                //- /*if (($('#BodyRedan').data('perfil') & 64) != 64) {
+                //-     **************************************************/                 
+                //-     window.location=$('#BodyRedan').data('actualLocation');
+                //-     checkCookie = false; 
+                //-     document.cookie = 'U5K-G=; expires=Thu, 01 Jan 1970 00:00:00 UTC';
+                //-     return;
+                //- }
+
+                if (actual != ''){
+                    $(actualAnimate).fadeOut(500,function(){
+                        $(actualShow).hide();
+                        $(actual).hide();
+                        $('#FormParameters').hide();
+                        actual = '';
+                    });
+                }
+
+                if ($('#MenuConfiguration').is(':visible')){
+                    $('#MenuConfiguration').fadeOut(500,function(){
+                        $('#Menu').fadeIn(500);
+                        $('#MenuGeneral').attr('style','width:11%;display:table-cell');
+                    });
+                }
+                if ($('#MenuHistoricos').is(':visible')){
+                    $('#MenuHistoricos').fadeOut(500,function(){
+                        $('#MenuFiltros').attr('style','display:table-column');
+                        $('#MenuPasarelas').attr('style','display:table-column');
+                        $('#Menu').fadeIn(500,function(){
+                            $('#MenuGeneral').attr('style','width:11%;display:table-cell');
+                        });
+                    });
+                }
+                if ($('#MenuBackup').is(':visible')){
+                    $('#MenuBackup').fadeOut(500,function(){
+                        $('#Menu').fadeIn(500);
+                        $('#MenuGeneral').attr('style','width:11%;display:table-cell');
+                    });
+                }
+            }
+
+            function loadPendingChanges(){
+                $.ajax({type: 'GET', 
+                        url: '/configurations/listOfGateways/',
+
+                        success: function(data){
+                                    if (data != 'NO_DATA'){
+                                        if (data.result != null && data.result.length > 0){
+                                            $.each(data.result, function(index, value){
+                                                listOfGateways = listOfGateways.concat(value.Gateway + ',')
+                                            })
+                                        }
+                                    }
+                                }
+                });
+            }
+
+            function Logout(){
+                authentication();
+                var index = BodyRedan.baseURI.indexOf('#');
+                if( index > -1)
+                    BodyRedan.baseURI = BodyRedan.baseURI.substr(0, index-1);
+
+                window.location.href=$('#BodyRedan').data('actualLocation')
+                GenerateHistoricEvent(ID_HW,USER_LOGOUT_SYSTEM,$('#loggedUser').text(),$('#loggedUser').text());
+                this.document.location.reload();
+            }
+
+            function restoreInfo() {
+                alertify.alert("Información", "Para Restaurar la Base de Datos, consultar 'ULISES G 5000-REDAN. Configuración Remota. Manual de Usuario.docx' Punto 6.2.");
+            }
+
+            function About() {
+                // alertify.alert("Acerca de...");
+                if(!alertify.About){
+                  //define a new dialog
+                  alertify.dialog('About',function factory(){
+                    return{
+                      main:function(message){
+                        this.message = message;
+                      },
+                      setup:function(){
+                          return { 
+                            buttons:[{text: "Aceptar", key:27/*Esc*/}],
+                            focus: { element:0 }
+                          };
+                      },
+                      prepare:function(){
+                        this.setContent(this.message);
+                      },
+                      build: function(){
+                        this.setHeader('REDAN. Aplicación de Configuración.');
+                        this.set('resizable', true);
+                      }
+                  }});
+                }
+
+                $.ajax({type: 'GET', 
+                        url: '/version',
+                        success: function(data) {
+                                console.log(data);
+                                //launch it
+                                var url_license = "http://" + window.location.hostname + ':' + window.location.port + '/COPYING.AUTHORIZATION.txt';
+                                var msg = '<div>' +
+                                          '<h2>REDAN CFGR</h2>' +
+                                          '<p style="text-align:center; color: black;">Version ' + data.version + '.' + data.subversion + ', ' + data.date + '</p>' +
+                                          '<p style="text-align:center">Nucleo CC Copyright ©2018..2109 Todos los Derechos Reservados.</p>' +
+                                          '<p style="text-align: right"><a href="' + url_license + '" target="_blank">Acuerdo de Licencia</a></p>' +
+                                          '</div>';
+                                alertify.About(msg).resizeTo(500, 270);
+                            }
+                });
+            }
+
+            function AboutColours() {
+                // alertify.alert("Acerca de...");
+                if (!alertify.About) {
+                    //define a new dialog
+                    alertify.dialog('About', function factory() {
+                        return {
+                            main: function (message) {
+                                this.message = message;
+                            },
+                            setup: function () {
+                                return {
+                                    buttons: [{text: "Aceptar", key: 27/*Esc*/}],
+                                    focus: {element: 0}
+                                };
+                            },
+                            prepare: function () {
+                                this.setContent(this.message);
+                            },
+                            build: function () {
+                                this.setHeader('REDAN. Estado BBDD de la Pasarela');
+                                this.set('resizable', true);
+                            }
+                        }
+                    });
+                }
+                var msg = '<div>' +
+                    '<h2>CODIGO DE COLORES</h2>' +
+                    '<hr/>' +
+                    '<p style = "text-align: center;" ><b>CONFIGURACIONES</b></p>' +
+                    '<table style = "width: 300px; margin-left: auto; margin-right: auto;" cellspacing="15" >' +
+                    '<tbody>' +
+                    '<tr>' +
+                    '<td style = "text-align: center;" bgcolor = "#99FF66"> CONFIGURACION ACTIVA </td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td style="text-align: center;" bgcolor = "#FFFFFF">CONFIGURACION NO ACTIVA&nbsp;&nbsp;</td>' +
+                    '</tr>' +
+                    '</tbody>' +
+                    '</table>' +
+                    '<p>&nbsp;</p>' +
+                    '<hr/>' +
+                    '<p style="text-align: center;"><b>PASARELAS</b></p>' +
+                    '<table style = "width: 100%;" cellspacing = "20" >' +
+                    '<tbody>' +
+                    '<tr>' +
+                    '<td style = "width: 150px; text-align: center;" ><b><u>PASARELAS EN CONFIGURACION ACTIVA</u></b></td>' +
+                    '<td style = "width: 150px; text-align: center;" ><b><u>PASARELAS EN CONFIGURACION NO ACTIVA</u></b></td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td style = "width: 150px; text-align: center;" bgcolor = "#EDEDED" >PASARELA DESCONOCIDA</td>' +
+                    '<td style = "width: 150px; text-align: center;" bgcolor = "#EDEDED" >PASARELA DESCONOCIDA</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td style = "width: 348px; text-align: center;" bgcolor = "#99FF66">PASARELA CONECTADA</td>' +
+                    '<td style = "width: 348px; text-align: center;" bgcolor = "#206600"><span style="color: #ffffff;">PASARELA CONECTADA</span></td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td style = "width: 348px; text-align: center;" bgcolor = "#80BFFF">PASARELA DESCONECTADA</td>' +
+                    '<td style = "width: 348px; text-align: center;" bgcolor = "#004D99"><span style="color: #ffffff;">PASARELA DESCONECTADA</span></td>' +
+                    '</tr>' +
+                    '</tbody>' +
+                    '</table>' +
+                    '<table style = "width: 300px; margin-left: auto; margin-right: auto;" cellspacing="15" >' +
+                    '<tbody>' +
+                    '<tr>' +
+                    '<td style = "text-align: center;" bgcolor = "#ffff99"> PASARELA NO SINCRONIZADA </td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td style="text-align: center;" bgcolor = "#ff8c1a">PASARELA SINCRONIZANDOSE</td>' +
+                    '</tr>' +
+                    //'<tr>' +
+                    //'<td style="text-align: center;" bgcolor = "#C1022C"><span style="color: #ffffff;">PASARELA EN ERROR</span></td>' +
+                    //'</tr>' +
+                    '</tbody>' +
+                    '</table>' +
+                    '</div>';
+                alertify.About(msg).resizeTo(200, 600);
+            }
+
+        table(style='width:100%')
+            tr
+                td(style='width:15%')
+                    #_contSupIzq.divCabeceraNucleo
+                        #_logo
+                            img#imgLogo(src="images/corporativo.png" width="100%;")
+                td(style='width:60%')
+                    #_tit_ppal.divCabeceraNucleo
+                        // h1.efecto-espejo(style='text-align:center') ULISES G 5000 R
+                        h1(style='text-align:center') ULISES G 5000 R
+                        // .divCabeceraNucleo
+                        h2#hRegion                      
+
+                td(style='width:25%')
+                    #_contSupDrcha.divCabeceraNucleo
+                        table
+                            tr
+                                td(style='width:85%')
+                                    table(width='100%')
+                                        tr
+                                            td
+                                                #_usuario.labelNucleo(style='text-align: -webkit-right' tkey='User')
+                                            td
+                                                b#loggedUser.labelNucleo 
+                                    #fecha(style='margin-top: 10px')
+                                        h4#_hfecha.labelNucleo(style='margin-top: 0px;margin-bottom: 0px')
+                                    #hora
+                                        h4#_hsolohora.labelNucleo(style='margin-top: 0px;margin-bottom: 0px')
+                                td(style='width:15%')
+                                    a.ButtonNucleo#buttonLogout(style='display:none' onclick="LogoutUser();checkCookie = false;document.cookie = 'U5K-G=; expires=Thu, 01 Jan 1970 00:00:00 UTC';") Logout
+
+    body#BodyRedan(onload='$("#BodyRedan").data("actualLocation",window.location.href);startTime();translateForm();loadPendingChanges()' onmousemove='RefreshCookie()')
+        .divNucleo.logoDF(style='height:780px') 
+            #Menu
+                table
+                    tr
+                        td#MenuGeneral(style='width:11%; display:table-column')
+                            nav.menu
+                                h3 Menú General
+                                ul.menuList(style='height:15%')
+                                    li#mgCfg
+                                        a(id="opcionConfig" onclick="hideMenu(\'#MenuConfiguration\',\'#MenuOpciones\')" tkey='Configuration')
+                                    li(id="mgHis")
+                                        a(id="opcionMant" onclick="hideMenu(\'#MenuHistoricos\',\'#MenuMantenimiento\'); LoadGatewaysInActiveConfiguration()" tkey='Maintenance')
+                                    li#mgBkp
+                                        a(id="opcionBackup" onclick="hideMenu(\'#MenuBackup\',\'#MenuCfgBackup\');" tkey='Backup')
+                                    li#about(style='margin-top:199px')
+                                        a(id='opcAbout' onclick='About();') Acerca de..
+            #MenuConfiguration
+                table#Principal(style='width:100%')
+                    tr(style='vertical-align:top')
+                        td#MenuOpciones(style='width:11%; display:table-column')
+                            nav#NavMenu.menu(style='width:auto;height: 670px')
+                                h3(tkey='Options') 
+                                ul#listaOpciones.menuList(style='height:inherit')
+                                    li#cfCfg
+                                        a(id="opcionConfigs" onclick="CheckingAnyChange(\'GeneralContent\', function(){hidePrevious(\'#FormConfiguration\',\'#AddFormConfiguration\',\'#DivConfigurations\'); GetConfigurations()})" tkey='Configurations')
+                                    li(id="lopcionTabla")
+                                        a(id="opcionTabla" onclick="CheckingAnyChange(\'GeneralContent\', function(){hidePrevious(\'#FormTableBss\',\'#AddTableBss\',\'#DivTableBss\'); GetTablesBss()})", tkey='TableBss')
+                                    li(id="lopcionUsuarios")
+                                        a(id="opcionUsuarios" onclick="CheckingAnyChange(\'GeneralContent\', function(){hidePrevious(\'#FormOperador\',\'#AddFormUser\',\'#DivOperador\'); GetUsuarios()})", tkey='Users')
+                                    // AGL..        
+                                    li(id="lopcionResources")
+                                        a(id="opcionResources" onclick="CheckingAnyChange(\'GeneralContent\', function(){hidePrevious(\'#FormResources\',\'#AddFormResources\',\'#DivResources\'); GetExtResources()})", tkey='MenuResources')
+                                    //li(id="lopcionHRR")
+                                    //    a(id="opcionHRR" onclick="CheckingAnyChange(\'GeneralContent\', function(){hidePrevious(\'#FormResources\',\'#AddFormResources\',\'#DivResources\'); GetHRR()})", tkey='MenuHRR')
+                                    li#cfVolver(style='margin-top:100px')
+                                        a( onclick="CheckingAnyChange(\'GeneralContent\', function(){hide()})", tkey='Exit') 
+                        td#GeneralDiv
+                            block content
+                            block component
+                            //  FORM CONFIGURATION
+                            block configuration
+                            include ./services/postConfiguration.jade
+                            //  FORM GATEWAY
+                            block gateways
+                            include ./services/postGateway.jade
+                            //  FORM USER
+                            block user
+                            include ./services/postUsuario.jade
+                            // FORM TABLE BSS
+                            block table_bss
+                            include ./services/postTableBss.jade
+                            // FORM RESOURCES
+                            block resources
+                            include services/postResources.jade
+                            // FORM HRR
+                            //block hrr
+                            //include services/postHRR.jade
+                            // FORM SITES
+                            block sites
+                            include ./services/postSites.jade
+                            // AGL.
+                            // block version
+                            // include ./version/version.jade
+                            // FORM RADIO DESTINATIONS
+                            //block destinations
+                            //include ./services/postRadioDestination.jade
+            #MenuHistoricos
+                table#TblHistoricos(style='table-layout:fixed')
+                    tr(style='vertical-align:top')
+                        td#MenuMantenimiento(style='display:table-column')
+                            nav.menu(style='height:auto')
+                                h3(tkey='MaintenanceService')
+                                ul.menuList#MaintenanceOptionsList(style='height:15%')
+                                    li
+                                        a(id="opcionHistoric" onclick="showMaintenancePanel('Maintenance')" tkey='Historics')
+                                    //- li
+                                    //-     a(id="opcionEstadi" onclick="showMaintenancePanel('Estadisticas')" tkey='Statistic')
+                                    //li
+                                    //  a(id="opcionPasarel" onclick="showMaintenancePanel('Pasarelas')" tkey='Gateways')
+                                    li#cfCfgLocal
+                                        a(id="cfgLocal" onclick="ConfigEdit();") Conf. Servidor
+                                    // AGL. FORM VERSION.
+                                    li(id="lopcionVersion")
+                                        a(id="opcionVersion" onclick="CheckingAnyChange(\'GeneralContent\', function(){hidePreviousHistorics(\'#FormVersion\',\'#AddFormVersion\',\'#DivVersion\'); GetVersion(false)})", tkey='MenuVersion')
+                                    li(style='margin-top:199px')
+                                        a( onclick="hide()", tkey='Exit') 
+                        td#Historicos(rowspan=2)
+                            // FORM HISTORICS
+                            block historics
+                            include ./historics/historics.jade
+                            // AGL. FORM VERSION
+                            block version
+                            include ./version/version.jade
+                    tr(style='vertical-align:top')
+                        td#MenuFiltros(style='display:table-column')
+                            nav.menu(style='height:330px')
+                                h3(tkey='Filters')
+                                ul.menuList#FiltersHistorics(style='height:50%:display:none')
+                                    li
+                                        a(onclick="CheckingAnyChange(\'GeneralContent\', function(){hidePreviousHistorics(\'#FormHistorics\',\'#AddFormHistorics\',\'#DivHistorics\'); GetOverallHistorics()})" tkey='nmenuFH_TODOS')
+                                    li
+                                        a(onclick="CheckingAnyChange(\'GeneralContent\', function(){hidePreviousHistorics(\'#FormHistorics\',\'#AddFormHistorics\',\'#DivHistorics\'); GetOverallHistoricsEvents()})" tkey='nmenuFH_EVENTOS')
+                                    li
+                                        a(onclick="CheckingAnyChange(\'GeneralContent\', function(){hidePreviousHistorics(\'#FormHistorics\',\'#AddFormHistorics\',\'#DivHistorics\'); GetOverallHistoricsAlarms()})" tkey='nmenuFH_ALARMAS')                                                                               
+                                    li
+                                        a(onclick="CheckingAnyChange(\'GeneralContent\', function(){hidePreviousHistorics(\'#FormHistorics\',\'#AddFilterDate\',\'#DivHistorics\'); ShowFilterDate()})" tkey='nmenuFH_FECHA')
+                                    li
+                                        a(onclick="CheckingAnyChange(\'GeneralContent\', function(){hidePreviousHistorics(\'#FormHistorics\',\'#AddFilterGroup\',\'#DivHistorics\'); ShowFilterGroups()})" tkey='nmenuFH_GRUPO')
+                                    li
+                                        a(onclick="CheckingAnyChange(\'GeneralContent\', function(){hidePreviousHistorics(\'#FormHistorics\',\'#AddFilterComponent\',\'#DivHistorics\'); ShowFilterComponent()})" tkey='nmenuFH_COMPO')
+                                    li
+                                        a(onclick="CheckingAnyChange(\'GeneralContent\', function(){hidePreviousHistorics(\'#FormHistorics\',\'#AddFilterCode\',\'#DivHistorics\'); ShowFilterCode()})" tkey='nmenuFH_TIPO')
+                                ul.menuList#FiltersStatics(style='height:15%:display:none')
+                                    //li
+                                    //  a(onclick="CheckingAnyChange(\'GeneralContent\', function(){hidePreviousHistorics(\'#FormStatiscs\',\'#AddFilterDateEstadisticas\',\'#DivStatistics\'); ShowFilterDateStatiscs()})" tkey='Date')
+                                    li
+                                        a(onclick="CheckingAnyChange(\'GeneralContent\', function(){hidePreviousHistorics(\'#FormStatiscs\',\'#AddFilterComponentEstadisticas\',\'#DivStatistics\'); ShowFilterComponentStatiscs()})" tkey='Component')
+                                    li
+                                        a(onclick="CheckingAnyChange(\'GeneralContent\', function(){hidePreviousHistorics(\'#FormStatiscs\',\'#AddFilterCodeEstadisticas\',\'#DivStatistics\'); ShowFilterCodeStatiscs()})" tkey='Event')
+                    tr
+                        td#MenuPasarelas(style='display:table-column')
+                            nav.menu(style='height:300px')
+                                h3(tkey='Gateways')
+                                ul.treeList#GotoGatewaysLocalConfiguration(style='height:90%;display:none')
+            #MenuBackup
+                table#TblBakups(style='table-layout:fixed')
+                    tr(style='vertical-align:top')
+                        td#MenuCfgBackup(style='display:table-column')
+                            nav.menu(style='height:auto')
+                                h3(tkey='BackupService')
+                                ul.menuList#BackupOptionsList(style='height:25%')
+                                    li
+                                        a(onclick="CheckingAnyChange(\'GeneralContent\', function(){hidePreviousBackup(\'#FormConfigurationBackup\',\'#AddFormConfigurationBackup\',\'#DivBackups\');GetParametersBackup()})" tkey='SetupBackup')
+                                    li
+                                        a(onclick="CheckingAnyChange(\'GeneralContent\', function(){hidePreviousBackup(\'#FormLogs\',\'#AddFormLogsBackup\',\'#DivLogs\'); PageLog=0; GetLogsBackup()})" tkey='LogsManagement')
+                                    li
+                                        a(onclick="CheckingAnyChange(\'GeneralContent\', function(){hidePreviousBackup(\'#FormHandBackup\',\'#AddFormHandBackup\',\'#DivHandBackup\'); GetHandBackup()})" tkey='HandBackup')
+                                    li
+                                        a(onclick="restoreInfo()" tkey='HandRestore')
+                                    li(style='margin-top:199px')
+                                        a( onclick="CheckingAnyChange(\'GeneralContent\', function(){hide()})", tkey='Exit') 
+                        td#Backups(rowspan=2)
+                            // FORM BACKUP
+                            block backups
+                            include ./backups/backups.jade
+
+        // Config Local
+        block local_config
+        include ./local_config.jade
+        .divNucleo(style='margin-top: 10px')
+            footer.footerNucleo#_pieExtern Nucleo CC Copyright ©2018..2019 Todos los Derechos Reservados.
+            footer.footerNucleo#hVersion

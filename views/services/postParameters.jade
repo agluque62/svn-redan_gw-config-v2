@@ -1,0 +1,891 @@
+
+block parameters
+	script(type='text/javascript' src='/javascripts/parametersRadio.js')
+	script(type='text/javascript' src='/javascripts/parametersTel.js')
+
+script.
+	function loadForm(element){
+		var tabs=[];
+		switch (element.rel){
+			case "FormOrigen":
+				tabs=document.getElementById('ListMenuRanges').getElementsByTagName("a");
+				$('#FormDestino').hide();
+				break;
+			case "FormDestino":
+				tabs=document.getElementById('ListMenuRanges').getElementsByTagName("a");
+				$('#FormOrigen').hide();
+				break;
+		}
+		$('#'+element.rel).show();
+		for (var i=0; i < tabs.length; i++)
+		{
+			if(tabs[i].rel == element.rel) 
+				tabs[i].className="selected";
+			else
+				tabs[i].className="";
+		}
+	}
+
+	function loadParam(element){
+		var tabs=[];
+		switch (element.rel){
+			case "FormHw":
+				tabs=document.getElementById('ListMenuParameters').getElementsByTagName("a");
+				//$('#FormJitter').hide();
+				$('#FormRadio').hide();
+				$('#FormTel').hide();
+				$('#FormLists').hide();
+				$('#FormCommunications').hide();
+				$('#FormATS').hide();
+				//$('#DivContent').animate({height:'150px'});
+			break;
+			// case "FormJitter":
+			// 	tabs=document.getElementById('ListMenuParameters').getElementsByTagName("a");
+			// 	$('#FormHw').hide();
+			// 	$('#FormRadio').hide();
+			// 	$('#FormTel').hide();
+			// 	$('#FormLists').hide();
+			// 	$('#FormCommunications').hide();
+			// 	$('#FormATS').hide();
+			// break;
+			case "FormRadio":
+				GetRemoteRadioResources();
+				tabs=document.getElementById('ListMenuParameters').getElementsByTagName("a");
+				$('#FormHw').hide();
+				//$('#FormJitter').hide();
+				$('#FormTel').hide();
+				$('#FormLists').hide();
+				$('#FormCommunications').hide();
+				$('#FormATS').hide();
+			break;
+			case "FormTel":
+				GetRemoteTfnoResources();
+				tabs=document.getElementById('ListMenuParameters').getElementsByTagName("a");
+				$('#FormHw').hide();
+				$('#rowSelectTResourceType').hide();
+				$('#rowFilterPhResource').hide();
+				$('#rowFilterPhResourceBt').hide();
+				$('#FormRadio').hide();
+				//$('#FormJitter').hide();
+				$('#FormLists').hide();
+				$('#FormCommunications').hide();
+				$('#FormATS').hide();
+			break;
+			case "FormLists":
+				tabs=document.getElementById('ListMenuParameters').getElementsByTagName("a");
+				$('#FormHw').hide();
+				$('#FormTel').hide();
+				$('#FormRadio').hide();
+				$('#FormTel').hide();
+				//$('#FormJitter').hide();
+				$('#FormATS').hide();
+				if($("#SRestriccion option:selected").val() == 0) {
+						$('#BlackList').attr('style', 'display:table-column');
+						$('#WhiteList').attr('style', 'display:table-column');
+				}
+				if($("#SRestriccion option:selected").val() == 1) {
+					$('#BlackList').attr('style', 'display:table');
+					$('#WhiteList').attr('style', 'display:table-column');
+				}
+				if($("#SRestriccion option:selected").val() == 2) {
+					$('#BlackList').attr('style', 'display:table-column');
+					$('#WhiteList').attr('style', 'display:table');
+				}
+				//$('#SRestriccion option:eq(0)').prop('selected', true);
+				//$('#DivContent').animate({height:'300px'});
+			break;
+			case "FormCommunications":
+				GetRemoteRadioResources();
+				tabs=document.getElementById('ListMenuParameters').getElementsByTagName("a");
+				$('#FormHw').hide();
+				$('#rowSelectFResourceType').hide();
+				$('#rowSelectTResourceType').hide();
+				$('#rowFilterPhResource').hide();
+				$('#rowFilterPhResourceBt').hide();
+				$('#rowFilterFResource').hide();
+				$('#rowFilterFResourceBt').hide();
+				$('#FormRadio').hide();
+				$('#FormTel').hide();
+				//$('#FormJitter').hide();
+				$('#FormLists').hide();
+				$('#FormATS').hide();
+				break;
+			case "FormATS":
+				tabs=document.getElementById('ListMenuParameters').getElementsByTagName("a");
+				$('#FormHw').hide();
+				$('#FormRadio').hide();
+				$('#FormTel').hide();
+				$('#FormJitter').hide();
+				$('#FormLists').hide();
+			break;
+		}
+		$('#'+element.rel).show();
+		for (var i=0; i < tabs.length; i++)
+		{
+			if(tabs[i].rel == element.rel) 
+				tabs[i].className="selected";
+			else
+				tabs[i].className="";
+		}
+	}
+div(id="FormParameters")
+	div.menu#DivParameters(style='width: 100%')
+		#tabs(style='margin-left: 10px; width: 96%')
+			ul#ListMenuParameters
+				li
+					a#aHw.selected(href='#' style='width: 100px' rel='FormHw', onclick='loadParam(this)' tkey='Audio')
+				|      
+				li
+					a(href='#' style='width: 80px' rel='FormRadio', onclick='loadParam(this)') Radio 
+				|      
+				li
+					a(href='#' style='width: 100px' rel='FormTel', onclick='loadParam(this)' tkey='Telephonic')
+				|      
+				li
+					a(href='#' style='width: 100px' rel='FormLists', onclick='loadParam(this)' tkey='BWLists')
+				|      
+				li
+					a#FormComm(href='#' style='width: 120px' rel='FormCommunications' tkey='Communications')
+				|      
+				li
+					a(href='#' style='width: 180px' rel='FormATS', onclick='loadParam(this)' class='ATS' tkey='ATSNumberRange')
+		
+		.contentTab#DivContent(style='width:96%; margin-left: 10px; overflow-y:auto;height:auto')
+			#FormHw(style='margin-left:5px')
+				label(style='color:black' tkey='HardwareParameters')
+				div(style='border-top: 1px solid black; width:97%;')
+					table#paramHw(style='padding: 5px 0; width:100%; table-layout:fixed') 
+						tr
+							td(style='width:20%')
+								label(tkey='EnableADAGC')
+							td.New(style='width:10%')
+								input#CbAdAgc(type='checkbox'  onclick='ClickAdAgc(this)')
+							td(align='right' style='width:50%')
+								label#LblAD(tkey='ADAGCGain')
+							td.New(style='width:20%')
+								input.textbox#TbAdGain(type='text' style='width:50px' onblur='ValidateAD(this,"ErrorADAGCGain")' onfocus='this.oldValue=this.value')
+						tr
+							td(style='width:20%')
+								label(tkey='EnableDAAGC')
+							td.New(style='width:10%')
+								input#CbDaAgc(type='checkbox'  onclick='ClickDaAgc(this)')
+							td(align='right' style='width:50%')
+								label#LblDA(tkey='DAAGCGain')
+							td.New(style='width:20%')
+								input.textbox#TbDaGain(type='text' style='width:50px' onblur='ValidateDA(this,"ErrorDAAGCGain")' onfocus='this.oldValue=this.value')
+						tr#GranularityRow
+							td
+								label(tkey='Granularity')
+							td.New
+								select#CbGranularity
+									option(value='0' tkey='Estricto') 
+									option(value='1' tkey='Normal')
+					//
+						tr
+							td(colspan=3 align='left')
+								label(tkey='JitterBufferDelay')
+							td.New
+								input.textbox#TbJitterBufferDelay(type='text' style='width:50px' value=0 onblur='ValidateNumber(this,"ErrorValue")' onfocus='this.oldValue=this.value')
+			//
+				#FormJitter(style='display:none;margin-left:5px')
+					label(style='color:black' tkey='AudioParameters')
+					div(style='border-top: 1px solid black; width:97%;')
+						table#paramJitter(style='padding: 5px 0') 
+							tr
+								td
+									label(tkey='MinimumValue')
+								td
+									input.textbox#TbMin(type='text' style='width:50px' value=0 onblur='ValidateNumber(this,"ErrorValue")' onfocus='this.oldValue=this.value')
+							tr
+								td
+									label(tkey='MaximumValue')
+								td
+									input.textbox#TbMax(type='text' style='width:50px' value=0 onblur='ValidateNumber(this,"ErrorValue")' onfocus='this.oldValue=this.value')
+							tr
+								td
+									label(tkey='JitterBufferDelay')
+								td
+									input.textbox#TbJitterBufferDelay(type='text' style='width:50px' value=0 onblur='ValidateNumber(this,"ErrorValue")' onfocus='this.oldValue=this.value')
+			#FormRadio(style="width:auto; display: none;margin-left:5px")
+				label(style='color:black' tkey='RadioParameters')
+				div(style='border-top: 1px solid black; width:97%;')
+					table#paramRadio(style='border-spacing: 0px 10px;padding: 5px 0;width: 100%; table-layout: fixed') 
+						tr
+							td(style='width:25%')
+								label(tkey='TypeRadio')
+							td.New(style='width:25%')
+								select#LbTypeRadio(type='select' onchange='SelectBss()' style='width:90%')
+									option(value='0' tkey='SingleLocal')
+									option(value='1' tkey='MRLocal')
+									option(value='2' tkey='SingleLocalDesplaced')
+									option(value='3' tkey='MRLocalDesplaced')
+									option(value='4' tkey='RemoteRxTx')
+									option(value='5' tkey='RemoteTx')
+									option(value='6' tkey='RemoteRx')
+							td(style='width:25%')
+							td(style='width:25%')
+						tr#EntradaAudioRow
+							td
+								label(tkey='SQActivation')
+							td.New
+								select#LbSquelchType(type='select'  onchange='OnSelectSQActivation(this)')
+									option(value='0') Hardware
+									option(value='1') VAD
+									option(value='2') Forzado
+						tr#VadRow
+							td
+								label(tkey='VADThreshold')
+							td.New
+								input.textbox#TbVad(type='text' style='width:50px' onblur='ValidateVAD(this,"ErrorThreshold")' onfocus='this.oldValue=this.value')
+						tr#SalidaAudioRow
+							td
+								label(tkey='PTTActivation')
+							td.New
+								select#LbPttType(type='select' disabled)
+									option(value='0') Hardware
+									option(value='1' tkey='Tone')
+						//
+							tr
+								td(colspan=2)
+									label(tkey='MaximumTimePTT')
+								td
+									input.textbox#TbTiempoMaxPtt(type='text' style='width:50px' onblur='ValidateNumber(this,"ErrorValue")' onfocus='this.oldValue=this.value')
+									| sec.
+						tr#BSSMethodRow
+							td
+								label(tkey='BSSMethod')
+							td.New
+								select#CbBssMethod(onchange='OnCbBssMethod(this)')
+									option(value='0') RSSI
+									option(value='1') NUCLEO
+							td.SoloRssi
+								label Tabla calificación audio
+							td.SoloRssi
+								select#CbBssAudioTable
+
+						tr#BSSAvailableRow
+							td
+								label(tkey='AvailableBSSMethods')
+							td.New
+								select#CbBssMethodAvailable(onchange='OnCbBssMethodAvailable(this)')
+									option(value='0' tkey='None') 
+									option(value='1') RSSI
+									option(value='2') RSSI/NUCLEO
+							// Añadir la clase .SoloRssi a los dos td siguientes y quitar (style='display:none')
+							// si alguna vez se decide que a los recursos locales
+							// también se les puede asignar una tabla de calificación de audio
+							td(style='display:none')
+								label Tabla calificación audio
+							td(style='display:none')
+								select#CbBssAudioTableAvailble
+						tr#BSSEnableRow
+							td
+								label(tkey='BSSEnable')
+							td.New
+								input#CbBssEnable(type='checkbox' onclick='OnCbBssEnable(this)')
+						//
+							tr#SquelchDeactRow
+								td(colspan=2)
+									label(tkey='SquelchDeactTimeout')
+								td.New
+									input.textbox#TbSqDesactivacion(type='text' style='width:50px' onblur='ValidateNumber(this,"ErrorValue")' onfocus='this.oldValue=this.value')
+									| dBm
+						tr#InternalDelayRow
+							td#LblClimax
+								label(tkey='GRSInternalDelay')
+							td.New
+								input.textbox#TbGrsInternalDelay(type='text' style='width:50px' onblur='ValidateInternalDelay(this,"ErrorGRSInternalDelay")' onfocus='this.oldValue=this.value')
+						tr#BssTimeRow
+							td
+								label(tkey='BSSTimeWindow')
+							td.New
+								input.textbox#TbBssWindow(type='text' style='width:50px' onblur='ValidateBssWindow(this,"ErrorBSSTimeWindow")' onfocus='this.oldValue=this.value')
+						tr#BssSquelchRow
+							td
+								label(tkey='BSSSquelchQueue')
+							td.New
+								input.textbox#TbBssSquelchQueue(type='text' style='width:50px' onblur='ValidateBssWindow(this,"ErrorBSSSquelchQueue")' onfocus='this.oldValue=this.value')
+						tr#ClimaxDelayRow
+							td
+								label(tkey='ClimaxDelay')
+							td.New
+								select#TbClimaxDelay(type='select' onchange='OnChangeClimax(this)')
+									option(value='1') ASAP
+									option(value='2' tkey='Time')
+						tr#ModoCalculoClimaxRow
+							td
+								label(tkey='ModoCalculoClimax')
+							td
+								select#TbModoCalculoClimax(type='select')
+									option(value='0' tkey='ModoRelativo')
+									option(value='1' tkey='ModoAbsoluto')
+						tr#CompensationRow
+							td
+								label(tkey='Time_ms')
+							td.New
+								input.textbox#CbCompensation(type='text' style='width:50px' onblur='ValidateCompensation(this,"Time")' onfocus='this.oldValue=this.value')
+						tr#PttSquelchRow
+							td
+								label(tkey='PTTSquelchEvents')
+							td.New
+								input#CbPttSquelchEvents(type='checkbox')
+						tr#EnableRecordingRow
+							td
+								label(tkey='EnableRecording')
+							td.New
+								input#CbEnableRecording(type='checkbox')
+						tr#PttPriorityRow
+							td
+								label(tkey='PttPriority')
+							td.New
+								select#LbPttPriority(type='select')
+									option(value='0' tkey='PttNormal')
+									option(value='1' tkey='PttPrioridad')
+									option(value='2' tkey='PttEmergencia')
+						tr#SipPriorityRow
+							td
+								label(tkey='SipPriority')
+							td.New
+								select#LbSipPriority(type='select')
+									option(value='0' tkey='Normal')
+									option(value='1' tkey='Emergencia')
+					//
+						tr#AudioInputSignalForcedRow
+							td(colspan=2)
+								label(tkey='AudioInputSignalForced')
+							td.New
+								input#CbInputSignalForced(type='checkbox')
+			#FormTel(style="width:auto; display: none;margin-left:5px")
+				label(style='color:black' tkey='PhoneParameters')
+				div(style='border-top: 1px solid black; width:97%;')
+					table
+						tr
+							td
+								table#paramPhone(style='border-spacing: 10px 5px; width: 100%; table-layout: fixed') 
+									tr
+										td(style='width:40%')
+											label(tkey='TypeTel')
+										td.New
+											select#LbTypeTel(type='select' onchange='OnChangeType(this)')
+												option(value='0') PP-BL
+												option(value='1') PP-BC
+												option(value='2') PP-AB
+												option(value='3') ATS-R2
+												option(value='4') ATS-N5
+												option(value='5') LCEN
+												option(value='6') ATS-QSIG
+											//	
+												option(value='7') TUN-LOC
+												option(value='8') TUN-REM
+										td(style='vertical-align: top;padding-top: 30px;')
+											label(style='color:#bf2a36' tkey='TelephonicResources')  
+											div(style='border-top: 1px solid #bf2a36; width:auto; padding: 0 0 5px 0')
+									tr(class='LCEN BL BC AB')
+										td
+											label(tkey='AGVN User Name')
+										td.New
+											input.textbox#TbTelATSUser(type='text' placeholder="ATS Number" style="font-size:100%; height:16px; width:50px;" onblur='ValidateAtsNumber(this,"ErrorATSNumber")' onfocus='this.oldValue=this.value' value='349999')
+									tr(class='AB')
+										td
+											label(tkey='Detecta Inversion Polaridad')
+										td.New
+											select#DetInversionPol
+												option(value=0 tkey='No')
+												option(value=1 tkey='Si')
+									tr
+										td
+											label(tkey='RemoteURI')
+										td
+										td.New(rowspan='12')
+											table#facedResources(style='height: 210px;border-style: double;width: 100%;')
+												tr
+													td(align='center')
+														select#CBFacedTelType(style='width:140px;' onchange='SelectTelType($("#CBFacedTelType option:selected").val())')
+												tr#rowSelectTResourceType
+													td(align='center')
+														select#CBFaced2ResourcesType(style='width:140px;' onchange='SelectPhResourcesType($("#CBFaced2ResourcesType option:selected").val())')
+															option(value='-2') Filtrar recursos...
+															option(disabled='disabled') ------------
+															option(value='4') Buscar por Alias
+															option(value='5') Buscar por URI
+															option(disabled='disabled') ------------
+															option(value='-1') Todos (Teléfono)
+												tr#rowFilterPhResource
+													td(align='center')
+														input.textbox#FilterPhResource(type='text' style='width:140px' placeholder="Carácteres a buscar...")
+												tr#rowFilterPhResourceBt
+													td(align='center')
+														a.ButtonNucleo#BtnFindPhFilterRes(onclick='FilterPhResourcesBy()') Buscar recursos
+												tr#rowSelectTelSite
+													td(align='center')
+														select#CBFacedTelSite(style='width:140px;' onchange='SelectTelGtw($("#name").val(),$("#CBFacedTelSite option:selected").val())')
+												tr#rowSelectTelGtw
+													td(align='center')
+														select#CBFacedTelGtw(style='width:140px;' onchange='SelectTelResource($("#name").val(),$("#CBFacedTelSite option:selected").val(),$("#CBFacedTelGtw option:selected").val())')
+												tr
+													td(align='center')
+														select#CBFacedTelResources(style='width:140px;')
+									tr
+										td.New(style='padding-top: 8px;vertical-align:top')
+											input.UriTextbox#TbRemoteUri(type='text' placeholder="NombreRecurso@IP:Puerto" style="font-size:95%; font-family: Courier, Monaco, monospace; height:16px;" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value')
+										td.New(align='right' style='vertical-align: top;')
+											a.ButtonNucleo(onclick='MakeFacedTelUri("#TbRemoteUri")') <
+									//
+										tr
+											td
+												label(tkey='UpdatePeriod')
+											td.New
+												input#CbRUpdatePeriod(type='checkbox' onclick='OnClickUpdatePeriod(this)')
+										tr
+											td
+												label(tkey='UpdatePeriodSeconds')
+											td.New
+												input.textbox#TbUpdatePeriod(type='text' style='width:50px' onblur='ValidateUpdatePeriod(this,"ErrorUpdatePeriodSeconds")' onfocus='this.oldValue=this.value' disabled)
+									tr(class='ATS LCEN')
+										td
+											label(tkey='AutomaticAnswer' )
+										td.New
+											input#CbResp(type='checkbox' onclick='OnClickPeriodoRespuesta(this)')
+									tr#OptionsIntervalRow(class='ATS LCEN' style='display: none;')
+										td
+											label(tkey='OPTIONSInterval' )
+										td.New
+											input.textbox#TbOptionsInterval(type='text' style='width:50px' value='0' onblur='ValidateTonosRespuesta(this,"ErrorOPTIONSInterval")' onfocus='this.oldValue=this.value')
+									tr(class='EyM')
+										td
+											label(tkey='DestinationType' )
+										td.New
+											select#LbDestinationType(type='select' )
+												option(value='0' tkey='Resource')
+												option(value='1' tkey='VCS')
+									//
+										tr
+											td
+												label(tkey='ATSQSIGMode' class='QSIG')
+											td.New
+												select#LbAtsModo(type='select' class='QSIG')
+													option(value='0' tkey='Net')
+													option(value='1' tkey='User')
+									tr( class='ATS')
+										td
+											label(tkey='Side')
+										td.New
+											select#LbLado(type='select')
+												option(value='0') A
+												option(value='1') B
+									tr( class='ATS')
+										td
+											label(tkey='LocalTestNumber')
+										td.New
+											input.textbox#TbLocalNumText(type='text' style='width:50px' onblur='ValidateAtsNumber(this,"ErrorATSNumber")' onfocus='this.oldValue=this.value')
+									tr( class='ATS')
+										td
+											label(tkey='RemoteTestNumber')
+										td.New
+											input.textbox#TbRemoteNumText(type='text' style='width:50px' onblur='ValidateAtsNumber(this,"ErrorATSNumber")' onfocus='this.oldValue=this.value')
+									tr(class='ATS LCEN')
+										td
+											label(tkey='OPTIONSSupervision' )
+										td.New
+											input#CbOptionsSupervision(type='checkbox' onclick='OnClickSupervision(this)')
+									tr#ReleaseRow(style='display: none;')
+										td
+											label(tkey='ReleaseTime' )
+										td.New
+											select#TbReleaseTime(type='select' style='width:50px')
+												option(value='5') 5
+												option(value='10') 10
+												option(value='15') 15
+												option(value='20') 20
+												option(value='25') 25
+												option(value='30') 30
+									tr#InterruptToneRow(class='ATS')
+										td
+											label(tkey='InterruptToneTime' )
+										td.New
+											select#CbInterruptToneTime(type='select' style='width:50px')
+												option(value='5') 5
+												option(value='6') 6
+												option(value='7') 7
+												option(value='8') 8
+												option(value='9') 9
+												option(value='10') 10
+												option(value='11') 11
+												option(value='12') 12
+												option(value='13') 13
+												option(value='14') 14
+												option(value='15') 15
+
+										//
+											td
+												label(tkey='EMType' class='EyM')
+											td
+												select#LbEMType(type='select' class='EyM')
+													option(value='0' tkey='TypeI')
+													option(value='1' tkey='TypeII')
+													option(value='2' tkey='TypeIII')
+													option(value='3' tkey='TypeIV')
+													option(value='4' tkey='TypeV')
+													option(value='5' tkey='Owner')
+											tr
+												td
+													label(tkey='EMSide' class='EyM')
+												td
+													select#LbEMLado(type='select' class='EyM')
+														option(value='0') E&M
+														option(value='1') PLR
+												td
+													label(tkey='24 wires' class='EyM')
+												td
+													select#LbWires(type='select' class='EyM')
+														option(value='0' tkey='2Wires')
+														option(value='1' tkey='4Wires')
+									tr(class='BL')
+										td
+											label(tkey='VoxDetection' )
+										td.New
+											input#CbVox(type='checkbox' onclick='OnVoxDetection(this)')
+									tr(class='BL')
+										td
+											label(tkey='VoxThreshold')
+										td.New
+											input.textbox#TbUmbral(type='text' style='width:50px' value='-15' onblur='ValidateVAD(this,"ErrorThreshold")' onfocus='this.oldValue=this.value')
+									tr(class='BL')
+										td
+											label(tkey='InactivityTime')
+										td.New
+											input.textbox#TbInactividad(type='text' style='width:50px' value='0' onblur='ValidateNumberColaVox(this,"ErrorInactivityTime")' onfocus='this.oldValue=this.value')
+			#FormLists(style="width:auto; display: none;margin-left:5px")
+				//label(style='color:black'  tkey='BWGlobalList')
+				//div(style='border-top: 1px solid black; width:97%;padding-top:5px')
+				//table#NewsUris(style='padding-top:10px;padding-bottom: 15px;width: 100%; border-spacing: 5px;')
+					tr
+						td.New
+							select#ListUris(type='select' style='width:150px')
+						td.New(colspan=2)
+							input.UriTextbox#NewUri(style='display:none' placeholder="NombreRecurso@IP:Puerto" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value')
+					tr
+						td.New
+							a.ButtonNucleo#BtnAddUri(onclick='AddUri(this)' style='position:relative' tkey='AddURI')						
+						td.New
+							a.ButtonNucleo#BtnRemoveUri(onclick='RemoveUri()' style='position:relative' tkey='RemoveURI')
+					tr
+						td.New			
+				label(style='color:black' tkey='BWLists')
+				div(style='border-top: 1px solid black; width:97%;padding-top:5px;padding-bottom: 10px')
+					table
+						tr#BlackWhiteRow
+							td(style='border: none' tkey='Restriction')
+							td.New(style='border: none')
+								select#SRestriccion(style='width:100px' onchange='OnChangeRestriccion(this)')
+									option(value=0) Ninguna
+									option(value=1) Lista Negra
+									option(value=2) Lista Blanca
+
+					table#BlackList.range(style='display:table-column')
+						tr
+							th(colspan=4 tkey='BlackList')
+						tr#AddUriRow1(align='center' style='height:40px')
+							td.New
+								input.UriTextbox#Uri1BL(type="text" placeholder="NombreRecurso@IP:Puerto" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value' style='width:85%')
+						tr#AddUriRow2(align='center' style='height:40px')
+							td.New
+								input.UriTextbox#Uri2BL(type="text" placeholder="NombreRecurso@IP:Puerto" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value' style='width:85%')
+						tr#AddUriRow3(align='center' style='height:40px')
+							td.New
+								input.UriTextbox#Uri3BL(type="text" placeholder="NombreRecurso@IP:Puerto" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value' style='width:85%')
+						tr#AddUriRow4(align='center' style='height:40px')
+							td.New
+								input.UriTextbox#Uri4BL(type="text" placeholder="NombreRecurso@IP:Puerto" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value' style='width:85%')
+						tr#AddUriRow5(align='center' style='height:40px')
+							td.New
+								input.UriTextbox#Uri5BL(type="text" placeholder="NombreRecurso@IP:Puerto" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value' style='width:85%')
+						tr#AddUriRow6(align='center' style='height:40px')
+							td.New
+								input.UriTextbox#Uri6BL(type="text" placeholder="NombreRecurso@IP:Puerto" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value' style='width:85%')
+						tr#AddUriRow7(align='center' style='height:40px')
+							td.New
+								input.UriTextbox#Uri7BL(type="text" placeholder="NombreRecurso@IP:Puerto" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value' style='width:85%')
+						tr#AddUriRow8(align='center' style='height:40px')
+							td.New
+								input.UriTextbox#Uri8BL(type="text" placeholder="NombreRecurso@IP:Puerto" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value' style='width:85%')
+
+					table#WhiteList.range(style='display:table-column')
+						tr
+							th(colspan=4 tkey='WhiteList')
+						tr#AddUriRow9(align='center' style='height:40px')
+							td.New
+								input.UriTextbox#Uri1WL(type="text" placeholder="NombreRecurso@IP:Puerto" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value')
+						tr#AddUriRow10(align='center' style='height:40px')
+							td.New
+								input.UriTextbox#Uri2WL(type="text" placeholder="NombreRecurso@IP:Puerto" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value')
+						tr#AddUriRow11(align='center' style='height:40px')
+							td.New
+								input.UriTextbox#Uri3WL(type="text" placeholder="NombreRecurso@IP:Puerto" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value')
+						tr#AddUriRow12(align='center' style='height:40px')
+							td.New
+								input.UriTextbox#Uri4WL(type="text" placeholder="NombreRecurso@IP:Puerto" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value')
+						tr#AddUriRow13(align='center' style='height:40px')
+							td.New
+								input.UriTextbox#Uri5WL(type="text" placeholder="NombreRecurso@IP:Puerto" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value')
+						tr#AddUriRow14(align='center' style='height:40px')
+							td.New
+								input.UriTextbox#Uri6WL(type="text" placeholder="NombreRecurso@IP:Puerto" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value')
+						tr#AddUriRow15(align='center' style='height:40px')
+							td.New
+								input.UriTextbox#Uri7WL(type="text" placeholder="NombreRecurso@IP:Puerto" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value')
+						tr#AddUriRow16(align='center' style='height:40px')
+							td.New
+								input.UriTextbox#Uri8WL(type="text" placeholder="NombreRecurso@IP:Puerto" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value')
+
+					//select#AssignedUriList(type='select' style='width:150px')
+							//td.New
+							//	a.ButtonNucleo(onclick='AddUriToList(this,function(){AddGatewayToList($(\'#DivGateways\').data(\'idCgw\'))})' tkey='Add')
+			#FormCommunications(style='width:auto; display:none;margin-left:5px')
+				label(style='color:black' tkey='Communications')
+				table
+					tr
+						td
+							div(style='border-top: 1px solid black; width:97%;')
+								table#paramCommunications(style='padding: 5px 0') 
+									tr#LabelSite1
+										td(style='font-weight: bold') EMPLAZAMIENTO 1
+									tr#RowSite1
+										td(style='width:100%')
+											table(style="border-spacing: 10px 15px;width:100%")
+												tr(align="center")
+													td(style='width:100%')
+														label(style='color:#bf2a36')  Tx
+														div(style='border-top: 1px solid #bf2a36; width:auto; padding: 0 0 5px 0')
+															table
+																tr#TxARow1
+																	td
+																		label URI A:
+																	td.New
+																		input.UriTextbox#UriTxA1(type="text" placeholder="NombreRecurso@IP:Puerto" style="font-size:95%; font-family: Courier, Monaco, monospace; height:16px;" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value')
+																	td#RowBtnSelectTxA1.New
+																		a.ButtonNucleo#BtnSelectTxA1(onclick='MakeFacedUri("#UriTxA1")') <
+																tr#TxBRow1
+																	td
+																		label URI B:
+																	td.New
+																		input.UriTextbox#UriTxB1(type="text" placeholder="NombreRecurso@IP:Puerto" style="font-size:95%; font-family: Courier, Monaco, monospace; height:16px;" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value')
+																	td.New
+																		a.ButtonNucleo#BtnSelectTxB1(onclick='MakeFacedUri("#UriTxB1")') <
+												tr(align="center")
+													td(style='width:100%')
+														label(style='color:#bf2a36')  Rx
+														div(style='border-top: 1px solid #bf2a36; width:auto; padding: 0 0 5px 0')
+															table
+																tr#RxARow1
+																	td
+																		label URI A:
+																	td.New
+																		input.UriTextbox#UriRxA1(type="text" placeholder="NombreRecurso@IP:Puerto" style="font-size:95%; font-family: Courier, Monaco, monospace; height:16px;" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value')
+																	td.New
+																		a.ButtonNucleo#BtnSelectRxA1(onclick='MakeFacedUri("#UriRxA1")') <
+																tr#RxBRow1
+																	td
+																		label URI B:
+																	td.New
+																		input.UriTextbox#UriRxB1(type="text" placeholder="NombreRecurso@IP:Puerto" style="font-size:95%; font-family: Courier, Monaco, monospace; height:16px;" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value')
+																	td.New
+																		a.ButtonNucleo#BtnSelectRxB1(onclick='MakeFacedUri("#UriRxB1")') <
+									tr#LabelSite2
+										td(style='font-weight: bold') EMPLAZAMIENTO 2
+									tr#RowSite2
+										td(style='width:100%')
+											table(style="border-spacing: 10px 15px;width:100%")
+												tr(align="center")
+													td(style='width:100%')
+														label(style='color:#bf2a36')  Tx
+														div(style='border-top: 1px solid #bf2a36; width:auto; padding: 0 0 5px 0')
+															table
+																tr#TxARow2
+																	td
+																		label URI A:
+																	td.New
+																		input.UriTextbox#UriTxA2(type="text" placeholder="NombreRecurso@IP:Puerto" style="font-size:95%; font-family: Courier, Monaco, monospace; height:16px;" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value')
+																	td.New
+																		a.ButtonNucleo#BtnSelectTxA2(onclick='MakeFacedUri("#UriTxA2")') <
+																tr#TxBRow2
+																	td
+																		label URI B:
+																	td.New
+																		input.UriTextbox#UriTxB2(type="text" placeholder="NombreRecurso@IP:Puerto" style="font-size:95%; font-family: Courier, Monaco, monospace; height:16px;" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value')
+																	td.New
+																		a.ButtonNucleo#BtnSelectTxB2(onclick='MakeFacedUri("#UriTxB2")') <
+												tr(align="center")
+													td(style='width:100%')
+														label(style='color:#bf2a36')  Rx
+														div(style='border-top: 1px solid #bf2a36; width:auto; padding: 0 0 5px 0')
+															table
+																tr#RxARow2
+																	td
+																		label URI A:
+																	td.New
+																		input.UriTextbox#UriRxA2(type="text" placeholder="NombreRecurso@IP:Puerto" style="font-size:95%; font-family: Courier, Monaco, monospace; height:16px;" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value')
+																	td.New
+																		a.ButtonNucleo#BtnSelectRxA2(onclick='MakeFacedUri("#UriRxA2")') <
+																tr#RxBRow2
+																	td
+																		label URI B:
+																	td.New
+																		input.UriTextbox#UriRxB2(type="text" placeholder="NombreRecurso@IP:Puerto" style="font-size:95%; font-family: Courier, Monaco, monospace; height:16px;" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value')
+																	td.New
+																		a.ButtonNucleo#BtnSelectRxB2(onclick='MakeFacedUri("#UriRxB2")') <
+									tr#LabelSite3
+										td(style='font-weight: bold') EMPLAZAMIENTO 3
+									tr#RowSite3
+										td(style='width:100%')
+											table(style="border-spacing: 10px 15px;width:100%")
+												tr(align="center")
+													td(style='width:100%')
+														label(style='color:#bf2a36')  Tx
+														div(style='border-top: 1px solid #bf2a36; width:auto; padding: 0 0 5px 0')
+															table
+																tr#TxARow3
+																	td
+																		label URI A:
+																	td.New
+																		input.UriTextbox#UriTxA3(type="text" placeholder="NombreRecurso@IP:Puerto" style="font-size:95%; font-family: Courier, Monaco, monospace; height:16px;" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value')
+																	td.New
+																		a.ButtonNucleo#BtnSelectTxA3(onclick='MakeFacedUri("#UriTxA3")') <
+																tr#TxBRow3
+																	td
+																		label URI B:
+																	td.New
+																		input.UriTextbox#UriTxB3(type="text" placeholder="NombreRecurso@IP:Puerto" style="font-size:95%; font-family: Courier, Monaco, monospace; height:16px;" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value')
+																	td.New
+																		a.ButtonNucleo#BtnSelectTxB3(onclick='MakeFacedUri("#UriTxB3")') <
+												tr(align="center")
+													td(style='width:100%')
+														label(style='color:#bf2a36')  Rx
+														div(style='border-top: 1px solid #bf2a36; width:auto; padding: 0 0 5px 0')
+															table
+																tr#RxARow3
+																	td
+																		label URI A:
+																	td.New
+																		input.UriTextbox#UriRxA3(type="text" placeholder="NombreRecurso@IP:Puerto" style="font-size:95%; font-family: Courier, Monaco, monospace; height:16px;" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value')
+																	td.New
+																		a.ButtonNucleo#BtnSelectRxA3(onclick='MakeFacedUri("#UriRxA3")') <
+																tr#RxBRow3
+																	td
+																		label URI B:
+																	td.New
+																		input.UriTextbox#UriRxB3(type="text" placeholder="NombreRecurso@IP:Puerto" style="font-size:95%; font-family: Courier, Monaco, monospace; height:16px;" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value')
+																	td.New
+																		a.ButtonNucleo#BtnSelectRxB3(onclick='MakeFacedUri("#UriRxB3")') <
+									//tr
+									//	td
+									//		table#TblEmplazamiento(style='width:100%;padding-bottom:15px')
+									//			tr(align="center")
+									//				td.New
+									//					a.ButtonNucleo#BtnUpdateSite(style='display:none' onclick='UpdateSite(function(){AddGatewayToList($(\'#DivGateways\').data(\'idCgw\'))})' tkey='UpdateSite')
+									//				td.New
+									//					a.ButtonNucleo#BtnAddSite(onclick='CommitSite(function(){AddGatewayToList($(\'#DivGateways\').data(\'idCgw\'))})' tkey='AddSite')
+									//				td.New
+									//					a.ButtonNucleo#BtnRemoveSite(onclick='RemoveSite(function(){AddGatewayToList($(\'#DivGateways\').data(\'idCgw\'))})' tkey='RemoveSite')
+
+						td(style='vertical-align:top')
+							table#facedResources(style='padding: 5px 0; height:210px')
+								tr
+									td(align='center')
+										label#ResId(style='color:#bf2a36' tkey='RemoteRadioResources')
+										div(style='border-top: 1px solid #bf2a36; width:auto; padding: 0 0 5px 0')
+								tr
+									td(align='center')
+										select#CBFacedType(style='width:140px;' onchange='SelectERType($("#CBFacedType option:selected").val())')
+								tr#rowSelectFSite
+									td(align='center')
+										select#CBFacedSite(style='width:140px;' onchange='SelectGtw($("#CBFacedSite option:selected").val())')
+								tr#rowSelectFGtw
+									td(align='center')
+										select#CBFacedGtw(style='width:140px;' onchange='SelectResource($("#CBFacedGtw option:selected").val())')
+								tr#rowSelectFResourceType
+									td(align='center')
+										select#CBFacedResourcesType(style='width:140px;' onchange='SelectResourcesType($("#CBFacedResourcesType option:selected").val())')
+											option(value='-2') Filtrar recursos...
+											option(disabled='disabled') ------------
+											option(value='4') Buscar por Alias
+											option(value='5') Buscar por URI
+											option(disabled='disabled') ------------
+											option(value='-1') Todos (Radio)
+											option(value='0') Radio Tx
+											option(value='1') Radio Tx Rx
+											option(value='2') Radio Rx
+								tr#rowFilterFResource
+									td(align='center')
+										input.textbox#FilterFResource(type='text' style='width:140px' placeholder="Carácteres a buscar...")
+								tr#rowFilterFResourceBt
+									td(align='center')
+										a.ButtonNucleo#BtnFindFilterRes(onclick='FilterResourcesBy()') Buscar recursos
+								tr#rowSelectFResource
+									td(align='center')
+										select#CBFacedResources(style='width:140px;' onchange='SelectBtnsResources($("#CBFacedResources option:selected"))')
+			#FormATS(style='width:auto; display:none;margin-left:5px')
+				label(style='color:black' tkey='ATSNumberRange')
+				div(style='border-top: 1px solid black; width:97%;margin-top: 20px;padding-bottom: 5px')
+					#tabs(style='margin-top: 20px; margin-left: 10px; width: auto')
+						ul#ListMenuRanges
+							li
+								a.selected(href='#', rel='FormOrigen', onclick='loadForm(this)' tkey='Origin')
+							|      
+							li
+								a(href='#', rel='FormDestino', onclick='loadForm(this)' tkey='Destination')
+					.contentTab(style='width:auto;margin-left: 10px; overflow-y:auto;overflow-x: hidden; height: auto; padding-top:10px')
+						form#FormOrigen
+							table#rangeAtsOriginNueva.range
+								tr(style='height:20px')
+									th(tkey='Starting' valign='top')
+									th(tkey='Ending' valign='top')
+								tr(style='height:45px')
+									td.New(align='center')
+										input#OrigenInicio1(type='text' style='width:55px' onblur='ValidateAtsNumber(this,"ErrorATSNumber")' onfocus='this.oldValue=this.value')
+									td.New(align='center')
+										input#OrigenFinal1(type='text' style='width:55px' onblur='ValidateAtsNumber(this,"ErrorATSNumber")' onfocus='this.oldValue=this.value')
+								tr(style='height:45px')
+									td.New(align='center')
+										input#OrigenInicio2(type='text' style='width:55px' onblur='ValidateAtsNumber(this,"ErrorATSNumber")' onfocus='this.oldValue=this.value')
+									td.New(align='center')
+										input#OrigenFinal2(type='text' style='width:55px' onblur='ValidateAtsNumber(this,"ErrorATSNumber")' onfocus='this.oldValue=this.value')
+								tr(style='height:45px')
+									td.New(align='center')
+										input#OrigenInicio3(type='text' style='width:55px' onblur='ValidateAtsNumber(this,"ErrorATSNumber")' onfocus='this.oldValue=this.value')
+									td.New(align='center')
+										input#OrigenFinal3(type='text' style='width:55px' onblur='ValidateAtsNumber(this,"ErrorATSNumber")' onfocus='this.oldValue=this.value')
+								tr(style='height:45px')
+									td.New(align='center')
+										input#OrigenInicio4(type='text' style='width:55px' onblur='ValidateAtsNumber(this,"ErrorATSNumber")' onfocus='this.oldValue=this.value')
+									td.New(align='center')
+										input#OrigenFinal4(type='text' style='width:55px' onblur='ValidateAtsNumber(this,"ErrorATSNumber")' onfocus='this.oldValue=this.value')
+								//	td.New(align='center' colspan=2)
+								//			a.ButtonNucleo#ButtonAddRange(onclick='AddRange(this,true)' tkey='AddRange')
+						form#FormDestino(style='display:none')
+							table#rangeAtsDestinationNueva.range
+								tr(style='height:20px')
+									th(tkey='Starting' valign='top')
+									th(tkey='Ending' valign='top')
+								tr(style='height:45px')
+									td.New(align='center')
+										input#DestinoInicio1(type='text' style='width:55px' onblur='ValidateAtsNumber(this,"ErrorATSNumber")' onfocus='this.oldValue=this.value')
+									td.New(align='center')
+										input#DestinoFinal1(type='text' style='width:55px' onblur='ValidateAtsNumber(this,"ErrorATSNumber")' onfocus='this.oldValue=this.value')
+								tr(style='height:45px')
+									td.New(align='center')
+										input#DestinoInicio2(type='text' style='width:55px' onblur='ValidateAtsNumber(this,"ErrorATSNumber")' onfocus='this.oldValue=this.value')
+									td.New(align='center')
+										input#DestinoFinal2(type='text' style='width:55px' onblur='ValidateAtsNumber(this,"ErrorATSNumber")' onfocus='this.oldValue=this.value')
+								tr(style='height:45px')
+									td.New(align='center')
+										input#DestinoInicio3(type='text' style='width:55px' onblur='ValidateAtsNumber(this,"ErrorATSNumber")' onfocus='this.oldValue=this.value')
+									td.New(align='center')
+										input#DestinoFinal3(type='text' style='width:55px' onblur='ValidateAtsNumber(this,"ErrorATSNumber")' onfocus='this.oldValue=this.value')
+								tr(style='height:45px')
+									td.New(align='center')
+										input#DestinoInicio4(type='text' style='width:55px' onblur='ValidateAtsNumber(this,"ErrorATSNumber")' onfocus='this.oldValue=this.value')
+									td.New(align='center')
+										input#DestinoFinal4(type='text' style='width:55px' onblur='ValidateAtsNumber(this,"ErrorATSNumber")' onfocus='this.oldValue=this.value')
+								//td.New(align='center' colspan='2')
+									//		a.ButtonNucleo(onclick='AddRange(this,false)' tkey='AddRange')

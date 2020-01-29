@@ -1,0 +1,14 @@
+
+#srv_cfg .row {
+    margin: 10px;
+}
+
+#srv_cfg input {
+    float: right;
+    background: white;
+}
+
+#srv_cfg select {
+    float: right;
+    background: white;
+}

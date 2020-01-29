@@ -1,0 +1,11 @@
+PREPARACIÓN DE LA INSTALACIÓN DE LA APLICACIÓN
+==============================================
+
+- Desde Workbench crear UG5K.mwb en directorio D:\Proyectos\Ulises G 5000 2X\UG5K-Serv\data_model
+	* (Instancia ug5k) Database / Reverse Engineer /ug5k
+	* (Model) File / Save Model As... 
+
+- Desde directorio D:\Proyectos\Ulises G 5000 2X\ crear fichero UG5K-Serv.zip con directorio UG5K-Serv.
+	* Del archivo comprimido eliminar los archivos/directorio que no forman parte de la aplicación.
+
+

@@ -1,0 +1,435 @@
+//extends ../layout
+
+block gateway
+	// - script(type='text/javascript' src='/javascripts/resources.js')
+	link(rel='stylesheet', href='/stylesheets/drag.css')
+	link(rel='stylesheet', href='/stylesheets/tabs.css')
+	link(rel='stylesheet', href='/stylesheets/table.css')
+
+	script(type='text/javascript' src='/javascripts/services.js')
+	script(type='text/javascript' src='/javascripts/hardware.js')
+script.
+		function loadCpu(element){
+			var tabs=[];
+			switch (element.rel){
+				case "tab1":
+					$('#tab1').show();
+					$('#tab2').hide();
+					break;
+				case "tab2":
+					$('#tab1').hide();
+					$('#tab2').show();
+					break;
+			}
+
+			tabs=document.getElementById('listCpus').getElementsByTagName("a");
+			for (var i=0; i < tabs.length; i++){
+				if(tabs[i].rel == element.rel) 
+					tabs[i].className="selected";
+				else
+					tabs[i].className="";
+			}
+		}
+
+		function loadit(element){
+			var tabs=[];
+			switch (element.rel){
+				case "AddFormGateway":
+					tabs=document.getElementById('ListMenuGateways').getElementsByTagName("a");
+					$('#ServicesFormGateway').hide();
+					$('#HwFormGateway').hide();
+					$('#ResourcesFormGateway').hide();
+					$('#AddFormsite').animate({width: '790px', height: '500px'});
+					break;
+				case "ServicesFormGateway":
+					tabs=document.getElementById('ListMenuGateways').getElementsByTagName("a");
+					$('#AddFormGateway').hide();
+					$('#HwFormGateway').hide();
+					$('#ResourcesFormGateway').hide();
+					$('#AddFormsite').animate({width: '790px', height: '500px'});
+					getServices4Copy();
+					break;
+				case "HwFormGateway":
+					tabs=document.getElementById('ListMenuGateways').getElementsByTagName("a");
+					$('#AddFormGateway').hide();
+					$('#ServicesFormGateway').hide();
+					$('#ResourcesFormGateway').hide();
+					loadingContent();
+					break;
+				case "ResourcesFormGateway":
+					tabs=document.getElementById('ListMenuGateways').getElementsByTagName("a");
+					$('#AddFormGateway').hide();
+					$('#HwFormGateway').hide();
+					$('#ServicesFormGateway').hide();
+					break;
+				case "SipServiceGateway":
+					tabs=document.getElementById('ListMenuServices').getElementsByTagName("a");
+					$('#WebServiceGateway').hide();
+					$('#SnmpServiceGateway').hide();
+					$('#RecordingServiceGateway').hide();
+					$('#SincrServiceGateway').hide();
+					break;
+				case "WebServiceGateway":
+					tabs=document.getElementById('ListMenuServices').getElementsByTagName("a");
+					$('#SipServiceGateway').hide();
+					$('#SnmpServiceGateway').hide();
+					$('#RecordingServiceGateway').hide();
+					$('#SincrServiceGateway').hide();
+					break;
+				case "SnmpServiceGateway":
+					tabs=document.getElementById('ListMenuServices').getElementsByTagName("a");
+					$('#SipServiceGateway').hide();
+					$('#WebServiceGateway').hide();
+					$('#RecordingServiceGateway').hide();
+					$('#SincrServiceGateway').hide();
+					break;
+				case "RecordingServiceGateway":
+					tabs=document.getElementById('ListMenuServices').getElementsByTagName("a");
+					$('#SipServiceGateway').hide();
+					$('#WebServiceGateway').hide();
+					$('#SnmpServiceGateway').hide();
+					$('#SincrServiceGateway').hide();
+					break;
+				case "SincrServiceGateway":
+					tabs=document.getElementById('ListMenuServices').getElementsByTagName("a");
+					$('#SipServiceGateway').hide();
+					$('#WebServiceGateway').hide();
+					$('#SnmpServiceGateway').hide();
+					$('#RecordingServiceGateway').hide();
+					break;
+
+			}
+			$('#'+element.rel).show();
+			for (var i=0; i < tabs.length; i++)
+			{
+				if(tabs[i].rel == element.rel) 
+					tabs[i].className="selected";
+				else
+					tabs[i].className="";
+			}
+		}
+
+		function loadingContent() {
+			$('#loader').show();
+			$('#loading').show();
+			$('#dimScreen').show();
+			setTimeout(function(){
+				$('#loader').hide();
+				$('#loading').hide();
+				$('#dimScreen').hide();
+		//	}, 2500);
+		}, 5);
+		}
+
+		function ClickDualCPU(element){
+			if (element.checked)
+				document.getElementById('liCpu2').style.display = 'block';
+			else
+				document.getElementById('liCpu2').style.display = 'none';
+		}
+		
+		function ClickTLan(element,cpu){
+			if (cpu === 0){
+				switch(element.value){
+					case '0': 	// Duality of LAN: No
+						document.getElementById('nic1').style.display = 'none';
+						document.getElementById('lan11').style.display = 'table';
+						document.getElementById('lan21').style.display = 'table';
+						break;
+					case '1': 	// Principal/Reserva
+						document.getElementById('nic1').style.display = 'table';
+						document.getElementById('lan11').style.display = 'none';
+						document.getElementById('lan21').style.display = 'none';
+						break;
+					case '2': 	// LACP
+						break;
+				}
+			}
+			else{
+				switch(element.value){
+					case '0': 	// Duality of LAN: No
+						document.getElementById('nic2').style.display = 'none';
+						document.getElementById('lan12').style.display = 'table';
+						document.getElementById('lan22').style.display = 'table';
+						break;
+					case '1': 	// Principal/Reserva
+						document.getElementById('nic2').style.display = 'table';
+						document.getElementById('lan12').style.display = 'none';
+						document.getElementById('lan22').style.display = 'none';
+						break;
+					case '2': 	// LACP
+						break;
+				}
+			}
+		}
+
+		function Fade(element,label){
+			translateWord(label,function(result){
+				alertify.alert('Ulises G 5000 R', result);
+				alertify.error(result);
+				$(element).fadeOut(500)
+						.fadeIn(1000);
+				$(element).val(element.oldValue);
+				//$(element).focus();
+			});	
+			
+		}
+
+
+		function ValidateUser(element,label){
+			var regx_userval = /^[a-zA-Z0-9\-_]{1,32}$/;
+
+			var matchIp = $(element).val().match(regx_userval);
+			if (matchIp == null){
+				Fade(element,label)
+			}
+		}
+
+		function ValidateIds(element,label) {
+			var regx_idval = /^[a-zA-Z0-9\-_.]{1,32}$/;
+
+			var matchIp = $(element).val().match(regx_idval);
+			if ($(element).val() != '' && matchIp == null) {
+				Fade(element, label)
+			}
+			if ($(element).length > 32) {
+				Fade(element, label)
+			}
+
+			else {
+				if ($(element).val() != element.oldValue && element.name == 'nameGw') {
+					$.ajax({
+						type: 'GET',
+						url: '/gateways/checkgtwname/' + $(element).val() + '/' + $('#DivConfigurations').data('idCFG'),
+						success: function (data) {
+							if (data == "NAME_DUP" && element.name == 'nameGw') {
+								alertify.error('El nombre: ' + $(element).val() + ' ya se encuentra dado de alta en esta configuración.');
+								$(element).val(element.oldValue);
+							}
+						},
+						error: function (data) {
+							alertify.error('Error al comprobar los nombres disponibles en el sistema.');
+						}
+					});
+				}
+			}
+		}
+
+		function ValidateIpPort(element,label){
+			var regx_ipportval = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(:[\d]{1,5})$/;
+
+			var matchIp = $(element).val().match(regx_ipportval);
+			if ($(element).val()!='' && matchIp == null){
+				Fade(element,label)
+			}
+		}
+
+		function ValidateIp(element,label){
+			if($(element).val() == '')
+			if(typeof($('#DivConfigurations').data('idCFG'))!='undefined') {
+				var regx_ipval = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
+
+				var matchIp = $(element).val().match(regx_ipval);
+				if ($(element).val() != '' && matchIp == null) {
+					Fade(element, label)
+				}
+			}
+		}
+
+		function ValidateVAD(element,label){
+			var regex = /^-?[0-9]+$/; // Números sin decimales, positivos o negativos
+
+			if ($(element).val()!='' && ($(element).val().match(regex) == null ||
+				(Number($(element).val()) < -35 || Number($(element).val()) >-15)))
+				Fade(element,label);
+		}
+
+		function ValidateInternalDelay(element,label){
+			var regex = /^[0-9]*(?:\.\d{1,2})?$/; // Números positivos con hasta dos decimales
+
+			if ($(element).val()!='' && ($(element).val().match(regex) == null ||
+				(Number($(element).val()) < 0 || Number($(element).val()) > 250)))
+				Fade(element,label);
+		}
+
+		function ValidateBssWindow(element,label){
+			var regex = /^[0-9]+$/; // Números positivos sin decimales
+
+			if($(element).val()!=0){
+				if ($(element).val()!='' && ($(element).val().match(regex) == null ||
+					(Number($(element).val()) < 10 || Number($(element).val()) > 1000)))
+					Fade(element,label);
+			}
+
+		}
+
+		function ValidateCompensation(element,label){
+			var regex = /^-?[0-9]*(?:\.\d{1,2})?$/; // Números con hasta dos decimales, positivos o negativos
+
+			if ($(element).val()!='' && ($(element).val().match(regex) == null ||
+				(Number($(element).val()) < 10 || Number($(element).val()) > 250)))
+				Fade(element,label);
+		}
+
+		function ValidateDA(element,label){
+			var regex = /^-?[0-9]*(?:\.\d{1,2})?$/; // Números con hasta dos decimales, positivos o negativos
+
+			if ($(element).val()!='' && ($(element).val().match(regex) == null ||
+				(Number($(element).val()) < -24.3 || Number($(element).val()) > 1.1)))
+				Fade(element,label);
+		}
+
+		function ValidateAD(element,label){
+			var regex = /^-?[0-9]*(?:\.\d{1})?$/; // Números con hasta un decimal, positivos o negativos
+
+			if ($(element).val()!='' && ($(element).val().match(regex) == null ||
+				(Number($(element).val()) < -13.4 || Number($(element).val()) > 1.2)))
+				Fade(element,label);
+		}
+
+		function ValidateTonosRespuesta(element,label){
+			var regex = /^-?[0-9]+$/; // Números sin decimales, positivos o negativos
+
+			if ($(element).val()!='' && ($(element).val().match(regex) == null ||
+				(Number($(element).val()) < 0 || Number($(element).val()) > 10)))
+				Fade(element,label);
+		}
+
+
+		function ValidatePort(element,label){
+			var regx_numberval = /^[0-9]+$/;
+
+			var matchNumber = $(element).val().match(regx_numberval);
+			if ($(element).val()!='' && matchNumber == null ||
+				(Number($(element).val()) <= 0)){
+				Fade(element,label)
+			}
+		}
+
+		function ValidateReleaseTimeNumber(element,label){
+			if($(element).val()=='')
+				Fase(element,label)
+			if(parseInt($(element).val())<1 || parseInt($(element).val())>10)
+				Fade(element,label)
+		}
+
+		function ValidateNumber(element,label){
+			var regx_numberval = /^[0-9]+$/;
+
+			var matchNumber = $(element).val().match(regx_numberval);
+			if ($(element).val()!='' && matchNumber == null){
+				Fade(element,label)
+			}
+		}
+
+		function ValidatePort(element, label) {
+			if ($(element).val() < 0 || $(element).val() > 65535) {
+				Fade(element, label)
+			}
+		}
+
+		function ValidateNumberColaVox(element,label){
+			var regx_numberval = /^[0-9]+$/;
+
+			var matchNumber = $(element).val().match(regx_numberval);
+			if (($(element).val()!='' && matchNumber == null) ||
+				(Number($(element).val()) < 0 || Number($(element).val()) > 30)){
+				Fade(element,label)
+			}
+		}
+		
+		function ValidateRtspUri(element,label){
+			var regx_urlval = /^(rtsp(?:s)?\:\/\/[a-zA-Z0-9]+)\:[0-9]+(\/[a-zA-Z0-9]+)+\/?$/;
+
+			var matchUrl = $(element).val().match(regx_urlval);
+			if ($(element).val()!='' && matchUrl == null){
+				Fade(element,label)
+			}
+		}
+
+		function ValidateAtsNumber(element,label){
+			var regx_atsval = /^[2-3][0-9]{5}$/;
+			if($(element).val()!=null)
+			{
+				var matchVal = $(element).val().match(regx_atsval);
+				if ($(element).val()!='' && matchVal == null){
+					Fade(element,label)
+				}
+			}
+		}
+		
+		function ValidateUri(element,label){
+			var regx_urival = /^sip:(.+)@(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(:[\d]{1,5})?$/;
+
+			var matchVal = $(element).val().match(regx_urival);
+			if ($(element).val()!='' && matchVal == null){
+				Fade(element,label)
+			}
+		}
+
+		function ValidateUriNoSIP(element,label){
+			var regx_urival = /^([a-zA-Z0-9\-_.]{1,32})@(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(:[\d]{1,5})?$/;
+
+			var matchVal = $(element).val().match(regx_urival);
+			if ($(element).val()!='' && matchVal == null){
+				Fade(element,label)
+			}
+		}
+
+		function ValidateFid(element,label){
+			/*
+			Banda
+			VHF:        /-- 118.000 137.000 --/
+
+			Banda
+			UHF:        /-- 225.000 400.000 --/
+			*/
+			var isError=false;
+			var regx_fid = /^(1|2|3|4)[0-9]{2}\.[0-9]{2}(0|5)$/;
+			var number = parseFloat($(element).val());
+
+			if (number < 118.000)
+				isError = true;
+			if (number > 137.000 && number < 225.000)
+				isError = true;
+			if (number > 400.000)
+				isError = true;
+
+			var matchVal = $(element).val().match(regx_fid);
+
+			if ($(element).val()!='' && matchVal == null){
+				isError = true;
+			}
+
+			if(isError)
+				Fade(element,label)
+		}
+
+		function ValidateUpdatePeriod(element,label){
+			var regx_numberval = /^[0-9]+$/;
+
+			var matchNumber = $(element).val().match(regx_numberval);
+			if (($(element).val()!='' && matchNumber == null) ||
+				(Number($(element).val()) < 90 || Number($(element).val()) > 1800)){
+				Fade(element,label)
+			}
+		}
+
+div(id="FormGateway", style="display: none; width: 350px")
+	div.menu.fadeNucleo#DivGateways(style="position:relative")
+		h3#GatewaysH3(tkey='Gateways')
+		input#CfgId(type='hidden')
+		table(style='table-layout: fixed;width: 99%')
+			tr
+				td(style='vertical-align:top;width:345px')
+					ul#listGateways.menuList
+					div
+						table(style="width:100%")
+							tr(style="height: 50px", align="center")
+								td.New
+									a.ButtonNucleo(id="NewGateway", onclick='GetGateway()', style="color:#bf2a36; width: 80px" tkey='New')
+				td(style='vertical-align:top')
+
+div(id="loader" class="hide")
+div(id="dimScreen" class="hide")
+div(id="loading" class="hide") Cargando contenido...

@@ -1,0 +1,196 @@
+block local_config
+
+script.
+    var json_schema = {
+        "$schema": "http://json-schema.org/draft-04/schema#", 
+        "definitions": {}, 
+        "properties": {
+            "Ulises": {
+                "properties": {
+                    "BackupServiceDomain": {"type": "string"}, 
+                    "Date": {"type": "string"}, 
+                    "Files": {"items": {}, "type": "array" }, 
+                    "HistoricsDeep": {"type": "integer" }, 
+                    "LoginSystemTrace": {"type": "boolean"}, 
+                    "LoginTimeOut": {"type": "integer" }, 
+                    "MySQL": { "type": "string" }, 
+                    "NodeJS": { "type": "string" }, 
+                    "Region": { "type": "string" }, 
+                    "SubVersion": { "type": "string" }, 
+                    "Version": { "type": "string" }, 
+                    "dbdatabase": { "type": "string" }, 
+                    "dbhost": { "type": "string" }, 
+                    "dbpassword": { "type": "string" }, 
+                    "dbuser": { "type": "string" }, 
+                    "log2con": { "type": "string" }, 
+                    "log2file": { "type": "string" }, 
+                    "logfile_maxfiles": { "type": "integer" }, 
+                    "logfile_path": { "type": "string" }, 
+                    "logfile_sizefile": { "type": "integer" }, 
+                    "maxCycleTime": { "type": "integer" }, 
+                    "morgan": { "type": "boolean" }, 
+                    "refreshTime": { "type": "integer" }
+                }, 
+                "required": [
+                    "LoginTimeOut", "morgan", "logfile_sizefile", "SubVersion", "dbhost", "logfile_path", 
+                    "logfile_maxfiles", "log2file", "BackupServiceDomain", "Region", "maxCycleTime", "log2con", 
+                    "dbuser", "Date", "dbpassword", "refreshTime", "NodeJS", "Files", "HistoricsDeep", 
+                    "dbdatabase", "Version", "MySQL", "LoginSystemTrace"
+                ], 
+                "type": "object"
+            }
+        }, 
+        "required": [
+            "Ulises"
+        ], 
+        "type": "object"
+    };
+    var editor = null;
+    var lastObject = null;
+    var json_file = '/localconfig';
+    function getData() {
+        $.ajax({
+            type: 'GET', url: json_file, async: false, contentType: "application/json", dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                /*
+                if (check(data).matches(json_schema)) {
+                    console.log('Objeto valido');
+                  }
+                  else{
+                    console.log('Objeto no valido');
+                  }
+                */
+                editor.setValue({
+                    Region: data.Region,
+                    BackupServiceDomain: data.BackupServiceDomain,
+                    HistoricsDeep: data.HistoricsDeep,
+                    LoginTimeOut: data.LoginTimeOut,
+                    refreshTime: data.refreshTime,
+                    maxCycleTime: data.maxCycleTime,
+                    log2con: data.log2con,
+                    log2file: data.log2file,
+                    LoginSystemTrace: data.LoginSystemTrace
+                });
+                lastObject = data;      
+            },
+            error: function (e) {
+                alert('error');
+                console.log(e);
+            }
+        });
+    }
+
+    function setData() {
+        var editor_data = editor.getValue();
+        lastObject.Region = editor_data.Region;
+        lastObject.BackupServiceDomain = editor_data.BackupServiceDomain;
+        lastObject.HistoricsDeep = editor_data.HistoricsDeep;
+        lastObject.LoginTimeOut =  editor_data.LoginTimeOut;
+        lastObject.refreshTime =  editor_data.refreshTime;
+        lastObject.maxCycleTime =  editor_data.maxCycleTime;
+        lastObject.log2con =  editor_data.log2con;
+        lastObject.log2file =  editor_data.log2file;
+        lastObject.LoginSystemTrace =  editor_data.LoginSystemTrace;
+
+        $.ajax({
+            type: 'POST', url: json_file, async: false, contentType: "application/json", dataType: 'json',
+            data: JSON.stringify(lastObject),
+            success: function (data) {
+                console.log(data);
+                if (data.res)
+                    alertify.success('Configuracion Actualizada...');
+                else
+                    alertify.error('Error: ' + data.txt);
+            },
+            error: function (e) {
+                alertify.error('error');
+                console.log(e);
+            }
+        });
+    }
+
+    function ConfigEdit() {
+
+        if(!alertify.cfgLocal) {
+            //define a new dialog
+            alertify.dialog('cfgLocal',function factory(){
+                return {
+                    main: function (par) {
+                        getData();
+                    },
+                    setup: function() {
+                        return { 
+                            buttons:[
+                                {text: "Aceptar", invokeOnClose: false},
+                                {text: "Cancelar", key: 27}
+                            ],
+                            focus: { element:0 }
+                        };
+                    },
+                    prepare: function(){
+                        this.set('maximizable',false);
+                    },
+                    build: function(){
+                        this.setHeader('REDAN. Configuracion Servidor...');
+                        this.set('resizable', true);
+                        editor = new JSONEditor(
+                            this.elements.content,
+                            {
+                                schema: { 
+                                    type: "object", 
+                                    title: "Parametros Configurables",
+                                    options: { 
+                                        disable_properties: true, 
+                                        disable_collapse: true, 
+                                        disable_edit_json: true
+                                    },
+                                    properties: {
+                                        Region: {title: "Region / Zona", type: "string"},
+                                        BackupServiceDomain: {title: "Localizacion Servicio de Backup", type: "string"},
+                                        HistoricsDeep: {title: "Dias de Historico",type: "integer",enum: [30,90,180,365],default: 30},
+                                        LoginTimeOut: {title: "Duracion de sesion en minutos",type: "integer",enum: [5,10,30,60,120],default: 30},
+                                        refreshTime: {title: 'Tiempo de Refresco en ms',type: "integer"},
+                                        maxCycleTime: {title: 'Tiempo Ciclo en ms',type: "integer" },
+                                        log2con: {title: 'Tracear a consola',type: "string", enum: 
+                                            ['none','silly','info','warn'], default: 'none'},
+                                        log2file: {title: 'Tracear a fichero', type: "string", enum: 
+                                            ['none','silly','info','warn'], default: 'silly'},
+                                        LoginSystemTrace: {title: 'Tracear el Control de Acceso',type: "boolean",format: "checkbox", default: false }
+                                    },
+                                    required: ['Region', 'BackupServiceDomain', 'HistoricsDeep',
+                                    'LoginTimeOut', 'refreshTime', 'maxCycleTime', 'log2con',
+                                    'log2file', 'LoginSystemTrace']
+                                },
+                                theme: 'barebones'
+                            }
+                        );
+                        this.elements.content.id = 'srv_cfg';
+                    },
+                    callback:function(closeEvent) {
+                        //The closeEvent has the following properties
+                        //
+                        // index: The index of the button triggering the event.
+                        // button: The button definition object.
+                        // cancel: When set true, prevent the dialog from closing.
+                        console.log(closeEvent);
+                        if (closeEvent.index == 0) {
+                            if (confirm('¿Desea Salvar los cambios')) {
+                                console.log(editor.getValue());
+                                setData();
+                            }
+                            else {
+                                closeEvent.cancel = 'false';
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        var ret = alertify.cfgLocal("").resizeTo(520, 450);
+        console.log(ret);
+
+    }
+
+
+

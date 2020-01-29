@@ -1,0 +1,52 @@
+block destinations
+
+script.
+		function loadDest(element){
+			var tabs=[];
+			switch (element.rel){
+				case "FormResources":
+					tabs=document.getElementById('ListMenuDestinations').getElementsByTagName("a");
+					$('#FormUris').hide();
+					break;
+				case "FormUris":
+					tabs=document.getElementById('ListMenuDestinations').getElementsByTagName("a");
+					$('#FormResources').hide();
+					break;
+			}
+			$('#'+element.rel).show();
+			for (var i=0; i < tabs.length; i++)
+			{
+				if(tabs[i].rel == element.rel) 
+					tabs[i].className="selected";
+				else
+					tabs[i].className="";
+			}
+		}
+
+
+div(id="FormRadioDestinations", style="display: none" ondragend="dragEnd(event)")
+	div.menu.fadeNucleo#DivDestinations(style="position:relative")
+		h3(tkey='RadioDestinations')
+		table(style='table-layout: fixed;width: 590px')
+			tr
+				td(style='width:25%; vertical-align:top')
+					ul#listDestinations.menuList
+					div
+						table
+							tr
+								td.New
+									a.ButtonNucleo(id="Add", onclick='NewRadioDestination()', style="color:#bf2a36; width: 80px" tkey='New')
+				td(style='vertical-align:top; padding-top: 15px')
+					.content#AddFormDestinations
+						table#PostDestination(style="border-spacing: 15px 15px; display:none")
+							tr
+								td
+									label(tkey='RadioDestination')
+								td.New
+									input.textbox(id="IdDestination", type="text" onblur='ValidateFid(this,"ErrorFrecuencia")' onfocus='this.oldValue=this.value')
+					table#DestinationsToolsTable(style='width:100%; display:none')
+						tr
+							td.New(align="center")
+								a#BtnUpdate.ButtonNucleo(onclick="UpdateDestination()" , style="width:auto" tkey='Update')
+							td.New(align="center")
+								a.ButtonNucleo(onclick="DelDestination()" , style="width:50px" tkey='Remove')

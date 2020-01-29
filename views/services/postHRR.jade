@@ -1,0 +1,824 @@
+//
+block hrr
+
+script.
+    var refreshTime=1000;
+    /*function SynchronizedGateways(){
+        $.ajax({
+            type: 'GET',
+            url: '/gateways/syncGateways/'+refreshTime,
+            success: function (data) {
+                UpdateSynchroStateInConfig(data);
+                UpdateSynchroStateInSites(data);
+            }
+        });
+
+        $.ajax({
+            type: 'GET',
+            url: '/alive',
+            success: function (data) {
+                if (!data.alive)
+                    $(location).attr('href', '/login');
+            }
+        });
+        setTimeout(function(){SynchronizedGateways()},refreshTime);
+    }*/
+
+    //setTimeout(SynchronizedGateways(),refreshTime);
+
+    /*function validateUploadForm() {
+        if( document.getElementById("fileselectbtn").files.length == 0 ){
+            console.log("no files selected");
+            alertify.error('No hay ningun fichero seleccionado');
+            return false;
+        }
+        return true;
+    }*/
+
+    // Fin de la modificacion....
+
+div(id="FormHRR", style="display: none; width: 350px")
+    div.menu.fadeNucleo#DivHRR(style='position:relative')
+        h3#TitleH3(tkey='HRR')
+        table(style='table-layout: fixed;width: 99%')
+            tr
+                td#TitleH2 CONFIGURACIONES DISPONIBLES:
+            tr
+                td#NavConfiguration(rowspan=2 style='vertical-align:top;width:345px')
+                    ul#listConfigurationsHrr.treeList
+                    div
+                        table(style="width:100%")
+                            tr(style="height: 50px", align="center")
+                                td(style="width:20%; cursor: pointer")
+                                    a(id="ColourHelp", onclick='AboutHRR()', style="color:#bf2a36; width: 50px; font-size:10px" tkey='HRRHelp')
+
+                // CONFIGURACIÓN
+                td(style='vertical-align:top')
+                    #AddFormConfiguration.content(name="Add-Configuration", style="display: none; width:730px")
+                        input(type="hidden", id="idCFG")
+                        table(width="100%" style='padding-left:100px')
+                            tr
+                                td(colspan="2")
+                                    label.labelNucleo(tkey='CfgId')
+                                td.New(colspan='2')
+                                    input.textbox(style='width:220px' id="name", type="text", placeholder="Nombre de la configuración", onblur='ValidateIds(this,"ErrorIdConfiguration")' onfocus='this.oldValue=this.value')
+                            tr
+                                td(colspan="2")
+                                    label.labelNucleo(tkey='Description')
+                                td.New(colspan='2')
+                                    input.textbox(id="desc", type="text")
+                            tr
+                                td(colspan="2")
+                                    label.labelNucleo(tkey='Active')
+                                td.New(colspan='2')
+                                    input(id="activa" type='checkbox'  name='activa'  disabled='disabled')
+                            tr#activeDateTimeRow
+                                td.New(colspan="2")
+                                    label.labelNucleo(tkey='ActivationTS')
+                                td.New(colspan='2')
+                                    input.textbox(id="ts_activa" type='text'  name='ts_activa' style='width: 178px' readonly)
+                            tr
+                                td.New.ActivateCfg(style='padding: 15px 0 15px 0; width: 100%' align="center" colspan=4)
+                                    a.ButtonNucleo#BtnActivate(onclick="ActiveCfg()" , style="text-align: center; padding: 5px 10px" tkey='Activate')                                   
+
+                        table#tableTools(width="100%",style='display:none;table-layout:fixed')
+
+                            tr
+                                td.New(style='padding-top: 15px' align="center" width="20%")
+                                    a.ButtonNucleo(id='UpdateCfgButton', onclick="PutConfiguration()" , style="text-align: center; padding: 5px 10px" tkey='Update')
+                                td.New(style='padding-top: 15px' align="center" width="20%")
+                                    a.ButtonNucleo#BtnCopyCfg(onclick="ShowCopyConfiguration(true)" , style="text-align: center; padding: 5px 10px" tkey='Copy') 
+                                td.New(style='padding-top: 15px' align="center" width="20%")
+                                    a.ButtonNucleo(onclick="DelConfiguration()" , style="text-align: center; padding: 5px 10px" tkey='Remove') 
+                                //
+                                    td.New(style='padding-top: 15px' align="center")
+                                        a.ButtonNucleo(onclick="ExportConfiguration()" , style="text-align: center; padding: 5px 10px" tkey='Export') 
+                                td.New2(style='padding-top: 15px' align="center" width="20%" colspan=2)
+                                    a.ButtonNucleo(onclick="ExportCfgToPdf($('#DivConfigurations').data('idCFG'))" , style="text-align: center; padding: 5px 10px") PDF
+                                td.New2(style='padding-top: 15px' align="center" width="20%" colspan=2)
+                                    a.ButtonNucleo(onclick="ExportCfgToExcel($('#DivConfigurations').data('idCFG'),'')" , style="text-align: center; padding: 5px 10px") EXCEL
+                            tr
+                                td.New(style='padding-top: 30px;' align="center" width="100%" colspan=8)
+                                    a.ButtonNucleo(id='AddSiteButton', onclick='CreateSite()' style="text-align: center; padding: 5px 10px; width:120px" tkey='NewSite')
+                            tr
+                                td.New2(style='padding-top: 15px' colspan=5)
+                                    .content.fadeFormNucleo#AssignatedGatewaysDiv(style='height: 280px;width: 672px')
+                                        // 20170518. AGL. Eliminada la opcion de otras pasarelas diferentes a la de la configuracion
+                                        table(style='width: inherit;table-layout:fixed')
+                                            tr(align='center')
+                                                td(style='width:100%')
+                                                    label#LblGatewaysInCfg.labelNucleo(tkey='GatewaysInCfg')
+                                                td.hide(style='width:50%')
+                                                    label.labelNucleo Ver todas las pasarelas
+                                                    input#CBViewFreeGateways(type='checkbox' onclick='ClickViewFreeGateways()')
+                                            tr(align='center')
+                                                td.New2(rowspan='2' style='vertical-align:top')
+                                                    ul.list#assignatedGatewaysList(style='width:310px;height:230px;margin-left:0' ondrop="dropAssignedGateway(event)" ondragover="allowDrop(event)")
+                                                td#CBFreeGatewaysRow
+                                                    select#CBFreeGateways(type = 'select' style='width:220px;display:none' onchange='ClickCBFreeGateways()')
+                                                        option(value=0 tkey='AliveGateways')
+
+                                            //- tr(align='center')
+                                            //-     td.New#freeGatewaysListRow
+                                            //-         ul.list#freeGatewaysList(style='width:310px;height:207px;margin-left:0;display:none' ondrop="dropFreeGateway(event)" ondragover="allowDrop(event)")
+
+                            tr
+                                //td(style='width:100%')
+                                //    label#HlpColoursGtws.labelNucleo(tkey='HlpColoursGtws')
+
+                                td.New(style='padding-top: 15px' colspan=5)
+                                    .content.fadeFormNucleo#CopyCfgDiv(style='height: 125px;display:none')
+                                        form(id='CopyCfgForm', action='/configurations/configurations/', method='POST', style='padding: 10px 0')
+                                            table
+                                                tr
+                                                    td(style="width: 250px")
+                                                        label.labelNucleo(tkey='CfgId')
+                                                    td
+                                                        input.textbox(id="nameCopy", type="text" onblur='ValidateIds(this,"ErrorIdConfiguration")' onfocus='this.oldValue=this.value')
+                                                tr
+                                                    td(style="width: 250px")
+                                                        label.labelNucleo(tkey='Description')
+                                                    td
+                                                        input.textbox(id="descCopy", type="text")
+                                                tr(style='padding: 10px 0')
+                                                    td(align="center" style='padding-top: 20px')
+                                                        a.ButtonNucleo(onclick="CopyConfiguration()" , style="text-align: center; padding: 5px 10px" tkey='Commit')
+                                                    td(align="center" style='padding-top: 20px')
+                                                        a.ButtonNucleo(onclick="ShowCopyConfiguration(false)" , style="text-align: center; padding: 5px 10px" tkey='Cancel')
+                    // EMPLAZAMIENTOS
+                    // Se incorpora a la configuración toda la gestión de emplazamientos/pasarelas/hardware
+                    #FormNewSite.content.divNucleo(style='position: absolute; top:100px;left:350px;display:none;width:405px')
+                        label(tkey='NewSite' style='padding-left:15px;color:black')
+                        div(style='border-top: 1px solid black;width: 97%;')
+                        table(style="border-spacing: 0 15px")
+                            tr(style="height: 20px")
+                                td(style="width: 40%" align='left')
+                                    label(tkey='Name' style='padding-left:25px')
+                                td.New
+                                    input.textbox#NewSite(type="text" style='width:220px' onblur='ValidateIds(this,"ErrorSiteId")' onfocus='this.oldValue=this.value')
+                            tr
+                                td(align='center')
+                                    a.ButtonNucleo(onclick="AddSite()" , style="width:50px" tkey='Add')
+                                td(align='center')
+                                    a.ButtonNucleo(onclick="CancelAddSite()" , style="width:50px" tkey='Cancel')
+                    #AddFormsite.content(style='display:none;width:375px')
+                        table(style="border-spacing: 0 15px; width:100%")
+                            tr#TrSite(style="height: 20px")
+                                td(align='left')
+                                    label(tkey='Name' style='padding-left:25px')
+                                td.New
+                                    input.textbox(id="IdSite", type="text", name="IdSite", style='width:220px' onblur='ValidateIds(this,"ErrorSiteId")' onfocus='this.oldValue=this.value')
+                        table(style="border-spacing: 0 15px; width:100%")
+                            tr#TrToolsSite(style="height: 20px", align="center")
+                                td.New
+                                    a.ButtonNucleo#BtnAddGateway(onclick="NewGateway()" , style="width:auto;position:relative" tkey='CreateGateway')
+                                td.New
+                                    a.ButtonNucleo#BtnImport(onclick="ImportConfiguration()" , style="width:auto" tkey='Import')
+                            tr#TrCreateGateway(style="height: 20px", align="center")
+                                //td.New
+                                //  a.ButtonNucleo#BtnAdd(onclick="UpdateSingleSite()" , style="width:auto" tkey='UpdateSite2')
+                                td.New
+                                    a.ButtonNucleo#BtnAddSite(onclick="UpdateSingleSite()" , style="width:85px" tkey='UpdateSite')
+                                td.New
+                                    a.ButtonNucleo#BtnRemove(onclick="DelSite()" , style="width:85px" tkey='RemoveSite')
+                                tr#TrToolsSite(style="height: 20px", align="center")
+                            //tr#TrCreateGateway(style="height: 20px", align="center")
+                                td.New(colspan=2 align='center' style='padding-top: 20px')
+                                    a.ButtonNucleo#BtnAddGateway(onclick="NewGateway()" , style="width:auto;position:relative" tkey='CreateGateway')
+                                td.New(style='padding-top: 20px' align="center")
+                                    a.ButtonNucleo#BtnImport(onclick="ImportConfiguration()" , style="text-align: center; padding: 5px 10px" tkey='Import') 
+                            tr
+                                td(colspan='2')
+                                    table#hwGateway(style='display:none')
+                                        tr
+                                            td(align='center')
+                                                label#LblIdGateway(style='font-size:18px;font-weight:bold')
+                                        tr
+                                            td
+                                                #GeneralContent
+                                                    #tabs
+                                                        ul#ListMenuGateways
+                                                            li
+                                                                a.selected(href='#', rel='AddFormGateway', onclick='loadit(this); $("#AddFormsite").animate({width: "790px", height: "500px"});' tkey='General')
+                                                            |      
+                                                            li
+                                                                a(href='#', rel='ServicesFormGateway', onclick='loadit(this)' tkey='Services')
+                                                            |      
+                                                            li
+                                                                a#TabHw(href='#', rel='HwFormGateway', onclick='loadit(this); GetMySlaves()' tkey='Hardware')
+                                                    .contentTab
+                                                        form.fadeFormNucleo#AddFormGateway(name="Add-Gateway" autocomplete="on")
+                                                            table(style='width:100%')
+                                                                tr
+                                                                    td(style="width: 120px; padding:10px 10px")
+                                                                        label(tkey='IdGateway')
+                                                                    td.New(style="width: 220px")
+                                                                        input.textbox(id="nameGw", type="text", style='width:inherit' name="nameGw" onfocus='this.oldValue=this.value')
+                                                                    td(style="width: 120px; padding:10px 5px")
+                                                                        label#labelSites(tkey='Site')
+                                                                    td.New
+                                                                        //label#LblEmplazamiento(style='color:black')
+                                                                        select#ListSites.toReset(style='width:18em' onchange='ChangeGateWaySite(this)' onmousedown='this.oldValue=this.selectedIndex' title="Lista de emplazamientos, dentro de la configuración, a los que se puede trasladar la pasarela.")
+                                                                    //td.New
+                                                                    //  button.ButtonNucleo#ChangeSite(type="button" onclick='ChangeCGWSite(this)' tkey='ChangeSite')
+                                                                tr
+                                                                    td(style="width: 120px; padding:5px 10px")
+                                                                        label(tkey='VirtualIP')
+                                                                    td.New
+                                                                        input.textbox(id="ipv", type="text", name="ipv" onblur='ValidateIp(this,"ErrorIP")' onfocus='this.oldValue=this.value')
+                                                                    td(style="width: 120px; padding:5px 5px")
+                                                                        label(id="lips" tkey='ServerIPPort')
+                                                                    td.New
+                                                                        input.textbox(id="ips", type="text", name="ips" onblur='ValidateIpPort(this,"ErrorIPPort")' onfocus='this.oldValue=this.value')
+                                                                tr
+                                                                    td(style="width: 120px; padding:5px 10px")
+                                                                        label(tkey='DualCPU')
+                                                                    td.New
+                                                                        input(id="dual" type='checkbox'  name='dual' onclick='ClickDualCPU(this)' onfocus='this.oldValue=this.checked')
+                                                                tr
+                                                                    td(colspan='4' style='height: 100% ; padding: 10px 50px')
+                                                                        div#tabs(style='height: 90%' align="center" )
+                                                                            ul#listCpus
+                                                                                li
+                                                                                    a.selected(href='#',rel='tab1',onclick='loadCpu(this)') CPU 0
+                                                                                li#liCpu2(style='display:none')
+                                                                                    a(href='#',rel='tab2',onclick='loadCpu(this)') CPU 1
+                                                                            .contentTab(style='height: inherit')
+                                                                                // CPU 0
+                                                                                #tab1(style='width: 525px; height: 93%')
+                                                                                    table(style='padding-left:10px; width:inherit')
+                                                                                        tr(style='display:none')
+                                                                                            td(style='width:150px')
+                                                                                                label(style='width: 100px' tkey='DualityOfLAN')
+                                                                                            td.New
+                                                                                                select#Lan1(type='text' onchange='ClickTLan(this,0)'  disabled='disabled')
+                                                                                                    option(value=0 tkey='No')
+                                                                                                    option(value=1 tkey='PrincipalReserva' selected='true')
+                                                                                                    option(value=2) LACP
+                                                                                    table(style='padding-left:10px; width:inherit')
+                                                                                        tr
+                                                                                            td(style='width: 50%')
+                                                                                                table#lan11
+                                                                                                    th LAN 1
+                                                                                                    tr
+                                                                                                        td
+                                                                                                            label(tkey='IPETH1')
+                                                                                                        td.New(valign="bottom")
+                                                                                                            input.textbox(id="ip01", type="text", name="ip01",
+                                                                                                                            onblur='ValidateIp(this,"ErrorIP")', style="width:100px" onfocus='this.oldValue=this.value')
+                                                                                                    tr
+                                                                                                        td(valign="bottom")
+                                                                                                            label(tkey='MaskETH1')
+                                                                                                        td.New(align=bottom)
+                                                                                                            input.textbox(id="ms01" type='text'  name='ms01'
+                                                                                                                            onblur='ValidateIp(this,"ErrorIP")', style="width:100px" onfocus='this.oldValue=this.value')
+                                                                                            td(style='width: 50%')
+                                                                                                table#lan21
+                                                                                                    th LAN 2
+                                                                                                    tr
+                                                                                                        td
+                                                                                                            label(tkey='IPETH2')
+                                                                                                        td.New(valign="bottom")
+                                                                                                            input.textbox(id="ip11", type="text", name="ip11"
+                                                                                                                            onblur='ValidateIp(this,"ErrorIP")', style="width:100px" onfocus='this.oldValue=this.value')
+                                                                                                    tr
+                                                                                                        td
+                                                                                                            label(tkey='MaskETH2')
+                                                                                                        td.New(valign="bottom")
+                                                                                                            input.textbox(id="ms11" type='text'  name='ms11'
+                                                                                                                            onblur='ValidateIp(this,"ErrorIP")', style="width:100px" onfocus='this.oldValue=this.value')
+                                                                                        tr
+                                                                                            td(style='width: 50%')
+                                                                                                table#nic1(style='display: none')
+                                                                                                    th BOND
+                                                                                                    tr
+                                                                                                        td
+                                                                                                            label IP
+                                                                                                        td.New(valign="bottom")
+                                                                                                            input.textbox(id="ipb1", type="text", name="ipb1"
+                                                                                                                             onblur='ValidateIp(this,"ErrorIP")', style="width:100px" onfocus='this.oldValue=this.value')
+                                                                                                    tr
+                                                                                                        td(style='width:150px')
+                                                                                                            label(style='width: 100px' tkey='IPGateway')
+                                                                                                        td.New
+                                                                                                            input.textbox(id="ipg1", type="text", name="ipg1"
+                                                                                                                                 onblur='ValidateIp(this,"ErrorIP")', style="width:100px" onfocus='this.oldValue=this.value')
+                                                                                                    tr
+                                                                                                        td
+                                                                                                            label(tkey='Mask')
+                                                                                                        td.New(valign=bottom)
+                                                                                                            input.textbox(id="msb1" type='text'  name='msb1'
+                                                                                                                            onblur='ValidateIp(this,"ErrorIP")', style="width:100px" onfocus='this.oldValue=this.value')
+                                                                                            td(style='width: 50%')
+                                                                                // CPU 1
+                                                                                #tab2(style='width: 525px; height: 93%; display: none')
+                                                                                    table(style='padding-left:10px; width:inherit')
+                                                                                        tr(style='display:none')
+                                                                                            td(style='width:150px')
+                                                                                                label(style='width: 100px' tkey='DualityOfLAN')
+                                                                                            td.New
+                                                                                                select#Lan2(type='text' onchange='ClickTLan(this,1)')
+                                                                                                    option(value=0 tkey='No')
+                                                                                                    option(value=1 tkey='PrincipalReserva')
+                                                                                                    option(value=2) LACP
+                                                                                    table(style='padding-left:10px; width:inherit')
+                                                                                        tr
+                                                                                            td(style='width: 50%')
+                                                                                                table#lan12
+                                                                                                    th LAN 1
+                                                                                                    tr
+                                                                                                        td
+                                                                                                            label(tkey='IPETH1')
+                                                                                                        td.New(valign="bottom")
+                                                                                                            input.textbox(id="ip02", type="text", name="ip02"
+                                                                                                                            onblur='ValidateIp(this,"ErrorIP")', style="width:100px" onfocus='this.oldValue=this.value')
+                                                                                                    tr
+                                                                                                        td(valign="bottom")
+                                                                                                            label(tkey='MaskETH1')
+                                                                                                        td.New(align=bottom)
+                                                                                                            input.textbox(id="ms02" type='text'  name='ms02'
+                                                                                                                            onblur='ValidateIp(this,"ErrorIP")', style="width:100px" onfocus='this.oldValue=this.value')
+                                                                                            td(style='width: 50%')
+                                                                                                table#lan22
+                                                                                                    th LAN 2
+                                                                                                    tr
+                                                                                                        td
+                                                                                                            label(tkey='IPETH2')
+                                                                                                        td.New(valign="bottom")
+                                                                                                            input.textbox(id="ip12", type="text", name="ip12"
+                                                                                                                onblur='ValidateIp(this,"ErrorIP")', style="width:100px" onfocus='this.oldValue=this.value')
+                                                                                                    tr
+                                                                                                        td
+                                                                                                            label(tkey='MaskETH2')
+                                                                                                        td.New(valign="bottom")
+                                                                                                            input.textbox(id="ms12" type='text'  name='ms12'
+                                                                                                                            onblur='ValidateIp(this,"ErrorIP")', style="width:100px" onfocus='this.oldValue=this.value')
+                                                                                        tr
+                                                                                            td(style='width: 50%')
+                                                                                                table#nic2(style='display: none')
+                                                                                                    th BOND
+                                                                                                    tr
+                                                                                                        td
+                                                                                                            label IP
+                                                                                                        td.New(valign="bottom")
+                                                                                                            input.textbox(id="ipb2", type="text", name="ipb2"
+                                                                                                                            onblur='ValidateIp(this,"ErrorIP")', style="width:100px" onfocus='this.oldValue=this.value')
+                                                                                                    tr
+                                                                                                        td(style='width: 150px')
+                                                                                                            label(style='width: 100px' tkey='IPGateway')
+                                                                                                        td.New
+                                                                                                            input.textbox(id="ipg2", type="text", name="ipg2"
+                                                                                                                            onblur='ValidateIp(this,"ErrorIP")', style="width:100px" onfocus='this.oldValue=this.value')
+                                                                                                    tr
+                                                                                                        td
+                                                                                                            label(tkey='Mask')
+                                                                                                        td.New(align=bottom)
+                                                                                                            input.textbox(id="msb2" type='text'  name='msb2'
+                                                                                                                            onblur='ValidateIp(this,"ErrorIP")', style="width:100px" onfocus='this.oldValue=this.value')
+                                                                                            td(style='width: 50%')
+                                                        form.fadeFormNucleo#ServicesFormGateway(style='display:none; padding:10px 10px')
+                                                            table
+                                                                //tr(style='padding-bottom: 10px')
+                                                                //  td(style='padding-left:15px; padding-bottom: 10px')
+                                                                //      label(tkey='ServiceId')
+                                                                //  td(style='padding-left:10px;padding-bottom: 10px')
+                                                                //      input.textbox#NewServiceEdit(style='width:20em' placeholder="Nombre del servicio...")
+                                                                //  td.New(style='padding-left:25px;padding-bottom: 10px')
+                                                                //      button.ButtonNucleo#AddButton(type="button" onclick='EditNewService(this)' tkey='AddService')
+                                                                tr(style='padding-bottom: 10px')
+                                                                    td(style='padding-left:15px; padding-bottom: 10px')
+                                                                        label(tkey='ServiceTemplate')
+                                                                    td.New(style='padding-left:10px; padding-bottom: 10px')
+                                                                        select#ListServices.toReset(style='width:20em' onchange='copyServiceData()' onmousedown='this.oldValue=this.selectedIndex' title="Permite copiar datos de servicio de otras pasarelas dadas de alta en el sistema.")
+                                                                //  td.New(style='padding-left:25px;padding-bottom: 10px')
+                                                                //      button.ButtonNucleo#CopyButton(type="button" onclick='CloneService(this)' tkey='CopyService')
+                                                                //  td.New(style='padding-left:25px;padding-bottom: 10px')
+                                                                //      button.ButtonNucleo#RemoveButton(type="button" onclick='RemoveService()' tkey='RemoveService')
+                                                            #tabs
+                                                                ul#ListMenuServices
+                                                                    li
+                                                                        a#sipService(href='#', rel='SipServiceGateway', onclick='loadit(this)') SIP
+                                                                    |      
+                                                                    li
+                                                                        a#sincrService(href='#', rel='SincrServiceGateway', onclick='loadit(this)' tkey='Sincronization')
+                                                                    |      
+                                                                    li
+                                                                        a#snmppService(href='#', rel='SnmpServiceGateway', onclick='loadit(this)') SNMP
+                                                                    |      
+                                                                    li
+                                                                        a#webService(href='#', rel='WebServiceGateway', onclick='loadit(this)') WEB
+                                                                    |      
+                                                                    li
+                                                                        a#grabService(href='#', rel='RecordingServiceGateway', onclick='loadit(this)' tkey='Recording')
+                                                            .contentTab(style='height: inherit')
+                                                                #SipServiceGateway(style='display:none; padding:10px 10px; height: 93%')
+                                                                    table
+                                                                        tr
+                                                                            td
+                                                                                label(tkey='SIPPort')
+                                                                            td.New
+                                                                                input.textbox#PuertoLocalSIP(style="width:60px" type="text" onblur='ValidateNumber(this,"ErrorValue")' onfocus='this.oldValue=this.value' disabled='disabled' value='5060')
+                                                                            td(style='padding-left:50px')
+                                                                                label(tkey='SIPSupervisionPeriodSg')
+                                                                            td.New
+                                                                                input.textbox#TbUpdatePeriod(type='text' style='width:50px' onblur='ValidateUpdatePeriod(this,"ErrorSIPSupervisionPeriod")' onfocus='this.oldValue=this.value' enabled)
+                                                                            //
+                                                                                tr
+                                                                                    td
+                                                                                        label Keep Alive Period:
+                                                                                    td
+                                                                                        input.textbox#kap(style="width:60px" type="text" onblur='ValidateNumber(this,"ErrorValue")' onfocus='this.oldValue=this.value')
+                                                                                tr
+                                                                                    td
+                                                                                        label(tkey='SIPSupervisionPeriod')
+                                                                                    td
+                                                                                        input.textbox#PeriodoSupervisionSIP(style="width:60px" type='text' onblur='ValidateNumber(this,"ErrorValue")' onfocus='this.oldValue=this.value')
+                                                                                tr
+                                                                                    td
+                                                                                        label Keep Alive Multiplier:
+                                                                                    td
+                                                                                        input.textbox#kam(style="width:60px" type='text' onblur='ValidateNumber(this,"ErrorValue")' onfocus='this.oldValue=this.value')
+                                                                                tr
+                                                                                    td
+                                                                                        label(tkey='SilenceCancelation')
+                                                                                    td
+                                                                                        input.textbox#SupresionSilencio(style="width:60px" type='checkbox')
+                                                                        tr
+                                                                            td
+                                                                                label(tkey='ProxysList')
+                                                                            td
+                                                                        tr
+                                                                            td.New
+                                                                                select.toReset#ProxysList(style="width: 170px" onchange="modify(ProxyEdit,ProxysList)")
+                                                                            td.New
+                                                                                button.ButtonNucleo(type="button" onclick='RemoveProxy()' style='width:120px; height: 25px' tkey='RemoveProxy')
+                                                                        tr
+                                                                            td.New
+                                                                                input.textbox#ProxyEdit(type='text' style="width: 170px" onblur='ValidateIp(this,"ErrorIP")' onfocus='this.oldValue=this.value')
+                                                                            td.New
+                                                                                button.ButtonNucleo(type="button" onclick='AddProxy()' style='width:120px; height: 25px' tkey='AddProxy')
+                                                                        tr
+                                                                            td(style="width: 150px")
+                                                                                label(tkey='RegistrarsList')
+                                                                        tr
+                                                                            td.New
+                                                                                select.toReset#RegistrarsList(style="width: 170px" onchange="modify(RegistrarEdit,RegistrarsList)")
+                                                                            td.New
+                                                                                button.ButtonNucleo(type="button" onclick='RemoveRegistrar()' style='width:120px; height: 25px' tkey='RemoveRegistrar')
+                                                                        tr
+                                                                            td.New
+                                                                                input.textbox#RegistrarEdit(type='text' style="width: 170px" onblur='ValidateIp(this,"ErrorIP")' onfocus='this.oldValue=this.value')
+                                                                            td.New
+                                                                                button.ButtonNucleo(type="button" onclick="AddRegistrar()" style='width:120px; height: 25px' tkey='AddRegistrar')
+                                                                #WebServiceGateway(style='display:none; padding:10px 10px; height: 53%')
+                                                                    table
+                                                                        tr
+                                                                            td(style="padding:10px 10px" colspan='2')
+                                                                                label(tkey='WEBPort')
+                                                                            td.New
+                                                                                input.textbox#wport(style="width:60px", type="text" onblur='ValidatePort(this,"ErrorWEBPort")' onfocus='this.oldValue=this.value' value='8080')
+                                                                        tr
+                                                                            td(style="padding:5px 10px" colspan='2')
+                                                                                label(tkey='SessionTimeout')
+                                                                            td.New
+                                                                                input.textbox#stime(style="width:60px" type="text" onblur='ValidateNumber(this,"ErrorValue")' onfocus='this.oldValue=this.value' value='0')
+                                                                #SnmpServiceGateway(style='display:none; height: 93%')
+                                                                    table
+                                                                        tr
+                                                                            td(style="padding:15px 0")
+                                                                                label(tkey='ServicePort')
+                                                                            td.New
+                                                                                input.textbox#sport(style="width:50px" type="text" onblur='ValidateNumber(this,"ErrorValue")' onfocus='this.oldValue=this.value' disabled='disabled' value='65000')
+                                                                            //  
+                                                                                tr
+                                                                            td
+                                                                                label SNMP V2:
+                                                                            td.New
+                                                                                input.textbox#agv2(style="width:60px" type='checkbox' onchange='OnChangeVersionSnmp()')
+                                                                            td(style="width:150px")
+                                                                                label#agLabelComm(tkey='ReadWriteCommunity')
+                                                                            td.New
+                                                                                input.textbox#agcomm(style="width:60px" disabled='disabled' type="text" value="public")
+                                                                        tr
+                                                                            td
+                                                                                label(tkey='SNMPPort')
+                                                                            td.New
+                                                                                input.textbox#snmpp(style="width:60px" type="text" onblur='ValidateNumber(this,"ErrorValue");ValidatePort(this,"ErrorValue")' onfocus='this.oldValue=this.value' value='161')
+                                                                            td.New(rowspan = 5 colspan=4 style='padding:0px 5px 10px 20px')
+                                                                                div(style='height: 195px; border: 2px solid; border-color: #bf2a36' ) Traps
+                                                                                    table
+                                                                                        tr
+                                                                                            td(colspan=2 style='padding: 5px 5px')
+                                                                                                select.toReset#TrapsList(multiple style="width: 260px; height: 50px")
+                                                                                        tr
+                                                                                            td(style="width: 150px; padding:1px 5px")
+                                                                                                label(tkey='Version')
+                                                                                            td
+                                                                                                select#TrapVersion(type='text')
+                                                                                                    option 1
+                                                                                                    option(selected="true") 2
+                                                                                        tr
+                                                                                            td(style="width: 150px; padding:2px 5px")
+                                                                                                label(tkey='IPAddress')
+                                                                                            td
+                                                                                                input.textbox#TrapIP(type='text' style='width: 170px' onblur='ValidateIp(this,"ErrorIP")' onfocus='this.oldValue=this.value')
+                                                                                        tr
+                                                                                            td(style="width: 150px; padding:2px 5px")
+                                                                                                label(tkey='Port')
+                                                                                            td
+                                                                                                input.textbox#TrapPort(type='text' style='width: 50px' onblur='ValidateNumber(this,"ErrorValue");ValidatePort(this,"ErrorValue")' onfocus='this.oldValue=this.value' value="162")
+                                                                                        tr
+                                                                                            td(style='padding:5px')
+                                                                                                button.ButtonNucleo(type="button" onclick='RemoveTrap()' style='width:100px; height: 25px' tkey='RemoveTrap')
+                                                                                            td(style='padding:5px')
+                                                                                                button.ButtonNucleo(type="button" onclick="AddTrap()" style='width:100px; height: 25px' tkey='AddTrap')
+
+                                                                        tr
+                                                                            td
+                                                                                label(tkey='SNMPname')
+                                                                            td.New
+                                                                                input.textbox#agname(style="width:150px" type="text" disabled='disabled' value='ULISESG5000i') 
+                                                                        tr
+                                                                            td
+                                                                                label(tkey='SNMPLocation')
+                                                                            td.New
+                                                                                input.textbox#agloc(style="width:150px" type="text" disabled='disabled' value='NUCLEO-DF LABS')
+                                                                        tr
+                                                                            td
+                                                                                label(tkey='SNMPContact')
+                                                                            td.New
+                                                                                input.textbox#agcont(style="width:150px" type="text" disabled='disabled' value='NUCLEO-DF DT. MADRID. SPAIN')
+                                                                #RecordingServiceGateway(style='display:none; padding:10px 10px; height: 93%')
+                                                                    table
+                                                                        tr
+                                                                            td(style="padding:10px 10px")
+                                                                                label(tkey='RTSPPort')
+                                                                            td.New
+                                                                                input.textbox#rtsp_port(style="width:60px", type="text", value='554' onblur='ValidateNumber(this,"ErrorValue");ValidatePort(this,"ErrorValue")' onfocus='this.oldValue=this.value')
+                                                                        //tr
+                                                                        //  td(style="padding:5px 10px")
+                                                                        //      label(tkey='RTSPUri')
+                                                                        //  td.New
+                                                                        //      input.textbox#rtsp_uri(style="width:260px" type="text" onblur='ValidateRtspUri(this,"ErrorRTSPUri")' onfocus='this.oldValue=this.value' value='rtsp://localhost:554/recording')
+                                                                        tr
+                                                                            td(style="padding:5px 10px")
+                                                                                label(tkey='RTSPIP')
+                                                                            td.New
+                                                                                input.textbox#rtsp_ip(style="width:100px" type="text" onblur='ValidateIp(this,"ErrorIP")' onfocus='this.oldValue=this.value')
+                                                                        // 20170517. AGL. Segundo Servidor.
+                                                                        tr
+                                                                            td(style="padding:5px 10px")
+                                                                                label(tkey='RTSPIPB')
+                                                                            td.New                                                                              
+                                                                                input.textbox#rtspb_ip(style="width:100px" type="text" onblur='ValidateIp(this,"ErrorIP")' onfocus='this.oldValue=this.value')
+                                                                        //tr
+                                                                        //  td(style="padding:5px 10px")
+                                                                        //      label(tkey='RTPTramas')
+                                                                        //  td.New
+                                                                        //      input.textbox#rtp_tramas(style="width:100px" type="checkbox")
+                                                                #SincrServiceGateway(style='display:none; padding:10px 10px; height: 93%')
+                                                                    table
+                                                                        tr
+                                                                            td
+                                                                                label(tkey='NTPServerList')
+                                                                        tr(valign='top')
+                                                                            td.New(rowspan='2')
+                                                                                select.toReset#NtpServersList(style="width: 170px")
+                                                                            td.New(style="padding:0 5px")
+                                                                                input.textbox#ServerEdit(style="width:170px" type="text" onblur='ValidateIp(this,"ErrorIP")' onfocus='this.oldValue=this.value') 
+                                                                            td.New(style='padding:0 5px')
+                                                                                button.ButtonNucleo(type="button" onclick="AddServer()" tkey='AddServer')
+                                                                        tr
+                                                                            td.New(style='padding:5px')
+                                                                                button.ButtonNucleo(type="button" onclick="RemoveServer()" style='width:120px; height: 25px' tkey='RemoveServer')
+                                                        form.fadeFormNucleo#HwFormGateway(style='display:none; padding:10px 10px')
+                                                            table
+
+                                                                tr
+                                                                    td(style='width: 75%')
+                                                                        #HardwareZone(style='position:relative')
+                                                                            table.gradienttable(style='table-layout: fixed;width:100%')
+                                                                                tr(style='height:20px')
+                                                                                    th.dropable.Slave0(style='width:25%' draggable=false ondragover="allowDrop(event)")
+                                                                                        //
+                                                                                            a(href='#' , style='color:gray' tkey="Slave0")
+                                                                                        a(href='#', style='color:gray')
+                                                                                    th.dropable.Slave1(style='width:25%' draggable=false ondragover="allowDrop(event)")
+                                                                                        //
+                                                                                            a(href='#' , style='color:gray' tkey="Slave1")
+                                                                                        a(href='#', style='color:gray')
+                                                                                    th.dropable.Slave2(style='width:25%' draggable=false ondragover="allowDrop(event)")
+                                                                                        //
+                                                                                            a(href='#' , style='color:gray' tkey="Slave2")
+                                                                                        a(href='#', style='color:gray')
+                                                                                    th.dropable.Slave3(style='width:25%' draggable=false ondragover="allowDrop(event)") 
+                                                                                        //
+                                                                                            a(href='#' , style='color:gray' tkey="Slave3")
+                                                                                        a(href='#', style='color:gray')
+                                                                                tr(style='height:30px')
+                                                                                    td.dropable.Res00(draggable=false ondrop="ResourceAssigned(event,0,0)" ondragover="allowDrop(event)" onclick="GotoResource(0,0,false)")
+                                                                                        a(href='#' style='color:gray') void
+                                                                                    td.dropable.Res01(draggable=false ondrop="ResourceAssigned(event,0,1)" ondragover="allowDrop(event)" onclick="GotoResource(0,1,false)")
+                                                                                        a(href='#' style='color:gray' ) void
+                                                                                    td.dropable.Res02(draggable=false ondrop="ResourceAssigned(event,0,2)" ondragover="allowDrop(event)" onclick="GotoResource(0,2,false)")
+                                                                                        a(href='#' style='color:gray' ) void
+                                                                                    td.dropable.Res03(draggable=false ondrop="ResourceAssigned(event,0,3)" ondragover="allowDrop(event)" onclick="GotoResource(0,3,false)")
+                                                                                        a(href='#' style='color:gray' ) void
+                                                                                tr(style='height:30px')
+                                                                                    td.dropable.Res10(draggable=false ondrop="ResourceAssigned(event,1,0)" ondragover="allowDrop(event)" onclick="GotoResource(1,0,false)")
+                                                                                        a(href='#' style='color:gray' ) void
+                                                                                    td.dropable.Res11(draggable=false ondrop="ResourceAssigned(event,1,1)" ondragover="allowDrop(event)" onclick="GotoResource(1,1,false)")
+                                                                                        a(href='#' style='color:gray' ) void
+                                                                                    td.dropable.Res12(draggable=false ondrop="ResourceAssigned(event,1,2)" ondragover="allowDrop(event)" onclick="GotoResource(1,2,false)")
+                                                                                        a(href='#' style='color:gray' ) void
+                                                                                    td.dropable.Res13(draggable=false ondrop="ResourceAssigned(event,1,3)" ondragover="allowDrop(event)" onclick="GotoResource(1,3,false)")
+                                                                                        a(href='#' style='color:gray' ) void
+                                                                                tr(style='height:30px')
+                                                                                    td.dropable.Res20(draggable=false ondrop="ResourceAssigned(event,2,0)" ondragover="allowDrop(event)" onclick="GotoResource(2,0,false)")
+                                                                                        a(href='#' style='color:gray' ) void
+                                                                                    td.dropable.Res21(draggable=false ondrop="ResourceAssigned(event,2,1)" ondragover="allowDrop(event)" onclick="GotoResource(2,1,false)")
+                                                                                        a(href='#' style='color:gray' ) void
+                                                                                    td.dropable.Res22(draggable=false ondrop="ResourceAssigned(event,2,2)" ondragover="allowDrop(event)" onclick="GotoResource(2,2,false)")
+                                                                                        a(href='#' style='color:gray' ) void
+                                                                                    td.dropable.Res23(draggable=false ondrop="ResourceAssigned(event,2,3)" ondragover="allowDrop(event)" onclick="GotoResource(2,3,false)")
+                                                                                        a(href='#' style='color:gray' ) void
+                                                                                tr(style='height:30px')
+                                                                                    td.dropable.Res30(draggable=false ondrop="ResourceAssigned(event,3,0)" ondragover="allowDrop(event)" onclick="GotoResource(3,0,false)")
+                                                                                        a(href='#' style='color:gray' ) void
+                                                                                    td.dropable.Res31(draggable=false ondrop="ResourceAssigned(event,3,1)" ondragover="allowDrop(event)" onclick="GotoResource(3,1,false)")
+                                                                                        a(href='#' style='color:gray' ) void
+                                                                                    td.dropable.Res32(draggable=false ondrop="ResourceAssigned(event,3,2)" ondragover="allowDrop(event)" onclick="GotoResource(3,2,false)")
+                                                                                        a(href='#' style='color:gray' ) void
+                                                                                    td.dropable.Res33(draggable=false ondrop="ResourceAssigned(event,3,3)" ondragover="allowDrop(event)" onclick="GotoResource(3,3,false)")
+                                                                                        a(href='#' style='color:gray' ) void
+                                                                tr
+                                                                    td(align="center")
+                                                                        label#LbLoadIndex(style='color:black' tkey='LoadIndexMessage')
+                                                    table#TableToolsGateway(style="width: 755px; padding: 5px 0; display:none")
+                                                        tr(align="center")
+                                                            td.New(style='padding-top: 5px' align="center")
+                                                                a.ButtonNucleo#UpdateGtwButton(onclick="PostGateway(function(){AddGatewayToList($(\'#DivGateways\').data(\'idCgw\'))})" , style="text-align: center; padding: 5px 10px")
+                                                            td.New(style='padding-top: 5px' align="center")
+                                                                a.ButtonNucleo#CancelGtwButton(onclick="ShowSite(\'EMPCGW5\',\'232\')" , style = "text-align: center; padding: 5px 10px" tkey='Cancel')
+
+                                                            td.New(style='padding-top: 5px' align="center")
+                                                                a.ButtonNucleo#CopyGtwButton(onclick="CopyGateway()" , style="text-align: center; padding: 5px 10px" tkey="Copy")
+                                                            td.New(style='padding-top: 5px' align="center")
+                                                                a.ButtonNucleo#RemoveGateway(onclick="DelGateway()" , style="text-align: center; padding: 5px 10px" tkey="Remove")
+                                                            td.New(style='padding-top: 5px' align="center")
+                                                                a.ButtonNucleo#ExportGateway(onclick="ExportConfiguration()" , style="text-align: center; padding: 5px 10px" tkey='Export')
+                    .content#CopySiteZone(style='overflow:hidden;display:none')
+                        label(style='color:black') Copia de emplazamiento
+                        div(style='border-top: 1px solid black; width:97%;')
+                        table(style='border-spacing: 10px 30px')
+                            tr
+                                td(style="width: 50%; padding:10px 10px")
+                                    label(tkey='Site')
+                                td.New
+                                    input.textbox(id="nameCopySite", type="text")
+                            tr
+                                td(style="width: 100%; padding:10px 10px")
+                                    label *Revise las IPs y los IDs de las pasarelas generadas.
+                            tr
+                                td(align='center')
+                                    a.ButtonNucleo#CopySite(onclick="CopySite()" , style="text-align: center; padding: 5px 10px" tkey="Copy")
+                                td(align='center')
+                                    a.ButtonNucleo#CloseCopySite(onclick="CloseCopySite()" , style="text-align: center; padding: 5px 10px" tkey="Cancel")
+
+                    .content#BigSlavesZone(style='overflow:hidden;display:none;')
+                        #SlavesZone(style='position:relative')
+                            table#SlaveTable.slavetable(style='height:274px;margin: 10px;')
+                                tr
+                                    td(colspan=2 align='center')
+                                        label#LblIdResouce(style='font-size:14px;font-weight:bold')
+                                tr#UriSipRow
+                                    td(colspan=2 align='center')
+                                        label(tkey='UriSip')
+                                        label#LblUriSip(style='font-size:14px;font-weight:bold')
+                                tr(style='height:60px')
+                                    td#Resource(rowspan=5 style='background: white; width:22%; vertical-align:top')
+                                        .menu(style='height:443px;width:100%')
+                                            table.resource(style='border: none;padding-top:30px;border-spacing: 15px')
+                                                tr
+                                                    td(style='border: none' tkey='Name')
+                                                    td.New(style='border: none')
+                                                        input.textbox#TbNameResource(style='width:100px', onblur='ValidateIds(this,"ErrorResourceId")')
+                                                tr
+                                                    td(style='border: none') Codec:
+                                                    td.New(style='border: none')
+                                                        select#SCodec(style='width:100px' disabled)
+                                                            option(value=-1 tkey='SelectCodec')
+                                                            option(value=0) G711-A
+                                                            option(value=1) G711-U
+                                                            option(value=2) G729
+                                                tr
+                                                    td(style='border: none' tkey='ResourceType')
+                                                    td.New(style='border: none')
+                                                        select#SResourceType(style='width:100px' onchange='OnChangeResourceType(this)')
+                                                            option(value=1) Radio
+                                                            option(value=2) Telefónico
+                                                        //
+                                                            option(value=3) Tunneling
+                                                    //
+                                                        tr#BlackWhiteRow
+                                                            td(style='border: none' tkey='Restriction')
+                                                            td.New(style='border: none')
+                                                                select#SRestriccion(style='width:100px' onchange='OnChangeRestriccion(this)')
+                                                                    option(value=0) None
+                                                                    option(value=1) Lista Negra
+                                                                    option(value=2) Lista Blanca
+                                                tr
+                                                    td(style='border: none' tkey='EnableRegister')
+                                                    td.New(style='border: none')
+                                                        input#TbEnableRegister(type='checkbox' style='width:100px' onclick='ClickEnableRegister(this)')
+                                                tr#KeyRow
+                                                    td(style='border: none' tkey='Key')
+                                                    td.New(style='border: none')
+                                                        input.textbox#TbKey(style='width:100px')
+                                                tr#DestinationRow
+                                                    td(style='border: none' tkey='RadioDestination')
+                                                    td.New(style='border: none;padding-bottom: 5px')
+                                                        input.textbox(id="IdDestination", style='width:80px' type="text" onblur='ValidateFid(this,"ErrorFrecuencia")' onfocus='this.oldValue=this.value')
+                                                    //  
+                                                        select#SFrecuencia(style='width:100px')
+                                                            option(value=0 tkey='AddDestination')
+                                                //
+                                                    td(align='center' style='border: none')
+                                                        a.ButtonNucleo#BtnResourceParameters(style='width: 80px' onclick='ResourceParameters()' tkey='Parameters')
+                                                tr
+                                                    td(colspan=2 style='border:none')
+                                                        table(style='width:100%')
+                                                            tr#ToolsRow
+                                                                td.New(style='padding-top: 50px; border:none' align='center')
+                                                                    a.ButtonNucleo#ButtonCommit(tkey='Commit')
+                                                                td(style='padding-top: 50px; border:none' align='center')
+                                                                    a.ButtonNucleo(onclick='Close();GetMySlaves()' tkey='Cancel')
+                                                tr
+                                                    td.New(colspan=2 align='center' style='border: none; padding-top:10px')
+                                                        a.ButtonNucleo#BtnRemoveResource(style='width: 100px' tkey='RemoveResource')
+                                    td#Param(style='vertical-align:top;padding: 0px 0px 0px 10px;')
+
+                                        //  FORM PARAMETERS
+                                        block parameters
+                                        include ./postParameters.jade
+
+                    //TODO meter aqui las ips
+                    .content#CopyGatewayZone(style='overflow:hidden;display:none')
+                        label(style='color:black') Copia de pasarela
+                        div(Style='border-top: 1px solid black; width:97%;')
+                        table
+                            tr
+                                td(style="width: 120px; padding:10px 10px")
+                                    label(tkey='IdGateway')
+                                td(style="width: 120px; padding:10px 10px")
+                                    label#LblNameCopyGateway(style='color:black')
+                            tr
+                                td(style="width: 120px; padding:10px 10px")
+                                    label(tkey='VirtualIP')
+                                td.New
+                                    input.textbox(id="IpvCopyGateway", type="text")
+                            tr
+                                td(style="width: 120px; padding:10px 10px")
+                                    label(tkey='IdGateway')
+                                td.New
+                                    input.textbox(id="nameCopyGw", type="text" placeholder="Nombre de la copia")
+                            tr
+                                td(style="width: 120px; padding:10px 10px")
+                                    label(tkey='IpCpu0')
+                                td.New
+                                    input.textbox(id="ipCopyCpu0", type="text" placeholder=" . . . " onblur='ValidateIp(this,"ErrorIP")' onfocus='this.oldValue=this.value')
+                            tr
+                                td(style="width: 120px; padding:10px 10px")
+                                    label(tkey='IpCpu1')
+                                td.New
+                                    input.textbox(id="ipCopyCpu1", type="text" placeholder=" . . . " onblur='ValidateIp(this,"ErrorIP")' onfocus='this.oldValue=this.value')
+                            tr
+                                td(style='padding-top: 8px' align='right')
+                                    a.ButtonNucleo#CopyGateway(onclick="Copy()" , style="text-align: center; padding: 5px 10px" tkey="Copy")
+                                td(style='padding-top: 8px' align="right")
+                                    a.ButtonNucleo#CloseCopyGateway(onclick="CloseCopy()" , style="text-align: center; padding: 5px 10px" tkey="Cancel")
+                td#ColumnImportZone(style='display:none') 
+                    .content#ImportZone(style='overflow:hidden;display:none')
+                        table(style='width: 100%;border-spacing: 10px 10px')
+                            tr
+                                td
+                                    label(style='color:black') Importar configuracion pasarela
+                                    div(style='border-top: 1px solid black; width:97%;')
+                            tr
+                                td
+                                    form#UploadForm(method="post",enctype="multipart/form-data",action="/", onsubmit='return validateUploadForm()')
+                                        p
+                                            input#fileselectbtn(type="file",name="upl",accept=".json", required)
+                                            input#user(type="hidden",name="user")
+                                            input#clave(type="hidden",name="clave")
+                                            input#perfil(type="hidden",name="perfil")
+                                            input#config(type="hidden",name="config")
+                                            input#site(type="hidden",name="site")
+                                            input#cfgData(type="hidden",name="cfgData")
+                                        table(style='width: 100%;border-spacing: 10px 10px')
+                                            tr
+                                                td
+                                                    input.ButtonNucleo(style='width: 100px' onclick='' type="submit")
+                                                td
+                                                    a.ButtonNucleo(style='width: 100px' onclick='CloseImportConfiguration()' tkey='Close')
+

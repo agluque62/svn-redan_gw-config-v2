@@ -1,0 +1,20 @@
+config:
+  target: 'http://192.168.0.212:5050'
+  phases:
+    - duration: 1200
+      arrivalRate: 0.1
+  defaults:
+scenarios:
+  - flow:
+    - get:
+        url: "/gateways/10.10.184.11/testconfig?std=-1"
+    - get:
+        url: "/gateways/10.10.184.102/testconfig?std=-1"
+    - get:
+        url: "/gateways/10.30.184.11/testconfig?std=-1"
+    - get:
+        url: "/gateways/10.30.184.11/testconfig?std=-1"
+    - get:
+        url: "/gateways/10.12.60.11/testconfig?std=-1"
+    - get:
+        url: "/gateways/10.12.60.11/testconfig?std=-1"

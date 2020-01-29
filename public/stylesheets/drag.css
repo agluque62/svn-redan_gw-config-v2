@@ -1,0 +1,35 @@
+@-webkit-keyframes blink { 
+   50% { border-color: gray; } 
+}
+
+.dropable{
+	border: 1px solid gray;
+}
+
+.dropable.target{
+	border: 1px solid red;
+    -webkit-animation: blink .5s step-end infinite alternate;
+}
+
+.dragableItem{
+	display: table-cell;
+	background-color:#ededed;
+ 	color:#bf2a36;
+ 	min-width: 110px;
+    border: 1px solid #C1022C;
+    border-radius: 0 5px 0 0;
+  }
+
+.dragableItemOccuped{
+	display: table-cell;
+	background-color:#FFFF99;
+ 	color:#bf2a36;
+ 	min-width: 110px;
+    border: 1px solid #C1022C;
+    border-radius: 0 5px 0 0;
+ }
+
+.dragableItem:hover{
+	/*display: block;*/
+	background-color:#bab1ba;
+}

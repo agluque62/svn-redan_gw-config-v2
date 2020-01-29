@@ -1,0 +1,43 @@
+extends layout
+
+block content
+	script(type='text/javascript' src='/javascripts/jquery-1.11.2.min.js')
+	script(type='text/javascript' src='/translator/lang.js')
+	script(type='text/javascript' src='/javascripts/users.js')
+	script(type='text/javascript' src='/javascripts/gateways.js')
+	script(type='text/javascript' src='/javascripts/configurations.js')
+	script(type='text/javascript' src='/javascripts/hardware.js')
+	script(type='text/javascript' src='/javascripts/parametersRadio.js')
+	script(type='text/javascript' src='/javascripts/parametersTel.js')
+	script(type='text/javascript' src='/javascripts/sites.js')
+	script(type='text/javascript' src='/javascripts/radioDestinations.js')
+	script(type='text/javascript' src='/javascripts/index.js')
+	script(type='text/javascript' src='/alertifyjs/alertify.min.js')
+	link(rel="stylesheet", href="/alertifyjs/css/alertify.min.css")
+	link(rel="stylesheet", href="/alertifyjs/css/themes/semantic.css")
+
+	script.
+		setTimeout(alerta,500)
+
+		function alerta(){
+			if ($('#mensaje').text() == 'Configuracion importada correctamente'){
+				alertify.alert('Ulises G 5000 R',$('#mensaje').text());	
+				ResetAfterImport($('#oculto').val());
+			}
+			else{
+				alertify.error($('#mensaje').text());	
+				ResetAfterImport($('#oculto').val());
+			}
+		}
+
+	.divNucleo#ImportResult(style='position: absolute;padding: 5px;left: 25%;width:450px;height:150px;display:none')
+		input#oculto(type='hidden' value=JSON.stringify(dataToRestore))
+		p#mensaje(style='display:none')= message
+	//
+		p(align='center')
+			label= file
+		p(align='center')
+			label= error
+		p(align='center' style='padding-top:20px')
+			a.ButtonNucleo(onclick="ResetAfterImport(" + JSON.stringify(dataToRestore) + ")" tkey='Aceptar')
+

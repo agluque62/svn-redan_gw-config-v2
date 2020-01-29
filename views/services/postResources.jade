@@ -1,0 +1,55 @@
+block resources
+
+div(id="FormResources", style="display: none; width: 1250px")
+    div.menu.fadeNucleo#DivResources(style="position:relative")
+        h3(tkey='Resources')
+        table(style='table-layout: fixed;width: 100%')
+            tr
+                td(style='vertical-align:top;width:35%')
+                    ul#listResources.menuList
+                    div
+                        table(style="width:100%")
+                            tr(style="height: 50px", align="center")
+                                td
+                                    select#extResFilter(type='select')
+                                        option(value='-1') Todos
+                                        option(value='0') Radio Tx
+                                        option(value='1') Radio TxRx
+                                        option(value='2') Radio Rx
+                                        option(value='3') Teléfono
+                                td
+                                    a.ButtonNucleo(id="FilterExtResource", onclick='GetExtResources(-1)', style="color:#bf2a36; width: 80px" tkey='FilterExtResource')
+                                td
+                                    a.ButtonNucleo(id="NewExtResource", onclick='GetExtResource(-1)', style="color:#bf2a36; width: 80px" tkey='NewExtResource')
+                td(style='vertical-align:top')
+                    #AddResources.fadeFormNucleo(style='display:none;padding-left:20px')
+                        .content#DatosResources(style='width:inherit')
+                            table(style='border-spacing: 10px 10px;width:100%')
+                                tr(style="height: 20px")
+                                    td(style="width: 25%; padding:10px 5px")
+                                        label(tkey='lblAliasExtResource')
+                                    td.New
+                                        input.textbox(id="aliasExtResource", style='width:100%; font-size:70%;' type="text" onblur='ValidateUser(this,"ErrorTableId")' onfocus='this.oldValue=this.value')
+                                tr(style="height: 20px")
+                                    td(style="padding:5px 5px")
+                                        label(tkey='lblUriExtResource')
+                                    td.New
+                                        input.textbox#uriExtResource(type='text', style='width:100%; font-size:70%;' onblur='ValidateUriNoSIP(this,"ErrorURI")')
+                                tr#RowExtResType(style="vertical-align:center")
+                                    td(style="padding:5px 5px")
+                                        label(tkey='lblExtResType')
+                                    td.New
+                                        select#extResType(type='select' style='font-size:70%;')
+                                            option(value='0') Radio Tx
+                                            option(value='1') Radio TxRx
+                                            option(value='2') Radio Rx
+                                            option(value='3') Teléfono
+
+                            table(style='width:100%;border-spacing: 20px')
+                                tr(style="height: 20px", align="center")
+                                    td
+                                        a.ButtonNucleo(id='UpdateExtResButton', onclick='PostExtResource()' tkey='Add')
+                                    td
+                                        a.ButtonNucleo(id='DeleteExtResButton' onclick="DeleteExtResource()" , style="width:50px" tkey='Remove')
+                                    td
+                                        a.ButtonNucleo(id='CancelExtResButton', onclick='GetExtResources()' tkey='Cancel')

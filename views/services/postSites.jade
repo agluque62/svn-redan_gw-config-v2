@@ -1,0 +1,39 @@
+block sites
+
+	script(type='text/javascript' src='/javascripts/hardware.js')
+
+script.
+		function CheckingAnyChange(element,f){
+			f();//Llama directamente a GetActiveCfgAndActivate
+		}
+
+		function ResetOldValue(element){
+			var tabs=[];
+			
+			var myElement=document.getElementById(element)
+			if (myElement != null){
+				tabs = myElement.getElementsByTagName("input");
+		 
+				for (var i=0; i < tabs.length; i++){
+					if(tabs[i].oldValue != null){
+						 tabs[i].oldValue = tabs[i].value
+					}
+				}
+			}
+		}
+
+div(id="FormSites", style="display: none; width: 350px")
+	div.menu.fadeNucleo#DivSites(style="position:relative")
+		h3#TitleSite(tkey='Sites')
+		table(style='table-layout: fixed;width: 420px')
+			tr
+				td(style='vertical-align:top;width:345px')
+					#SitesList
+						ul.treeList#listSites
+						div
+							table(style='width:90%')
+								tr(align='center')
+									td.New
+										a.ButtonNucleo(onclick="CheckingAnyChange(\'GeneralContent\', function(){NewSite()})" , style="width:50px" tkey='New')
+
+

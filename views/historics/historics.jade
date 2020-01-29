@@ -1,0 +1,531 @@
+block historics
+
+
+div(id="FormHistorics", style="display: none; width: 350px")
+	div.menu.fadeNucleo#DivHistorics(style='position:relative')
+		h3(tkey='Historics')
+		table(style='table-layout:fixed')
+			tr
+				td#tdFilter(style='vertical-align:top;width: 175px')
+					#AddFilterGroup.content(style='display:none;width:auto; padding:5px')
+						label(style='color:black' tkey='FilteringGroup')
+						#FilterGroup(style='border-top: 1px solid black; padding-top: 10px;padding-left: 5px;')
+							table
+								tr
+									td
+										label.labelNucleo(tkey='StartingDate')
+										| 
+										input#IDateStartGroup(type='datetime-local' value='')
+								tr
+									td
+										label.labelNucleo(tkey='EndingDate')
+										| 
+										input#IDateEndGroup(type='datetime-local' value='')
+							label.labelNucleo(tkey='Group')
+							| 
+							select#SGroup(style='width:130px')
+							table(style='padding-top:10px;width:100%')
+								tr(align='center')
+									td
+										a.ButtonNucleo(onclick='FilteringByGroup(true)' tkey='Search')
+					#AddFilterDate.content(style='display:none;width:auto; padding:5px')
+						label(style='color:black' tkey='FilteringDate')
+						#FilterDate(style='border-top: 1px solid black; padding-top: 10px;padding-left: 5px;')
+							table
+								tr
+									td
+										label.labelNucleo(tkey='StartingDate')
+										| 
+										input#IDateStart(type='datetime-local' value='')
+								tr
+									td
+										label.labelNucleo(tkey='EndingDate')
+										| 
+										input#IDateEnd(type='datetime-local' value='')
+							table(style='padding-top:10px;width:100%')
+								tr(align='center')
+									td
+										a.ButtonNucleo(onclick='FilteringByDate(true)' tkey='Search')										
+					#AddFilterComponent.content(style='display:none;width:auto; padding:5px')
+						label(style='color:black' tkey='FilteringComponent')
+						#FilterComponent(style='border-top: 1px solid black; padding-top: 10px;padding-left: 5px;')
+							table
+								tr
+									td
+										label.labelNucleo(tkey='StartingDate')
+										| 
+										input#IDateStartComponent(type='datetime-local' value='')
+								tr
+									td
+										label.labelNucleo(tkey='EndingDate')
+										| 
+										input#IDateEndComponent(type='datetime-local' value='')
+							label.labelNucleo(tkey='Component')
+							| 
+							select#SComponent(style='width:100px')
+							table(style='padding-top:10px;width:100%')
+								tr(align='center')
+									td
+										a.ButtonNucleo(onclick='FilteringByComponent(true)' tkey='Search')
+					#AddFilterCode.content(style='display:none;width:auto; padding:5px')
+						label(style='color:black' tkey='FilteringCode')
+						#FilterCode(style='border-top: 1px solid black; padding-top: 10px;padding-left: 5px;')
+							table
+								tr
+									td
+										label.labelNucleo(tkey='StartingDate')
+								tr
+									td
+										input#IDateStartCode(type='datetime-local' value='')
+								tr
+									td
+										label.labelNucleo(tkey='EndingDate')
+								tr
+									td
+										input#IDateEndCode(type='datetime-local' value='')
+							table
+								tr
+									td
+										label.labelNucleo(tkey='TipoRegistro')
+								tr
+									td
+										select#SCode(style='width:150px')
+							table(style='padding-top:10px;width:100%')
+								tr(align='center')
+									td
+										a.ButtonNucleo(onclick='FilteringByCode(true)' tkey='Search')
+
+				td(style='vertical-align:top' colspan=2)
+					#AddFormHistorics.content(name="Add-Historics" style='display:none')
+						table#TableToExcel(style='display:none')
+							tr
+								th(tkey='DateTime')
+								th(tkey='Group')
+								th(tkey='Component')
+								th(tkey='Description')
+								th(tkey='Type')
+								th(tkey='Acknowled')
+								th(tkey='TypeAlarm')
+								th(tkey='User')
+						table#TableToExcelEvents(style='display:none')
+							tr
+								th(tkey='DateTime')
+								th(tkey='Group')
+								th(tkey='Component')
+								th(tkey='Description')
+								th(tkey='Type')
+								th(tkey='User')								
+						table.gradienttable#TableHistorics(style='width:100%;table-layout:fixed')
+							tr
+								th(style='width:8%' tkey='DateTime')
+								th(style='width:7%' tkey='Group')
+								th(style='width:7%' tkey='Component')
+								th(style='width:43%' tkey='Description')
+								th(style='width:6%' tkey='Type')
+								th(style='width:8%' tkey='Acknowled')
+								th(style='width:6%' tkey='TypeAlarm')
+								th(style='width:15%' tkey='User')
+						table(style='width:100%;table-layout:fixed;padding:15px')
+							tr
+								td(align='center')
+									a.ButtonNucleo(onclick='GotoFirstPage()' tkey='First')
+								td(align='left')
+									a.ButtonNucleo(onclick='GotoPreviousPage()' tkey='Previous')
+								td(align='center')
+									div.tooltip#Page(data-page='0')
+										span.tooltiptext Si aparece * es que hay más registros de los mostrados
+								td(align='right')
+									a.ButtonNucleo(onclick='GotoNextPage()' tkey='Next')
+								td(align='center')
+									a.ButtonNucleo(onclick='GotoLastPage()' tkey='Last')
+
+			tr(align='center')
+				td
+				td
+					a.ButtonNucleo#BtnToPdf(onclick='ExportHistoricsToPdf(dataToPrint,filterReport)' style='display:none') PDF
+				
+					a.ButtonNucleo#BtnToPdfEvents(onclick='ExportHistoricsToPdf(dataToPrint,filterReport)' style='display:none') PDF
+				td
+					a.ButtonNucleo#BtnToExcel(onclick="doCsv('TableToExcel')" style='display:none') Excel
+
+					a.ButtonNucleo#BtnToExcelEvents(onclick="doCsv('TableToExcelEvents')" style='display:none') Excel
+				td
+				td
+
+div(id="FormStatiscs", style="display: none; width: 350px")
+	div.menu.fadeNucleo#DivStatistics(style='position:relative')
+		h3(tkey='Statistic')
+		table(style='width:80%')
+			tr
+				td#tdFilter(style='vertical-align:top')
+					#AddFilterDateEstadisticas.content(style='display:none;width:auto; padding:5px')
+						label(style='color:black' tkey='FilteringDate')
+						#FilterDate(style='border-top: 1px solid black; padding-top: 10px;padding-left: 5px;')
+							table
+								tr
+									td
+										label.labelNucleo(tkey='StartingDate')
+								tr
+									td
+										input#IDateStartStatistics(type='datetime-local' onchange='selectEndingDate(IDateStartStatistics,IDateEndStatistics)')
+								tr
+									td
+										label.labelNucleo(tkey='EndingDate')
+								tr
+									td
+										input#IDateEndStatistics(type='datetime-local')
+							table(style='padding-top:10px;width:100%')
+								tr(align='center')
+									td
+										a.ButtonNucleo(onclick='FilteringByDateStatistics()' tkey='Search')
+					#AddFilterComponentEstadisticas.content(style='display:none;width:auto; padding:5px')
+						label(style='color:black' tkey='FilteringComponent')
+						#FilterComponent(style='border-top: 1px solid black; padding-top: 10px;padding-left: 5px;')
+							table
+								tr
+									td
+										label.labelNucleo(tkey='StartingDate')
+								tr
+									td
+										input#IDateStartStatisticsComponent(type='datetime-local' value='')
+								tr
+									td
+										label.labelNucleo(tkey='EndingDate')
+								tr
+									td
+										input#IDateEndStatisticsComponent(type='datetime-local' value='')
+							label.labelNucleo(tkey='Component')
+							| 
+							#SComponentStatistics(style='height:120px;width:330px;overflow-y:scroll;border:2px solid #ccc')
+							table(style='padding-top:10px;width:100%')
+								tr(align='center')
+									td
+										a.ButtonNucleo(onclick='FilteringByComponentStatistics()' tkey='Search')
+					#AddFilterCodeEstadisticas.content(style='display:none;width:auto; padding:5px')
+						label(style='color:black' tkey='FilteringCode')
+						#FilterCode(style='border-top: 1px solid black; padding-top: 10px;padding-left: 5px;')
+							table
+								tr
+									td
+										label.labelNucleo(tkey='StartingDate')
+								tr
+									td
+										input#IDateStartStatisticsCode(type='datetime-local' value='')
+								tr
+									td
+										label.labelNucleo(tkey='EndingDate')
+								tr
+									td
+										input#IDateEndStatisticsCode(type='datetime-local' value='')
+							table
+								tr
+									td
+										label.labelNucleo(tkey='Event')
+								tr
+									td
+										select#SCodeStatistics(style='width:325px')
+							table(style='padding-top:20px;width:100%')
+								tr(align='center')
+									td
+										a.ButtonNucleo(onclick='FilteringByCodeStatistics()' tkey='Search')
+
+				td(colspan=2 style='vertical-align:top; padding-left: 15px')
+					#AddFormStatistics.content(style='display:none; width:520px')
+						table(width="90%" height='100%')
+							tr
+								td(style="width: 250px")
+									label.labelNucleo(tkey='TasaEventosFallos')
+								td
+									input.textbox(id="tasa", type="text" style='width: 65px;text-align: right', readonly)
+								td
+									label.labelNucleo %
+							tr
+								td(style="width: 250px")
+									label.labelNucleo(tkey='MTBF')
+								td
+									input.textbox(id="mtbf", type="text" style='width: 65px;text-align: right' readonly)
+								td
+									label.labelNucleo(tkey='Days')
+						//	
+							tr
+								td(style="width: 250px")
+									label.labelNucleo(tkey='MUT')
+								td
+									input.textbox(id="mut" type='text' style='width: 65px;text-align: right' readonly)
+								td
+									label.labelNucleo %
+
+			tr
+				td
+				td(align="center")
+					a.ButtonNucleo#BtnStatsToPdf(onclick="ExportStatisticsToPdf()" style='display:none') PDF
+				td(align="center")
+					a.ButtonNucleo#BtnStatsToExcel(onclick="doCsvStatistics()" style='display:none') Excel
+
+script.
+
+	function selectEndingDate(crtIni,crtFin){
+		var fechaH = $(crtIni)[0].valueAsDate;
+		fechaH.setDate(fechaH.getDate());
+		$(crtFin)[0].valueAsDate = fechaH;
+		$(crtFin).attr('min',$(crtFin).val());
+	}
+	function ExportHistoricsToPdf(rows, filter) {
+		var header = [];
+
+		alertify.success('Generando fichero PDF');
+
+		translateWord('DateTime', function (dateTime) {
+			translateWord('Code', function (code) {
+				translateWord('Group', function (group) {
+					translateWord('Component', function (component) {
+						translateWord('Description', function (description) {
+							translateWord('Type', function (type) {
+								translateWord('Acknowled', function (acknowled) {
+									translateWord('TypeAlarm', function (typealarm) {
+										translateWord('User', function (user) {
+
+											header[0] = "Fecha-\nHora";
+											header[1] = group;
+											header[2] = component;
+											header[3] = description;
+											header[4] = type;
+											header[5] = acknowled;
+											header[6] = typealarm;
+											header[7] = user;
+
+											var doc = new jsPDF('l');
+											doc.setFontType("bold");
+											doc.setFontSize(11);
+											doc.text(7, 15, "HISTORICOS: " + filter);
+											doc.autoTableSetDefaults({headerStyles: {fillColor: [255, 50, 40]}});// Red
+											doc.autoTable(header, rows, {
+												startY: 20,
+												margin: {horizontal: 7},
+												bodyStyles: {valign: 'top'},
+												columnStyles: {
+													0: {columnWidth: 30, overflow: 'linebreak'},
+													1: {columnWidth: 30, overflow: 'linebreak'},
+													2: {columnWidth: 30, overflow: 'linebreak'},
+													3: {columnWidth: 90, overflow: 'linebreak'},
+													4: {columnWidth: 20, overflow: 'linebreak'},
+													5: {columnWidth: 25, overflow: 'linebreak'},
+													6: {columnWidth: 25, overflow: 'linebreak'},
+													7: {columnWidth: 30, overflow: 'linebreak'}
+												}
+											});
+											doc.save('Historicos.pdf');
+										})
+									})
+								})
+							})
+						})
+					})
+				})
+			})
+		})
+	}
+	function ExportHistoricsToPdfEvents(rows,filter){
+		var header=[];
+		
+		alertify.success('Generando fichero PDF'); 
+
+		translateWord('DateTime',function(dateTime){
+			translateWord('Code',function(code){
+				translateWord('Group',function(group){
+					translateWord('Component',function(component){
+						translateWord('Description',function(description){
+							translateWord('Type',function(type){
+										translateWord('User',function(user){
+											header[0]={ text: dateTime, style: 'tableHeader' }											
+											header[1]={ text: group, style: 'tableHeader' }
+											header[2]={ text: component, style: 'tableHeader' }
+											header[3]={ text: description, style: 'tableHeader' }
+											header[4]={ text: type, style: 'tableHeader' }
+											header[5]={ text: '', style: 'tableHeader' }
+											header[6] = {text:'', style: 'tableHeader'}
+											header[7] = {text: user, style: 'tableHeader'}
+											var start = 0;
+											var cuantos = 300;
+											var items = rows.slice(start,cuantos);
+											while (items.length > 0){
+												var data=[];
+												data.push(header);
+												$.each(items,function(index,value){
+													//Dos columnas menos que hay que quitar
+													data.push(value);
+												})
+
+												translateWord('Historics',function(historic){
+													var docDefinition = { 
+														footer: function(currentPage, pageCount) { return {text: currentPage.toString() + ' / ' + pageCount, alignment: 'center', margin: [ 0, 5, 0, 0 ]  }},
+														background: function(currentPage){
+															if (currentPage > 1)
+																return	{ text: filter, style: 'subheader' };
+														},
+														// a string or { width: number, height: number }
+														pageSize:'A4',
+														// by default we use portrait, you can change it to landscape if you wish
+														pageOrientation: 'landscape',
+														content:[ 	
+															{ text: historic, style: 'header' },
+															{ text: filter, style: 'subheader' },
+															{
+																style: 'tableExample',
+																table: {
+																		headerRows: 1,
+																		body:data
+																}
+															},
+														],
+														styles: {
+															header: {
+																fontSize: 18,
+																bold: true,
+																margin: [0, 0, 0, 10],
+																color: 'red',
+																alignment: 'center'
+															},
+															subheader: {
+																fontSize: 16,
+																bold: true,
+																color: '#D2747D',
+																margin: [0, 10, 0, 5]
+															},
+															tableExample: {
+																margin: [0, 5, 0, 15]
+															},
+															tableHeader: {
+																bold: true,
+																fontSize: 12,
+																color: 'black'
+															}
+														},
+														defaultStyle: {
+															// alignment: 'justify'
+															fontSize: 10
+														}
+													};
+
+													pdfMake.createPdf(docDefinition).open();	
+												})
+												//pdfMake.createPdf(docDefinition).download('U5K-G-' + start + '.pdf');	
+												items = rows.slice(++start * cuantos,(start * cuantos) + cuantos);
+											}
+										})	
+							})
+						})
+					})
+				})
+			})
+		})
+	}
+	/*
+	var tableToExcel = (function() {
+	  var uri = 'data:application/vnd.ms-excel;base64,'
+	    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+	    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+	    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+	  return function(table, name) {
+	    if (!table.nodeType) table = document.getElementById(table)
+	    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+	    window.location.href = uri + base64(format(template, ctx))
+	  }
+	}
+	)()
+	*/
+	function ExportStatisticsToPdf(){
+		var header=[];
+		var detail=[];
+
+		translateWord('TasaEventosFallos',function(tasafallos){
+			translateWord('MTBF',function(mtbf){
+				header[0]={ text: tasafallos, style: 'tableHeader' }
+				header[1]={ text: mtbf, style: 'tableHeader' }
+
+				var data=[];
+				data.push(header);
+
+				detail[0]=$('#tasa').val();
+				detail[1]=$('#mtbf').val();
+
+				data.push(detail);
+
+				var docDefinition = { 
+					footer: {text: ' 1/1 ', alignment: 'center', margin: [ 0, 5, 0, 0 ] },
+					background: function(currentPage){
+						if (currentPage > 1)
+							return	{ text: "Estadísticas", style: 'subheader' };
+					},
+					// a string or { width: number, height: number }
+					pageSize:'A4',
+
+					content:[ 	
+						{ text: "Estadísticas", style: 'header' },
+						{ text: subHeader, style: 'subheader' },
+						{
+							style: 'tableExample',
+							table: {
+									headerRows: 1,
+									body:data
+							}
+						},
+					],
+					styles: {
+						header: {
+							fontSize: 18,
+							bold: true,
+							margin: [0, 0, 0, 10],
+							color: 'red',
+							alignment: 'center'
+						},
+						subheader: {
+							fontSize: 16,
+							bold: true,
+							color: '#D2747D',
+							margin: [0, 10, 0, 5]
+						},
+						tableExample: {
+							margin: [0, 5, 0, 15]
+						},
+						tableHeader: {
+							bold: true,
+							fontSize: 13,
+							color: 'black'
+						}
+					},
+					defaultStyle: {
+						// alignment: 'justify'
+					}
+				};
+
+				pdfMake.createPdf(docDefinition).open();	
+			})
+		})
+	}
+	function doCsv(tableName){
+		var table = document.getElementById(tableName).innerHTML;
+		var data = table.replace(/<thead>/g,'')
+						.replace(/<\/thead>/g,'')
+						.replace(/<tbody>/g,'')
+						.replace(/<\/tbody>/g,'')
+						.replace(/<tr>/g,'')
+						.replace(/<\/tr>/g,'\r\n')
+						.replace(/<th [a-z|A-Z|\s|\d|=|"]+>/g,'')
+						.replace(/<\/th>/g,';')
+						.replace(/<td>/g,'')
+						.replace(/<\/td>/g,';')
+						.replace(/\t/g,'')
+						.replace(/\/n/g,'');
+
+		var myLink=document.createElement('a');
+		myLink.download = 'HistoricosRedan.csv';
+		myLink.href = "data:application/csv," + escape(data);
+		myLink.click();
+	}
+	function doCsvStatistics(){
+		var myLink=document.createElement('a');
+		myLink.download = 'EstadisticasRedan.csv';
+		myLink.href = "data:application/csv," + escape(subHeader+";\r\n")+escape("Tasa Eventos/Fallos(%);Tiempo Medio(Días);\r\n"+ $(tasa).val()+";"+$(mtbf).val());
+		myLink.click();
+	}

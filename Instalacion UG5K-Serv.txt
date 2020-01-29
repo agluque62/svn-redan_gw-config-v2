@@ -1,0 +1,20 @@
+INSTALACIÓN DE LA APLICACIÓN
+============================
+
+
+- Descomprimir UG5K-Serv.zip.
+- Se generará el directorio UG5K-Serv con todos los directorios y archivos necesarios para la aplicación.
+- Abrir una ventana de comandos y ejecutar:
+	cd <directorio_donde_se_descomprimio UG5K-Serv>
+
+- Ejecutar el comando Install_UG5K_Remote_Configuration.bat <unidad:directorio_destino>. 
+- Elegir Instalar o actualizar una instalación previa.
+- Se copiarán todos los archivos al directorio donde ya está instalada la aplicación, actualizándose todos los archivos.
+
+
+PROCEDIMIENTO PARA ACTUALIZAR LA BASE DE DATOS SIN ELIMINAR LOS DATOS ALMACENADOS
+=================================================================================
+- Entrar en la aplicación de MySQL Workbench. Abajo a la izquierda aparece "Models" y un icono de una carpeta. Pulsar sobre este icono y buscar el archivo ug5k.mwb en el directorio de la instalación ./data_model.
+- Pulsar el botón abrir.
+- Una vez abierto, en la pestaña EER Diagram, seleccionar "Database/Synchronize model..." e ir pulsando sobre el botón Next hasta finalizar.
+

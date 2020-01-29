@@ -1,0 +1,109 @@
+style(type='text/css').
+	.tg	{border-collapse:collapse;border-spacing:0;border-color:#aaa;}
+		.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#aaa;color:#333;background-color:#fff;}
+		.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#aaa;color:#fff;background-color:#f38630;}
+		.tg .color-content{background-color:#d9d5d5;text-align:center}
+		.tg .color-header{background-color:#d9132d}
+
+
+block resource
+	div.fadeNucleo(id="FormResources", style="display: none; position: absolute; margin-top: 50px; margin-left: 50px")
+		h3#h3IdGtw(style="color: white")
+		table.tg
+			tr
+				th.color-header Slot 1
+				|     
+				th.color-header Slot 2
+				|     
+				th.color-header Slot 3
+				|     
+				th.color-header Slot 4
+				|   
+			tr
+				td.color-content#td11
+				|     
+				td.color-content#td21
+				|     
+				td.color-content#td31
+				|     
+				td.color-content#td41
+				|   
+			tr
+				td.color-content#td12
+				|     
+				td.color-content#td22
+				|     
+				td.color-content#td32
+				|     
+				td.color-content#td42
+				|   
+			tr
+				td.color-content#td13
+				|     
+				td.color-content#td23
+				|     
+				td.color-content#td33
+				|     
+				td.color-content#td43
+				|   
+			tr
+				td.color-content#td14
+				|     
+				td.color-content#td24
+				|     
+				td.color-content#td34
+				|     
+				td.color-content#td44
+
+		table
+			tr
+				td
+					input.tab(type='button', name='parametros')
+					|	General parameters
+				td
+					input.tab(type='radio',value='VoIP parameters', name='parametros')
+				td
+					a.tab(onclick='GetUsuarios()', style="color:#bf2a36; width: 100px") Audio parameters
+				td
+					a.tab(onclick='GetUsuarios()', style="color:#bf2a36; width: 100px") Functionality
+
+		div
+			table#propResource(style="width: 100%; padding: 10px 0px")
+				tr#rowBack
+					td
+					|     
+					td
+			table(style="width: 100%; padding: 10px 0px")
+				tr
+					td
+					td
+					td(style="text-align:center")
+						a.ButtonNucleo(style="width:30px", onclick='GoBack()') Back
+
+			.tabbable
+				ul#myTab.nav.nav-tabs
+					li.active
+						a(href='#tab1') Home
+					|   
+					li
+						a(href='#tab2') Profile
+					|   
+					li
+						a(href='#tab3') Messages
+					|   
+				.tab-content(style='padding-bottom: 9px; border-bottom: 1px solid #ddd;')
+					#tab1.tab-pane.active
+						p I&apos;m in Section 1.
+					|                 
+					#tab2.tab-pane
+						p Howdy, I&apos;m in Section 2.
+					|                 
+					#tab3.fadeNucleo.tab-pane
+						p What up girl, this is Section 3.
+			|  
+			script.
+				$('#myTab a').click(function (e) {
+					e.preventDefault();
+					$(this).tab('show');
+				})
+

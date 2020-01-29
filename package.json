@@ -1,0 +1,39 @@
+{
+  "name": "UG5K-Serv",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "alertify.js": "^1.0.11",
+    "alertifyjs": "^1.7.1",
+    "async": "^0.9.0",
+    "babel-eslint": "^10.0.1",
+    "body-parser": "~1.10.2",
+    "bootstrap": "^3.3.4",
+    "connect-ensure-login": "^0.1.1",
+    "connect-flash": "~0.1.1",
+    "cookie-parser": "~1.3.3",
+    "debug": "~2.1.1",
+    "del": "~3.0.0",
+    "eslint": "^5.14.1",
+    "express": "~4.11.1",
+    "express-session": "^1.16.2",
+    "file-system": "^2.2.1",
+    "jade": "~1.9.1",
+    "memorystore": "^1.6.1",
+    "moment": "^2.18.1",
+    "morgan": "~1.5.1",
+    "multer": "^1.3.0",
+    "mysql": "^2.5.4",
+    "passport": "^0.2.2",
+    "passport-local": "^1.0.0",
+    "pdfmake": "^0.1.18",
+    "serve-favicon": "~2.2.0",
+    "winston": "^2.3.1"
+  },
+  "devDependencies": {
+    "eslint-plugin-react": "^7.12.4"
+  }
+}
