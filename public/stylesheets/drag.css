@@ -14,16 +14,16 @@
 .dragableItem{
 	display: table-cell;
 	background-color:#ededed;
- 	color:#bf2a36;
+ 	color: /*#bf2a36*/var(--main-color);
  	min-width: 110px;
-    border: 1px solid #C1022C;
+    border: 1px solid /*#C1022C*/var(--main-color);
     border-radius: 0 5px 0 0;
   }
 
 .dragableItemOccuped{
 	display: table-cell;
 	background-color:#FFFF99;
- 	color:#bf2a36;
+ 	color: /*#bf2a36*/var(--main-color);
  	min-width: 110px;
     border: 1px solid #C1022C;
     border-radius: 0 5px 0 0;

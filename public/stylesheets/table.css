@@ -16,7 +16,7 @@ table.gradienttable th {
 	background: -o-linear-gradient(top,  #d5e3e4 0%,#ccdee0 40%,#b3c8cc 100%);
 	background: -ms-linear-gradient(top,  #d5e3e4 0%,#ccdee0 40%,#b3c8cc 100%);
 	background: linear-gradient(to bottom,  #F4B5C1 0%,#F4B5C1 40%,#D2747D 100%);
-	/*background: linear-gradient(to bottom,  #d5e3e4 0%,#ccdee0 40%,#b3c8cc 100%);*/
+	background: linear-gradient(to bottom,  var(--tbh-grad-color01) 0%, var(--tbh-grad-color02) 40%, var(--tbh-grad-color03) 100%);
 	border: 1px solid #999999;
 }
 table.gradienttable th.occuped {
@@ -31,6 +31,7 @@ table.gradienttable th.occuped {
 	background: -ms-linear-gradient(top,  #ADEBAD 0%,#9CD49C 40%,#7DAA7D 100%);
 	/*background: linear-gradient(to bottom,  #ADEBAD 0%,#9CD49C 40%,#7DAA7D 100%);*/
 	background: linear-gradient(to bottom, #F676A0 0%,#D45D7E 40%,#861E33 100%);
+	background: linear-gradient(to bottom, var(--tbh-grad-color01) 0%,var(--tbh-grad-color02) 40%,var(--tbh-grad-color03) 100%);
 /*	border: 1px solid #999999; */
 }
 table.gradienttable td {
@@ -47,6 +48,7 @@ table.gradienttable td {
 	background: -ms-linear-gradient(top,  #ebecda 0%,#e0e0c6 40%,#ceceb7 100%);
 	/*background: linear-gradient(to bottom,  #ebecda 0%,#e0e0c6 40%,#ceceb7 100%);*/
 	background: linear-gradient(to bottom, #FFFFFF 0%,#FFF6F9 40%,#F9D3E0 100%);
+	background: linear-gradient(to bottom, var(--tb-grad-color01) 0%,var(--tb-grad-color02) 40%,var(--tb-grad-color03) 100%);
 	border: 1px solid #999999;
 }
 
@@ -168,6 +170,7 @@ table.slavetable th {
 	padding: 0px;
 	background: #d5e3e4;
 	background: linear-gradient(to bottom, #F676A0 0%,#D45D7E 40%,#861E33 100%);
+	background: linear-gradient(to bottom,  var(--tbh-grad-color01) 0%, var(--tbh-grad-color02) 40%, var(--tbh-grad-color03) 100%);
 	min-width: 100px;
 	/*border: 1px solid #999999;*/
 }

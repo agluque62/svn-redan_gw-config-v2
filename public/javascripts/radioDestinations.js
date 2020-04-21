@@ -222,7 +222,7 @@ function ShowResources(data) {
     $.each(data.recursos, function(index, value) {
         if (value.tipo == 1 && value.idRECURSO != $("#ResourceBag").data('resourceName')) {	// Solo recursos de radio y no está asignado a este destino
             var item = $("<li id='" + value.name + "'><div id='" + value.idRECURSO + "' data-resourceId='" +
-                value.idRECURSO + "' class='dragableItem' style='color:#bf2a36;height:auto;width:95px' draggable='true' ondragstart='drag(event)'>" +
+                value.idRECURSO + "' class='dragableItem' style='color:var(--main-color);height:auto;width:95px' draggable='true' ondragstart='drag(event)'>" +
                 "<img src='/images/iconRadio.gif' style='float: right'/>" +
                 value.name + "</div></li>");
             //item.append($("<img src='/images/iconRadio.gif' style='float: right'/>"));

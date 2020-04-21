@@ -665,7 +665,7 @@ function ShowDataSlave(data) {
             $('#Res' + (fila - 1) + ' a').text(r.resource)
                 .append(r.tipo == 1 ? $("<img src='/images/iconRadio.gif' style='float: right'/>")
                     : $("<img src='/images/iconPhone.gif' style='float: right'/>"))
-                .attr('style', 'color:#bf2a36')
+                .attr('style', 'color:var(--main-color)')
                 .attr('onclick', 'BlockResourceZone(true, "' + fila + '")');
         }
 

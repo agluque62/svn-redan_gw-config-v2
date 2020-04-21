@@ -157,11 +157,11 @@ function ShowSite(site, id) {
                             name1 = value.name.substring(0, 14);
                             name2 = value.name.substring(14, 28);
                             item = $('<li data-texto="' + value.idCGW + '">' +
-                                '<a draggable="false" ondragstart="dragGatewayToSite(event)" style="display:block; color:#89001e" onclick="CheckingAnyChange(\'GeneralContent\', function(){ShowHardwareGateway(\'' + value.idCGW + '\',\'' + value.name + '\')})"' + '>' + name1 + '<br>' + name2 + '</a></li>');
+                                '<a draggable="false" ondragstart="dragGatewayToSite(event)" style="display:block; color1:#89001e" onclick="CheckingAnyChange(\'GeneralContent\', function(){ShowHardwareGateway(\'' + value.idCGW + '\',\'' + value.name + '\')})"' + '>' + name1 + '<br>' + name2 + '</a></li>');
                         }
                         else if (value.name.length < 14) {
                             item = $('<li data-texto="' + value.idCGW + '">' +
-                                '<a draggable="false" ondragstart="dragGatewayToSite(event)" style="display:block; color:#89001e" onclick="CheckingAnyChange(\'GeneralContent\', function(){ShowHardwareGateway(\'' + value.idCGW + '\',\'' + value.name + '\')})"' + '>' + value.name + '</a></li>');
+                                '<a draggable="false" ondragstart="dragGatewayToSite(event)" style="display:block; color1:#89001e" onclick="CheckingAnyChange(\'GeneralContent\', function(){ShowHardwareGateway(\'' + value.idCGW + '\',\'' + value.name + '\')})"' + '>' + value.name + '</a></li>');
 
                         }
                         else {
@@ -169,7 +169,7 @@ function ShowSite(site, id) {
                             name2 = value.name.substring(14, 28);
                             var name3 = value.name.substring(28, 31);
                             item = $('<li data-texto="' + value.idCGW + '">' +
-                                '<a draggable="false" ondragstart="dragGatewayToSite(event)" style="display:block; color:#89001e" onclick="CheckingAnyChange(\'GeneralContent\', function(){ShowHardwareGateway(\'' + value.idCGW + '\',\'' + value.name + '\')})"' + '>' + name1 + '<br>' + name2 + '<br>' + name3 + '</a></li>');
+                                '<a draggable="false" ondragstart="dragGatewayToSite(event)" style="display:block; color1:#89001e" onclick="CheckingAnyChange(\'GeneralContent\', function(){ShowHardwareGateway(\'' + value.idCGW + '\',\'' + value.name + '\')})"' + '>' + name1 + '<br>' + name2 + '<br>' + name3 + '</a></li>');
                         }
                         item.appendTo($(lista));
                     });

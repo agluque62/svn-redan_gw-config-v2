@@ -20,7 +20,7 @@ var GetResources = function(gtw) {
                 var num = value.NumDispositivoSlot + 1;
                 var tdItem = '#td' + slot + num;
                 $(tdItem).append($('<a>', {
-                    style: 'color:#bf2a36',
+                    style: 'color:var(--main-color)',
                     class: 'ButtonNucleo',
                     onclick: 'GetResource("' + value.IdRecurso + '","' + value.IdTifx + '")',
                     text: value.IdRecurso

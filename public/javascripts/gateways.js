@@ -3677,7 +3677,7 @@ function ShowAssignedSlaves(data) {
 			// 		if (value.CGW_idCGW != null)
 			// 			clase="dragableItemOccuped";
 
-			// 		var item = $("<li data-group='" + value.nameOfGroup + "'><div id='" + value.idSLAVES + "' class='" + clase + "' style='color:#bf2a36' draggable='true' ondragstart='dragGateway(event)'>" + value.name + "</li>");
+			// 		var item = $("<li data-group='" + value.nameOfGroup + "'><div id='" + value.idSLAVES + "' class='" + clase + "' style='color1:#bf2a36' draggable='true' ondragstart='dragGateway(event)'>" + value.name + "</li>");
 			// 		item.appendTo($(".listHardware"));
 			// 	}
 			// }

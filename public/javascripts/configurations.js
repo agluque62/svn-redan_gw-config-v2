@@ -206,7 +206,7 @@ var ShowCfg = function(cfg) {
 								 });*/
                                 $.each(data.result, function(index, value) {
                                     var item = $('<li data-texto-emp="' + value.idEMPLAZAMIENTO + '"  >' +
-                                        '<a draggable="false" ondragstart="dragGatewayToSite(event)" ondrop="dropGatewayToSite(event)" ondragover="getOverDropC(event)" style="display:block; color:#b70028" onclick="CheckingAnyChange(\'GeneralContent\', function(){ShowSite(\'' + value.nameSite + '\',\'' + value.idEMPLAZAMIENTO + '\')})"' + '>' + value.nameSite + '</a>' +
+                                        '<a draggable="false" ondragstart="dragGatewayToSite(event)" ondrop="dropGatewayToSite(event)" ondragover="getOverDropC(event)" style="display:block; color1:#b70028" onclick="CheckingAnyChange(\'GeneralContent\', function(){ShowSite(\'' + value.nameSite + '\',\'' + value.idEMPLAZAMIENTO + '\')})"' + '>' + value.nameSite + '</a>' +
                                         '<ul class="gtwList" id="site-' + value.idEMPLAZAMIENTO + '" style="display:none"></ul>' +
                                         '</li>');
 
@@ -257,7 +257,7 @@ var ShowCfgByName = function(cfgName, cfgId) {
                     //item.appendTo($(lista));
                     //var item = $('<li>' + 
                     var item = $('<li data-texto-emp="' + value.idEMPLAZAMIENTO + '" draggable="true" ondragstart="dragSiteToCfg(event)">' +
-                        '<a style="display:block; color:#b70028" onclick="CheckingAnyChange(\'GeneralContent\', function(){ShowSite(\'' + value.nameSite + '\',\'' + value.idEMPLAZAMIENTO + '\')})"' + '>' + value.nameSite + '</a>' +
+                        '<a style="display:block; color1:#b70028" onclick="CheckingAnyChange(\'GeneralContent\', function(){ShowSite(\'' + value.nameSite + '\',\'' + value.idEMPLAZAMIENTO + '\')})"' + '>' + value.nameSite + '</a>' +
                         '<ul class="gtwList" id="site-' + value.idEMPLAZAMIENTO + '" style="display:none"></ul>' +
                         '</li>');
                     item.appendTo($(lista));
