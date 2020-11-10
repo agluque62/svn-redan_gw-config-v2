@@ -1,6 +1,15 @@
+/**
+ * 
+ * */
 var dataAtsRange = {};
 dataAtsRange.ranks = [];
+/**
+ * ResetTelParameters
+ * */
 function ResetTelParameters() {
+
+    Trace("parametersTel.js:ResetTelParameters");
+
     $('#NameResource').text('Resource: ');
 
     // Ocultar tab de radio
@@ -39,7 +48,6 @@ function ResetTelParameters() {
 	$('#TbSupTime').val('');
 	*/
 }
-
 /************************************************/
 /*	FUNCTION: GetRemoteTfnoResources 			*/
 /*  PARAMS: 									*/
@@ -49,6 +57,7 @@ function ResetTelParameters() {
 function GetRemoteTfnoResources() {
     var options = '';
 
+    Trace("parametersTel.js:GetRemoteTfnoResources");
 
     $('#CBFacedTelType').empty();
     options = '<option value="" disabled selected>Seleccione tipo de recurso</option>';
@@ -73,6 +82,8 @@ function GetRemoteTfnoResources() {
 function SelectTelType(resType) {
     var cfgId = $('#DivConfigurations').data('idCFG');
 
+    Trace("parametersTel.js:SelectTelType. cfgId ", cfgId);
+
     if (resType == 0)
         SelectPhoneSite(cfgId);
     else
@@ -86,6 +97,9 @@ function SelectTelType(resType) {
 /*  REV 1.0.2 VMG								*/
 /************************************************/
 function SelectPhoneExtResource() {
+
+    Trace("parametersTel.js:SelectPhoneExtResource.");
+
     $('#CBFacedTelSite').empty();
     $('#CBFacedTelGtw').empty();
     $('#CBFacedTelResources').empty();
@@ -94,23 +108,6 @@ function SelectPhoneExtResource() {
     $('#rowSelectTelSite').hide();
     $('#rowSelectTelGtw').hide();
     $('#CBFaced2ResourcesType option[value="-2"]').prop('selected', true);
-
-	/*$.ajax({type: 'GET',
-	url: '/externalResources/3'})
-	.done(function(data) {
-        if( data.lista_recursos == null) {
-            var item = '<option value="0">No existen recursos...</option>';
-            $('#CBFacedTelResources').append(item);
-        }
-        else {
-            if (data.lista_recursos != null && data.lista_recursos.length > 0) {
-                $.each(data.lista_recursos, function (index, value) {
-                    var item = '<option value="' + value.uri + '">' + value.alias + '</option>';
-                    $('#CBFacedTelResources').append(item);
-                });
-            }
-        }
-	});*/
 }
 
 /************************************************/
@@ -120,6 +117,9 @@ function SelectPhoneExtResource() {
 /*  REV 1.0.2 VMG								*/
 /************************************************/
 function SelectPhResourcesType(option) {
+
+    Trace("parametersTel.js:SelectPhResourcesType.");
+
     $('#CBFacedTelResources').empty();
     $('#FilterPhResource').val('');
 
@@ -162,6 +162,8 @@ function FilterPhResourcesBy() {
     var filterType = parseInt($("#CBFaced2ResourcesType option:selected").val());
     var chars2Find = $('#FilterPhResource').val();
 
+    Trace("parametersTel.js:FilterPhResourcesBy. filterType %s, chars2Find ", filterType, chars2Find);
+
     $('#CBFacedTelResources').empty();
     $.ajax({
         type: 'GET',
@@ -189,6 +191,9 @@ function FilterPhResourcesBy() {
 /*  REV 1.0.2 VMG								*/
 /************************************************/
 function SelectPhoneSite(cfgId) {
+
+    Trace("parametersTel.js:SelectPhoneSite. cfgId ", cfgId);
+
     $('#CBFacedTelSite').empty();
     $('#CBFacedTelGtw').empty();
     $('#CBFacedTelResources').empty();
@@ -223,8 +228,14 @@ function SelectPhoneSite(cfgId) {
         }
     });
 }
-
+/**
+ * ShowOptions
+ * @param {any} tipo
+ */
 function ShowOptions(tipo) {
+
+    Trace("parametersTel.js:ShowOptions. tipo ", tipo);
+
     $('.BL').attr('style', 'display:none');
     $('.BC').attr('style', 'display:none');
     $('.AB').attr('style', 'display:none');
@@ -232,7 +243,8 @@ function ShowOptions(tipo) {
     $('.LCEN').attr('style', 'display:none');
     $('.EyM').attr('style', 'display:none');
     $('.QSIG').attr('style', 'display:none');
-    $('#ListMenuParameters li:nth-child(6)').hide();
+    $('#ListMenuParameters li:nth-child(6)').show();
+    $('#ListMenuParameters li:nth-child(7)').show();
     $('#ReleaseRow').hide();
 
     switch (tipo) {
@@ -249,42 +261,45 @@ function ShowOptions(tipo) {
         case '2': // AB
             $('.AB').attr('style', 'display:table-row');
             break;
-		/*case '1':// BC
-			$('.BL').attr('style','display:table-row');
-			$('#CbVox').prop('disabled',false);
-			$('#TbUmbral').prop('disabled',CbVox.checked ? false : 'disabled');
-			$('#TbInactividad').prop('disabled',CbVox.checked ? false : 'disabled');
-			break;*/
         case '3': 	// R2
-            if ($('#CbOptionsSupervision').prop('checked'))
-                $('#ReleaseRow').show();
+            //if ($('#CbOptionsSupervision').prop('checked'))
+            //    $('#ReleaseRow').show();
             $('.ATS').attr('style', 'display:table-row');
-            $('#ListMenuParameters li:nth-child(6)').show();
-            if ($('#CbOptionsSupervision').prop('checked'))
-                $('#ReleaseRow').show();
+            //$('#ListMenuParameters li:nth-child(6)').show();
+            //if ($('#CbOptionsSupervision').prop('checked'))
+            //    $('#ReleaseRow').show();
             break;
         case '4': 	// N5
             $('.ATS').attr('style', 'display:table-row');
-            $('#ListMenuParameters li:nth-child(6)').show();
-            if ($('#CbOptionsSupervision').prop('checked'))
-                $('#ReleaseRow').show();
+            //$('#ListMenuParameters li:nth-child(6)').show();
+            //if ($('#CbOptionsSupervision').prop('checked'))
+            //    $('#ReleaseRow').show();
             break;
         case '5': 	// LCEN
             $('.LCEN').attr('style', 'display:table-row');
-            if ($('#CbOptionsSupervision').prop('checked'))
-                $('#ReleaseRow').show();
+            //if ($('#CbOptionsSupervision').prop('checked'))
+            //    $('#ReleaseRow').show();
             break;
         case '6': 	// QSIG
             $('.QSIG').attr('style', 'display:table-row');
             break;
     }
-}
 
+}
+/**
+ * OnChangeType
+ * @param {any} sel
+ */
 function OnChangeType(sel) {
     ShowOptions(sel.value);
 }
-
+/**
+ * AddPhoneParameters
+ * */
 function AddPhoneParameters() {
+
+    Trace("parametersTel.js:AddPhoneParameters");
+
     var hw = {
         RECURSO_idRECURSO: $('#DivParameters').data('idRecurso'),
         AD_AGC: $('#CbAdAgc').prop('checked') ? '1' : '0',
@@ -347,6 +362,9 @@ function AddPhoneParameters() {
 /*  REV 1.0.2 VMG							*/
 /********************************************/
 function AddRange(item, origin) {
+
+    Trace("parametersTel.js:AddRange. [item, origen]", item, origin);
+
     var inicial = '';
     var final = '';
 
@@ -385,33 +403,21 @@ function AddRange(item, origin) {
             ranks = { idRANGOS: '1', origen: 0, inicial: inicial, final: final, tipo: 0 };
 
         dataAtsRange.ranks.push(ranks);
-		/*$.ajax({type: 'POST',
-			dataType: 'json',
-			contentType:'application/json',
-			url: '/resources/' + $('#DivParameters').data('idRecurso') + '/phoneParameters/range',
-			data: JSON.stringify({
-				origen: origin,
-				inicial: inicial,
-				final: final
-			}),
-			success: function (data){
-				if (data.error == null){
-					GenerateHistoricEvent(ID_HW,MODIFY_ATS_ROUTES,$('#TbNameResource').val(),$('#loggedUser').text());
-					alertify.success('Rango ATS añadido.');
-					GetAtsRange($('#DivParameters').data('idRecurso'));
-				}
-			}
-		});*/
     }
     else {
         alertify.error('Rango ATS incorrecto.');
     }
     ShowRangeAts();
 }
-
-
-
+/**
+ * UpdateRank
+ * @param {any} index
+ * @param {any} origen
+ */
 function UpdateRank(index, origen) {
+
+    Trace("parametersTel.js:UpdateRank. index %s, origen ", index, origen);
+
     var inicial = '';
     var final = '';
     var idRango = '';
@@ -458,24 +464,6 @@ function UpdateRank(index, origen) {
 
         dataAtsRange.ranks.push(ranks);
         RemoveRank(idRango, origen);
-		/*$.ajax({type: 'PUT',
-				dataType: 'json', 
-				contentType:'application/json',
-				url: '/resources/' + $('#DivParameters').data('idRecurso') + '/phoneParameters/range', 
-				data: JSON.stringify({
-					idRangos: idRango,
-					origen: origen,
-					inicial: inicial,
-					final: final
-				}),
-				success: function (data){
-					if (data.error == null){
-						GenerateHistoricEvent(ID_HW,MODIFY_ATS_ROUTES,$('#TbNameResource').val(),$('#loggedUser').text());
-						alertify.success('Rango ATS actualizado.');
-						GetAtsRange($('#DivParameters').data('idRecurso'));
-					}
-				}
-		});*/
     }
     else {
         if (origen) {
@@ -491,8 +479,15 @@ function UpdateRank(index, origen) {
     }
     ShowRangeAts();
 }
-
+/**
+ * RemoveRank
+ * @param {any} index
+ * @param {any} origen
+ */
 function RemoveRank(index, origen) {
+
+    Trace("parametersTel.js:RemoveRank. index %s, origen ", index, origen);
+
     var idRango;
 
     if (origen) {
@@ -503,21 +498,15 @@ function RemoveRank(index, origen) {
         idRango = $('#rangeAtsDestination tr:nth-child(' + (index) + ')').data('idrango');
         $('#rangeAtsDestination tr:nth-child(' + (index) + ')').remove();
     }
-
-
-	/*$.ajax({type: 'DELETE',
-			url: '/resources/' + $('#DivParameters').data('idRecurso') + '/phoneParameters/range/' + idRango, 
-			success: function (data){
-				if (data.error == null){
-					GenerateHistoricEvent(ID_HW,MODIFY_ATS_ROUTES,$('#TbNameResource').val(),$('#loggedUser').text());
-					alertify.success('Rango ATS eliminado.');
-					GetAtsRange($('#DivParameters').data('idRecurso'));
-				}
-			}
-	});*/
 }
-
+/**
+ * OnVoxDetection
+ * @param {any} cb
+ */
 function OnVoxDetection(cb) {
+
+    Trace("parametersTel.js:OnVoxDetection");
+
     if (cb.checked) {
         $('#TbUmbral').prop('disabled', false);
         $('#TbInactividad').prop('disabled', false);
@@ -528,12 +517,44 @@ function OnVoxDetection(cb) {
     }
 }
 
-function OnClickSupervision(cb) {
-    if (cb.checked)
+/**
+ * OnClickSupervision
+ * Gestiona la presentacion (o no) de los parámetros asociados a Supervisa Options.
+ * 20200716: Nuevos parámetros de telefonía.
+ */ 
+function OnClickSupervision() {
+
+    Trace("parametersTel.js:OnClickSupervision");
+
+    var cb1 = $('#CbOptionsSupervision').prop('checked');
+    var cb2 = $('#CbAddOptionsSupervision').prop('checked');
+    if (cb1) {
+        $('#OptionsMode').show();
+    }
+    else {
+        $('#OptionsMode').hide();
+    }
+
+    if (cb2) {
+        $('#AddOptionsMode').show();
+    }
+    else {
+        $('#AddOptionsMode').hide();
+    }
+
+    if (cb1 || cb2) {
         $('#ReleaseRow').show();
-    else
+        $('#ReleaseRowSeparator').show();
+    }
+    else {
         $('#ReleaseRow').hide();
+        $('#ReleaseRowSeparator').hide();
+    }
 }
+/**
+ * OnClickPeriodoRespuesta
+ * @param {any} cb
+ */
 function OnClickPeriodoRespuesta(cb) {
     if (cb.checked)
         $('#OptionsIntervalRow').show();
@@ -548,37 +569,14 @@ function OnClickPeriodoRespuesta(cb) {
 function GetTelephonicResources() {
     var cfgName = $('#name').val();
 
+    Trace("parametersTel.js:GetTelephonicResources. cfgName ", cfgName);
+
     $('#CBFacedTelSite').empty();
     $('#CBFacedTelGtw').empty();
     $('#CBFacedTelResources').empty();
 
     SelectTelSite(cfgName);
 
-	/*$.ajax({type: 'GET', 
-		url: '/resources/tel/null/null/null',
-		success: function(data){
-			$('#CBFacedTelCfg').empty();
-			$('#CBFacedTelSite').empty();
-			$('#CBFacedTelGtw').empty();
-			$('#CBFacedTelResources').empty();
-
-			if (data.data != null){
-			    var numCfg = 0;
-			    var options = '<option value="" disabled selected>Seleccione configuración</option>';
-
-				$('#CBFacedTelCfg').append(options);
-				$.each(data.data, function(index, value){
-					var encontrado = false;
-
-					if ($("#CBFacedTelCfg option[value='" + value.cfName + "']").length == 0){
-						options = '<option value="' + value.cfName + '">' + value.cfName + '</option>';
-						$('#CBFacedTelCfg').append(options);
-					}
-				})
-				
-			}
-		}
-	});*/
 }
 
 /****************************************/
@@ -587,6 +585,9 @@ function GetTelephonicResources() {
 /*  REV 1.0.2 VMG						*/
 /****************************************/
 function SelectTelSite(cfgName) {
+
+    Trace("parametersTel.js:SelectTelSite. cfgName ", cfName);
+
     $.ajax({
         type: 'GET',
         url: '/resources/tel/' + cfgName + '/null/null',
@@ -619,6 +620,9 @@ function SelectTelSite(cfgName) {
 /*  REV 1.0.2 VMG						*/
 /****************************************/
 function SelectTelGtw(cfgName, site) {
+
+    Trace("parametersTel.js:SelectTelGtw. cfgName %s, site ", cfgName, site);
+
     $.ajax({
         type: 'GET',
         url: '/resources/tel/' + cfgName + '/' + site + '/null/null',
@@ -650,6 +654,9 @@ function SelectTelGtw(cfgName, site) {
 /*  REV 1.0.2 VMG						*/
 /****************************************/
 function SelectTelResource(cfgName, site, gtw) {
+
+    Trace("parametersTel.js:SelectTelResource. cfgName %s, site %s, gtw ", cfgName, site, gtw);
+
     var buttonText = $('#ButtonCommit')[0].outerHTML;
 
     var splitIndex = buttonText.search('InsertNewResource');
@@ -680,12 +687,14 @@ function SelectTelResource(cfgName, site, gtw) {
         }
     });
 }
-
+/**
+ * MakeFacedTelUri
+ * @param {any} target
+ */
 function MakeFacedTelUri(target) {
-	/*if ($('#CBFacedTelCfg option:selected').val() == ""){
-		alertify.error('Seleccione configuración');
-		return;
-	}*/
+
+    Trace("parametersTel.js:MakeFacedTelUri. target ", target);
+
     if ($('#CBFacedTelSite option:selected').val() == "") {
         alertify.error('Seleccione emplazamiento');
         return;

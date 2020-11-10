@@ -1,5 +1,15 @@
+/**
+ * version.js
+ * 
+ */
+/**
+ * GetVersion.
+ * @param {any} isFirstLoad
+ */
+var GetVersion = function (isFirstLoad) {
 
-var GetVersion = function(isFirstLoad) {
+    Trace("users.js:GetVersion. isFirstLoad ", isFirstLoad);
+
     $('#DivVersion').animate({ width: '760px' });
     if (!isFirstLoad) {
         $("#AddFormVersion").show();
@@ -11,6 +21,7 @@ var GetVersion = function(isFirstLoad) {
     })
         .done(function(data) {
             // $("#IdVersion").text(data.version);
+            console.log('GetVersion: ', data.version, data.subversion, data.R16Mode);
             var strSubversion = data.subversion == '' ? ',  ' : ('.' + data.subversion + ',  ');
             $("#IdVersion").text(data.version + strSubversion + data.date);
             $("#IdSubVersion").text(data.subversion);
@@ -32,5 +43,9 @@ var GetVersion = function(isFirstLoad) {
                 );
                 item.appendTo($("#listVersions"));
             });
+        /** 202005. Modo 16R*/
+            force_rdaudio_normal = data.R16Mode;
+            $("#hVersion").text(data.version + '.' + data.subversion + (force_rdaudio_normal==true? " R16" : ""));
+
         });
 };

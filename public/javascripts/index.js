@@ -30,7 +30,15 @@ var ccHistoProfMsc = 0x0200;
 var ccBackpProfMsc = 0x0400;
 var ccConfiProfMsc = 0x8000;					// 0x4000 Se ha eliminado. Se asimila al siguiente....
 var ccLoadcProfMsc = 0x8000;
+/**
+ * Authorize
+ * @param {any} currentProfile
+ * @param {any} authorizedProfiles
+ */
 function Authorize(currentProfile, authorizedProfiles) {
+
+    // Trace("index.js:Authorize. currentProfile %s, authorizedProfiles: ", currentProfile, authorizedProfiles);
+
     if (!currentProfile || !authorizedProfiles)
         return false;
     for (i = 0; i < authorizedProfiles.length; i++) {
@@ -40,8 +48,18 @@ function Authorize(currentProfile, authorizedProfiles) {
     }
     return false;
 }
-
+/**
+ * strProfile
+ * @param {any} pv
+ * @param {any} pg
+ * @param {any} pa
+ * @param {any} ph
+ * @param {any} pb
+ * @param {any} pc
+ * @param {any} pl
+ */
 function strProfile(pv, pg, pa, ph, pb, pc, pl) {
+
     var str = " (";
 
     str += (pv ? "v" : "");
@@ -53,10 +71,20 @@ function strProfile(pv, pg, pa, ph, pb, pc, pl) {
     str += (pl ? "l" : "");
 
     str += ')';
+
+    Trace("index.js:strProfile: ", str);
+
     return str;
 }
-
+/**
+ * indexInitUserData
+ * @param {any} username
+ * @param {any} userprofile
+ */
 function indexInitUserData(username, userprofile) {
+
+    Trace("index.js:indexInitUserData. username %s, userprofile ", username, userprofile);
+
     var perfilVisualizacion = ((userprofile & visualProfMsc) ? true : false);
     var perfilGestUsuarios = ((userprofile & ccUsersProfMsc) ? true : false);
     var perfilAdministracion = ((userprofile & ccAdminProfMsc) ? true : false);
@@ -139,6 +167,9 @@ function indexInitUserData(username, userprofile) {
     $('#BtnImport').show();			// Boton IMPORT.
     $('#ExportGateway').show();		// Boton EXPORT.
 }
+/**
+ * LogoutUser
+ * */
 function LogoutUser() {
     $(location).attr('href', '/logout');
 }
@@ -154,7 +185,15 @@ var optGWMOVE_BETWEENCFG = false;
 script.src = 'http://code.jquery.com/jquery-1.11.2.min.js';
 script.type = 'text/javascript';
 
+/**
+ * SetCookie
+ * @param {any} name
+ * @param {any} value
+ */
 function SetCookie(name, value) {
+
+    // Trace("index.js:SetCookie. name %s, value ", name, value);
+
     if ($('#BodyRedan').data('logintimeout') != '0') {
         var now = new Date();
         var time = now.getTime();
@@ -165,8 +204,14 @@ function SetCookie(name, value) {
         checkCookie = true;
     }
 }
+/**
+ * ResetAfterImport
+ * @param {any} datos
+ */
 function ResetAfterImport(datos) {
     var data = JSON.parse(datos);
+
+    Trace("index.js:ResetAfterImport. datos ", datos);
 
     $('#loggedUser').text(data.user);
     $('#BodyRedan').data('perfil', data.perfil);
@@ -205,8 +250,14 @@ function ResetAfterImport(datos) {
         ShowCfg(JSON.parse(data.cfgData));
     });
 }
-
+/**
+ * getAuthenticatedUser
+ * @param {any} data
+ */
 function getAuthenticatedUser(data) {
+
+    Trace("index.js:getAuthenticatedUser. data ", data);
+
     var index = data.toString().indexOf('.');
 
     if (index > -1)
@@ -214,8 +265,14 @@ function getAuthenticatedUser(data) {
     else
         return "";
 }
-
+/**
+ * myEncode
+ * @param {any} e
+ */
 function myEncode(e) {
+
+    Trace("index.js:myEncode. e ", e);
+
     e.preventDefault();
 
     $('#BodyRedan').data('actualLocation', window.location.href);
@@ -565,8 +622,14 @@ function myEncode(e) {
         });
     }
 }
-
+/**
+ * EnableAplicarCambiosPerfil
+ * @param {any} perfil
+ */
 function EnableAplicarCambiosPerfil(perfil) {
+
+    Trace("index.js:EnableAplicarCambiosPerfil. perfil ", perfil);
+
     var perfilAdministracion = ((perfil & 64) ? true : false);
     var perfilCargaConfiguraciones = ((perfil & 32768) ? true : false);
 
@@ -576,7 +639,13 @@ function EnableAplicarCambiosPerfil(perfil) {
         return false;
 
 }
+/**
+ * EnableOptions
+ * @param {any} perfil
+ */
 function EnableOptions(perfil) {
+
+    Trace("index.js:EnableOptions. perfil ", perfil);
 
     var perfilVisualizacion = ((perfil & 1) ? true : false);
     var perfilMando = ((perfil & 2) ? true : false);
@@ -618,3 +687,492 @@ function EnableOptions(perfil) {
 
 	$('#MenuOpciones ul li').removeClass('menuListDisabled');	*/
 }
+
+// 20200508. Opcion de Forzar Audio Radio para Version 16 radios. 
+// 20200715. Para esta version de pone como estaba.
+var force_rdaudio_normal = false;
+/**
+ * ForceRdAudioPrecision
+ * */
+function ForceRdAudioPrecision() {
+
+    Trace("index.js:ForceRdAudioPrecision. force_rdaudio_normal ", force_rdaudio_normal);
+
+    if (force_rdaudio_normal == true) {
+        /** Ocultar Modo de Audio */
+        $('#GranularityRow').hide();
+    }
+}
+/**
+ * 20201020. Tracea las llamadas en el Cliente.
+ * */
+var TraceLevel = 1;
+function Trace(msg, ...args) {
+    switch (TraceLevel) {
+        case 0:
+            break;
+        case 1:
+            console.log(msg, ...args);
+            break;
+        case 2:
+            console.trace(msg, ...args);
+            break;
+    }
+}
+/** 20201106. Para presentar o no el Indice de Carga. */
+var LoadIndexControlEnabled = false;
+/**
+ * 
+ * @param {any} srv_force_rdaudio_normal
+ * @param {any} srv_LoadIndexControlEnabled
+ */
+function SetupOptionsForServer(srv_force_rdaudio_normal, srv_LoadIndexControlEnabled) {
+    Trace("SetupOptionsForServer. force_rdaudio_normal %s, LoadIndexControlEnabled %s.", srv_force_rdaudio_normal, srv_LoadIndexControlEnabled);
+    force_rdaudio_normal = srv_force_rdaudio_normal == 'true';
+    LoadIndexControlEnabled = srv_LoadIndexControlEnabled == 'true';
+}
+
+/** 20201103. From LAYOUT-JADE */
+var actual = '';
+var actualShow = '';
+var actualAnimate = '';
+var checkCookie = false;
+var PageLog;
+// 20170809. Configuracion de ALERTIFY
+alertify.defaults.transition = 'zoom';
+
+window.onbeforeunload = function () {
+    /** 20170522 AGL No se porque esta esto. Hace que funcione mal el 
+        LOGIN / LOGOUT  De momento lo elimino */
+    /* authentication();
+    ***************************/
+};
+
+/**
+ * SetRegion
+ * */
+function SetRegion() {
+    Trace("index.js:SetRegion");
+    $('#hRegion').text($('#BodyRedan').data('region'));
+}
+/**
+ * SetVersion
+ * */
+function SetVersion() {
+    Trace("index.js:SetVersion");
+}
+/**
+ * StartTime
+ * */
+function startTime() {
+    //Trace("index.js:startTime.");
+    var ESdays = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sabado'];
+    var ENdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var today = new Date();
+    var h = today.getHours();
+    var m = today.getMinutes();
+    var s = today.getSeconds();
+
+    var y = today.getFullYear();
+    var month = today.getMonth() + 1;
+    var d = today.getDate();
+
+    var weekDay = navigator.languages[0].substr(0, 2) == 'es' ? ESdays[today.getDay()] : ENdays[today.getDay()];
+    m = checkTime(m);
+    s = checkTime(s);
+    document.getElementById('_hsolohora').innerHTML = h + ":" + m + ":" + s;
+    document.getElementById('_hfecha').innerHTML = d + "/" + month + "/" + y + " (" + weekDay + ")";
+    var t = setTimeout(function () { startTime() }, 500);
+
+    if (checkCookie)
+        CheckCookie();
+}
+/**
+ * CheckCookie
+ * */
+function CheckCookie() {
+    if (document.cookie.indexOf("U5K-G") < 0) {
+        checkCookie = false;
+        //alert('Login timeout after ' + $('#Login-Operador').data('logintimeout') + ' minutes.');
+        alertify.alert('Ulises G 5000 R', 'Login timeout after ' + $('#BodyRedan').data('logintimeout') + ' minutes.');
+        alertify.error('Login timeout after ' + $('#BodyRedan').data('logintimeout') + ' minutes.');
+        window.location = $('#BodyRedan').data('actualLocation');
+    }
+}
+/**
+ * checkTime
+ * @param {any} i
+ */
+function checkTime(i) {
+    if (i < 10) { i = "0" + i };  // add zero in front of numbers < 10
+    return i;
+}
+/**
+ * RefreshCookie
+ * */
+function RefreshCookie() {
+    if (document.cookie.indexOf("U5K-G") >= 0) {
+        SetCookie('U5K-G', $('#BodyRedan').data('perfil'));
+    }
+}
+/**
+ * showMaintenancePanel.
+ * @param {any} maintenanceService
+ */
+function showMaintenancePanel(maintenanceService) {
+    Trace("index.js:showMaintenancePanel. maintenanceService ", maintenanceService);
+
+    $('#FormHistorics').fadeOut(300, function () {
+        $('#FormStatiscs').fadeOut(300);
+        $('#MenuFiltros').fadeOut(300, function () {
+            $('#MenuPasarelas').fadeOut(300, function () {
+                if (maintenanceService === 'Pasarelas') {
+                    $('#MenuPasarelas').fadeIn(300);
+                    $('#MenuPasarelas').attr('style', 'display:table-cell;width:11%;vertical-align: top')
+                    $('#FiltersStatics').hide();
+                    $('#FiltersHistorics').hide();
+                    $('#GotoGatewaysLocalConfiguration').show();
+                }
+                else {
+                    $('#MenuFiltros').fadeIn(300);
+                    $('#MenuFiltros').attr('style', 'display:table-cell;width:11%;vertical-align: top')
+                    $('#GotoGatewaysLocalConfiguration').hide();
+                    if (maintenanceService == "Maintenance") {
+                        $('#FiltersStatics').hide();
+                        $('#FiltersHistorics').show();
+                    }
+                    else {
+                        $('#FiltersHistorics').hide();
+                        $('#FiltersStatics').show();
+                    }
+                }
+            });
+        });
+    });
+}
+/**
+ * hidePreviuos
+ * @param {any} form
+ * @param {any} showThis
+ * @param {any} animateThis
+ */
+function hidePrevious(form, showThis, animateThis) {
+    Trace("index.js:hidePrevious. [form, showThis, animateThis]", form, showThis, animateThis);
+    if (actual != form) {
+        if (actual != '') {
+            $(actualAnimate).animate({ width: '5px' });
+            $('#FormParameters').hide();
+            $(actualShow).hide();
+            $(actual).hide();
+            $(actualAnimate).fadeOut(100);
+        }
+        actual = form;
+        actualShow = showThis;
+        actualAnimate = animateThis;
+        //if ( !$(actualAnimate).is(':visible'))
+        $(actualAnimate).animate({ height: '670px' })
+        $(actualAnimate).fadeIn(100);
+        $(actualAnimate).animate((animateThis == '#DivGateways' || animateThis == '#DivConfigurations' || animateThis == '#DivHardware' || animateThis == '#DivTableBss') ? { width: '350px' } : { width: '145px' });
+    }
+}
+/**
+ * hidePreviousHistorics
+ * @param {any} form
+ * @param {any} showThis
+ * @param {any} animateThis
+ */
+function hidePreviousHistorics(form, showThis, animateThis) {
+    Trace("index.js:hidePreviousHistorics. [form, showThis, animateThis]", form, showThis, animateThis);
+
+    $(actualAnimate).show();
+
+    if (actual != '') {
+        $(actualAnimate).animate({ width: '5px' });
+        $(actualShow).hide();
+        $(actual).hide();
+    }
+    actual = form;
+    actualShow = showThis;
+    actualAnimate = animateThis;
+    $(actualAnimate).animate({ width: '175px' });
+}
+/**
+ * hidePreviousBackup
+ * @param {any} form
+ * @param {any} showThis
+ * @param {any} animateThis
+ */
+function hidePreviousBackup(form, showThis, animateThis) {
+    Trace("index.js:hidePreviousBackup. [form, showThis, animateThis]", form, showThis, animateThis);
+    if (actual != '') {
+        $(actualAnimate).animate({ width: '5px' }, function () {
+            $(actualShow).hide();
+            $(actual).hide();
+            $(actualAnimate).fadeOut(100, function () {
+                actual = form;
+                actualShow = showThis;
+                actualAnimate = animateThis;
+
+                $(actualAnimate).fadeIn(100, function () {
+                    $(actualShow).show();
+                    $(actual).show();
+                    $(actualAnimate).animate(animateThis == '#DivLogs' ? { width: '1000px' } : { width: '375px' });
+                });
+            });
+        });
+    }
+    else {
+        actual = form;
+        actualShow = showThis;
+        actualAnimate = animateThis;
+
+        $(actualAnimate).fadeIn(100, function () {
+            $(actualShow).show();
+            $(actual).show();
+            $(actualAnimate).animate(animateThis == '#DivLogs' ? { width: '1000px' } : { width: '375px' });
+        });
+    }
+}
+/**
+ * hideMenu
+ * @param {any} menu
+ * @param {any} form
+ */
+function hideMenu(menu, form) {
+    Trace("index.js:hideMenu. [form, menu]", form, menu);
+    $('#Menu').fadeOut(500, function () {
+        $('#MenuGeneral').attr('style', 'display:table-column');
+        $(menu).fadeIn(500);
+        $(form).attr('style', 'display:table-cell;width:11%');
+
+        if (menu == "#MenuConfiguration") {
+            translateWord('Activate', function (result) {
+                if ($('#listaOpciones li:nth-last-child(2)').text() != result) {
+                    var item = $('<li id="aplicaCambios" style="margin-top:100px"><a id="opcionAplCambios" onclick="CheckingAnyChange(\'GeneralContent\', function(){GetActiveCfgAndActivate()})">' + result + '</li>');
+                    item.insertBefore($('#listaOpciones li:last-child'));
+                }
+            })
+            /*if(EnableAplicarCambios($('#BodyRedan').data('perfil')))
+                $('#aplicaCambios').removeClass('menuListDisabled');
+            else
+                $('#aplicaCambios').addClass('menuListDisabled');
+            */
+
+            /*if (($('#BodyRedan').data('perfil') & 16) == 16){
+                $('#MenuOpciones').attr('style','display:table-cell;width:11%');
+                EnableOptions($('#BodyRedan').data('perfil'));
+            }
+            else
+                EnableOptions($('#BodyRedan').data('perfil'));
+                */
+        }
+    })
+}
+/**
+ * hide
+ * */
+function hide() {
+    Trace("index.js:hide.");
+
+    if (actual != '') {
+        $(actualAnimate).fadeOut(500, function () {
+            $(actualShow).hide();
+            $(actual).hide();
+            $('#FormParameters').hide();
+            actual = '';
+        });
+    }
+
+    if ($('#MenuConfiguration').is(':visible')) {
+        $('#MenuConfiguration').fadeOut(500, function () {
+            $('#Menu').fadeIn(500);
+            $('#MenuGeneral').attr('style', 'width:11%;display:table-cell');
+        });
+    }
+    if ($('#MenuHistoricos').is(':visible')) {
+        $('#MenuHistoricos').fadeOut(500, function () {
+            $('#MenuFiltros').attr('style', 'display:table-column');
+            $('#MenuPasarelas').attr('style', 'display:table-column');
+            $('#Menu').fadeIn(500, function () {
+                $('#MenuGeneral').attr('style', 'width:11%;display:table-cell');
+            });
+        });
+    }
+    if ($('#MenuBackup').is(':visible')) {
+        $('#MenuBackup').fadeOut(500, function () {
+            $('#Menu').fadeIn(500);
+            $('#MenuGeneral').attr('style', 'width:11%;display:table-cell');
+        });
+    }
+}
+/**
+ * loadPendingChanges
+ * */
+function loadPendingChanges() {
+    Trace("index.js:loadPendingChanges");
+    $.ajax({
+        type: 'GET',
+        url: '/configurations/listOfGateways/',
+
+        success: function (data) {
+            if (data != 'NO_DATA') {
+                if (data.result != null && data.result.length > 0) {
+                    $.each(data.result, function (index, value) {
+                        listOfGateways = listOfGateways.concat(value.Gateway + ',')
+                    })
+                }
+            }
+        }
+    });
+}
+/**
+ * Logout
+ * */
+function Logout() {
+    Trace("index.js:Logout.");
+    authentication();
+    var index = BodyRedan.baseURI.indexOf('#');
+    if (index > -1)
+        BodyRedan.baseURI = BodyRedan.baseURI.substr(0, index - 1);
+
+    window.location.href = $('#BodyRedan').data('actualLocation')
+    GenerateHistoricEvent(ID_HW, USER_LOGOUT_SYSTEM, $('#loggedUser').text(), $('#loggedUser').text());
+    this.document.location.reload();
+}
+/**
+ * restoreInfo
+ * */
+function restoreInfo() {
+    Trace("index.js:restoreInfo");
+    alertify.alert("Información", "Para Restaurar la Base de Datos, consultar 'ULISES G 5000-REDAN. Configuración Remota. Manual de Usuario.docx' Punto 6.2.");
+}
+/**
+ * About
+ * */
+function About() {
+    Trace("index.js:About");
+    // alertify.alert("Acerca de...");
+    if (!alertify.About) {
+        //define a new dialog
+        alertify.dialog('About', function factory() {
+            return {
+                main: function (message) {
+                    this.message = message;
+                },
+                setup: function () {
+                    return {
+                        buttons: [{ text: "Aceptar", key: 27/*Esc*/ }],
+                        focus: { element: 0 }
+                    };
+                },
+                prepare: function () {
+                    this.setContent(this.message);
+                },
+                build: function () {
+                    this.setHeader('REDAN. Aplicación de Configuración.');
+                    this.set('resizable', true);
+                }
+            }
+        });
+    }
+
+    $.ajax({
+        type: 'GET',
+        url: '/version',
+        success: function (data) {
+            console.log(data);
+            //launch it
+            var url_license = "http://" + window.location.hostname + ':' + window.location.port + '/COPYING.AUTHORIZATION.txt';
+            var msg = '<div>' +
+                '<h2>REDAN CFGR</h2>' +
+                '<p style="text-align:center; color: black;">Version ' + data.version + '.' + data.subversion + ', ' + data.date + '</p>' +
+                '<p style="text-align:center">Nucleo CC Copyright ©2018..2109 Todos los Derechos Reservados.</p>' +
+                '<p style="text-align: right"><a href="' + url_license + '" target="_blank">Acuerdo de Licencia</a></p>' +
+                '</div>';
+            alertify.About(msg).resizeTo(500, 270);
+        }
+    });
+}
+/**
+ * AboutColors
+ * */
+function AboutColours() {
+    Trace("index.js:AboutColors.");
+    // alertify.alert("Acerca de...");
+    if (!alertify.About) {
+        //define a new dialog
+        alertify.dialog('About', function factory() {
+            return {
+                main: function (message) {
+                    this.message = message;
+                },
+                setup: function () {
+                    return {
+                        buttons: [{ text: "Aceptar", key: 27/*Esc*/ }],
+                        focus: { element: 0 }
+                    };
+                },
+                prepare: function () {
+                    this.setContent(this.message);
+                },
+                build: function () {
+                    this.setHeader('REDAN. Estado BBDD de la Pasarela');
+                    this.set('resizable', true);
+                }
+            }
+        });
+    }
+    var msg = '<div>' +
+        '<h2>CODIGO DE COLORES</h2>' +
+        '<hr/>' +
+        '<p style = "text-align: center;" ><b>CONFIGURACIONES</b></p>' +
+        '<table style = "width: 300px; margin-left: auto; margin-right: auto;" cellspacing="15" >' +
+        '<tbody>' +
+        '<tr>' +
+        '<td style = "text-align: center;" bgcolor = "#99FF66"> CONFIGURACION ACTIVA </td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td style="text-align: center;" bgcolor = "#FFFFFF">CONFIGURACION NO ACTIVA&nbsp;&nbsp;</td>' +
+        '</tr>' +
+        '</tbody>' +
+        '</table>' +
+        '<p>&nbsp;</p>' +
+        '<hr/>' +
+        '<p style="text-align: center;"><b>PASARELAS</b></p>' +
+        '<table style = "width: 100%;" cellspacing = "20" >' +
+        '<tbody>' +
+        '<tr>' +
+        '<td style = "width: 150px; text-align: center;" ><b><u>PASARELAS EN CONFIGURACION ACTIVA</u></b></td>' +
+        '<td style = "width: 150px; text-align: center;" ><b><u>PASARELAS EN CONFIGURACION NO ACTIVA</u></b></td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td style = "width: 150px; text-align: center;" bgcolor = "#EDEDED" >PASARELA DESCONOCIDA</td>' +
+        '<td style = "width: 150px; text-align: center;" bgcolor = "#EDEDED" >PASARELA DESCONOCIDA</td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td style = "width: 348px; text-align: center;" bgcolor = "#99FF66">PASARELA CONECTADA</td>' +
+        '<td style = "width: 348px; text-align: center;" bgcolor = "#206600"><span style="color: #ffffff;">PASARELA CONECTADA</span></td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td style = "width: 348px; text-align: center;" bgcolor = "#80BFFF">PASARELA DESCONECTADA</td>' +
+        '<td style = "width: 348px; text-align: center;" bgcolor = "#004D99"><span style="color: #ffffff;">PASARELA DESCONECTADA</span></td>' +
+        '</tr>' +
+        '</tbody>' +
+        '</table>' +
+        '<table style = "width: 300px; margin-left: auto; margin-right: auto;" cellspacing="15" >' +
+        '<tbody>' +
+        '<tr>' +
+        '<td style = "text-align: center;" bgcolor = "#ffff99"> PASARELA NO SINCRONIZADA </td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td style="text-align: center;" bgcolor = "#ff8c1a">PASARELA SINCRONIZANDOSE</td>' +
+        '</tr>' +
+        //'<tr>' +
+        //'<td style="text-align: center;" bgcolor = "#C1022C"><span style="color: #ffffff;">PASARELA EN ERROR</span></td>' +
+        //'</tr>' +
+        '</tbody>' +
+        '</table>' +
+        '</div>';
+    alertify.About(msg).resizeTo(200, 600);
+}
+

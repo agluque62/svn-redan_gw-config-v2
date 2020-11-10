@@ -6,8 +6,13 @@
 var gatewaysFromOperator = [];
 /** 20170509. AGL Gestor 'Aplicar cambios' */
 var usersModified = false;
+/**
+ * DelUsuario
+ * */
+var DelUsuario = function () {
 
-var DelUsuario = function() {
+    Trace("users.js:DelUsuario");
+
     if ($('#IdOperador').val() == $('#loggedUser').text()) {
         alertify.alert('Ulises G 5000 R', "No es posible eliminar el usuario con el que se está logeado.");
         alertify.error("No es posible eliminar el usuario con el que se está logeado.");
@@ -58,11 +63,12 @@ var DelUsuario = function() {
 
     }
 };
-
-/****************/
-/*	PUT Method  */
-/****************/
+/**
+ * PutUser
+ * */
 var PutUser = function() {
+
+    Trace("users.js:PutUser");
 
     var perfil = GetPerfil();
     if ($('#IdOperador').val() == '') {
@@ -137,11 +143,13 @@ var PutUser = function() {
         }
     });
 };
+/**
+ * PostUser
+ * */
+var PostUser = function () {
 
-/*****************/
-/*	POST Method  */
-/*****************/
-var PostUser = function() {
+    Trace("users.js:PostUser");
+
     if ($('#IdOperador').val() == '') {
         alertify.alert('Ulises G 5000 R', "Identificador de usuario no válido.");
         alertify.error("Identificador de usuario no válido.");
@@ -220,8 +228,15 @@ var PostUser = function() {
         }
     });
 };
+/**
+ * GetUsuario
+ * @param {any} ind
+ * @param {any} valor
+ */
+var GetUsuario = function (ind, valor) {
 
-var GetUsuario = function(ind, valor) {
+    Trace("users.js:GetUsuario. valor %s, ind ", valor, ind);
+
     /** AGL */
     var divOperadorShortWidth = { width: '535px' };
     var divOperadorLongWidth = { width: '535px' };
@@ -338,8 +353,12 @@ var GetUsuario = function(ind, valor) {
         $('#LbPerfil input').prop('checked', false);
     }
 };
-
+/**
+ * GetUsuarios.
+ * */
 var GetUsuarios = function() {
+
+    Trace("users.js:GetUsuarios.");
 
     if ((($('#BodyRedan').data('perfil') & 16) != 16) && (($('#BodyRedan').data('perfil') & 64) != 64)) {
         alertify.error('No tiene asignados permisos para la gestión de usuarios.');
@@ -369,8 +388,13 @@ var GetUsuarios = function() {
             });
         });
 };
+/**
+ * GetPerfil
+ * */
+var GetPerfil = function () {
 
-var GetPerfil = function() {
+    Trace("users.js:GetPerfil.");
+
     var valor = 0;
     for (var i = 0; i < 16; i++) {
         /*La posicion 3 es el reconocimiento de alarmas que ya no se usa pero se mantienen  la posición del resto por compatibilidad con otras aplicaciones*/
@@ -384,180 +408,62 @@ var GetPerfil = function() {
 
     return valor;
 };
+/**
+ * GetSitesToOp
+ * */
+var GetSitesToOp = function () {
 
-var GetSitesToOp = function() {
-    /** AGL ********************************
-	$.ajax({type: 'GET', 
-			url: '/sites'})
-		.done(function(data){
-			$("#listSitesToOp").empty(); 
-			
-			var configAnterior="";
-			var primeraVez= 1;
-			var texto="<li> <table>"; 
-
-			$.each(data.data, function(index, value){
-				if (value.idEMPLAZAMIENTO != 1)
-				{
-					if (configAnterior != value.nameCfg)
-					{
-						if (configAnterior!="")
-						{ 
-							texto += "</table> </li> <li> <table>";
-						}
-						else
-						{
-							if (primeraVez==1)
-								primeraVez=2;
-						}
-						configAnterior= value.nameCfg;						
-						texto += "<tr><td>" + "<div style='color:black; font-size: 10px; margin-right: 0'>[" + value.nameCfg + "]</div>" + "</td></tr>" ;
-						texto += "<tr>" +
-									"<td style='width:90%'><a onclick='GetGtwToSite(" + value.idEMPLAZAMIENTO + "," + JSON.stringify(value.name) + ",true)'>" + value.name + "</a></td>" +									
-								"</tr>" +
-								"<tr><td>"+
-								'<ul class="gtwList" id="gtw-site-' + value.idEMPLAZAMIENTO + '" style="display:none"></ul>'+
-								"</td></tr>";								
-					}
-					else
-					{
-						texto += "<tr>" +
-									"<td style='width:90%'><a onclick='GetGtwToSite(" + value.idEMPLAZAMIENTO + "," + JSON.stringify(value.name) + ",true)'>" + value.name + "</a></td>" +
-								"</tr>" +
-								"<tr><td>"+
-								'<ul class="gtwList" id="gtw-site-' + value.idEMPLAZAMIENTO + '" style="display:none"></ul>'+
-								"</td></tr>";			
-					}
-				}
-	   });
-	   texto += "</table>" + "</li>";
-	   var item = $(texto);
-	   item.appendTo($("#listSitesToOp"));
-	});
-	***************************************/
-    console.log("Llamando a GetSitesToOp");
+    Trace("users.js:GetSitesToOp.");
 };
+/**
+ * GetGtwToSite,
+ * @param {any} id
+ * @param {any} name
+ * @param {any} showMe
+ */
+var GetGtwToSite = function (id, name, showMe) {
 
+    Trace("users.js:GetGtwToSite. id %s, name %s, showMe ", id, name, showMe);
 
-var GetGtwToSite = function(id, name, showMe) {
-    /** AGL ***********************
-        if (showMe){
-            var lista='#gtw-site-' + id;
-            if ($(lista).is(':visible')){
-                $(lista).empty();
-                $(lista).hide();
-                return;
-            }
-        }
-    
-        $.ajax({type: 'GET', 
-                        url: '/sites/' + id + '/gateways', 
-                        success: function(data){
-                        // Mostrar sus gateways
-                        var lista='#gtw-site-' + id;
-                        $(lista).empty();
-    
-                            var visible = showMe;
-                            if (data.data != 'NO_DATA'){
-                            $.each(data.data, function(index, value){
-                                var gtwData = JSON.stringify({cgw:value.idCGW,site:id,usr:$('#AddFormUser').data('idOperador')});
-                                var checked = gatewaysFromOperator.indexOf(value.idCGW) >= 0;
-                                visible |= checked;
-                                var item = $('<li data-texto="' + value.idCGW + '"> ' + 
-                                                '<table><tr>' +
-                                                    '<td style="width:90%"><a style="display:block; color:#ff8c1a">' + value.name + '</a></td>' +
-                                                    '<td style="width:10%"><input class="cbGtw" type="checkbox" align="right" data-idgtw=' + gtwData + (checked ? ' checked' : '') +'></td>' + 
-                                                '</tr></table>' +
-                                            '</li>');
-                                item.appendTo($(lista));
-                                if (visible)
-                                    $(lista).show();
-                            });
-                        }
-                      }
-        });	
-        *********************/
-    console.log("Llamando a GetGwToSite");
 };
+/**
+ * CheckEveryGateway
+ * @param {any} sender
+ * @param {any} list
+ */
+var CheckEveryGateway = function (sender, list) {
 
-
-var CheckEveryGateway = function(sender, list) {
-    /** AGL ****************************
-	if ($('#' + sender).prop ('checked'))
-		$('#'+list + ' input:checkbox').prop ('checked',true);
-	else
-		$('#'+list + ' input:checkbox').prop ('checked',false);
-	****************/
-    console.log("Llamando a CheckEveryGateway");
+    Trace("users.js:CheckEveryGateway. sender %s, list ", sender, list);
 };
+/**
+ * ShowGateways
+ * */
+var ShowGateways = function () {
 
-var ShowGateways = function() {
-	/** AGL
-	var perfil = GetPerfil();
-	var permisoVisualizacion = perfil & 128;
-	var permisoAdministracion = perfil & 256;
-	
-	if ((permisoVisualizacion== 128) || (permisoAdministracion== 256)){
-		$('#DivOperador').animate({width: '1250px'});
-		$('#DatosUsuario').animate({width: '650px'},function(){
-			$('#GatewayToOp').show();
-		});
-	}
-	else{
-		$('#DivOperador').animate({width: '900px'});
-		$('#DatosUsuario').animate({width: '290px'},function(){
-			$('#GatewayToOp').hide();
-		});
-	}
-	*******************************/
-    console.log("Llamando a ShowGateways");
+    Trace("users.js:ShowGateways.");
 
-    //Habilitar o deshabilitar perfiles para que no se pueda asignar mas de uno a un usuario
-    // /*for (var i=0;i<16;i++){
-    // //La posicion 3 es el reconocimiento de alarmas que ya no se usa pero se mantienen  la posición del resto por compatibilidad con otras aplicaciones
-    // //Con la 5 pasa lo mismo, era el perfil ingenieria
-    // if ((i!=2) && (i!=5)) {
-    // var valor = Math.pow(2,i);
-    // if (perfil != 0){
-    // if ($('#' + valor).prop('checked')){
-    // $('#' + valor).prop('disabled', false);
-    // }
-    // else				
-    // {
-    // $('#' + valor).prop('disabled', true);
-    // }
-    // }
-    // else{
-    // $('#' + valor).prop('disabled', false);
-    // }
-
-    // }
-    // }*/
 };
+/**
+ * GetGatewaysToOp
+ * @param {any} idOperador
+ * @param {any} f
+ */
+var GetGatewaysToOp = function (idOperador, f) {
 
-var GetGatewaysToOp = function(idOperador, f) {
-    /** AGL *************************
-        gatewaysFromOperator=[];
-    
-        $.ajax({type: 'GET', 
-                url: '/gateways/operator/' + idOperador})
-            .done(function(data){
-                if (data != null && data.length > 0){
-                    $.each(data,function(index,value){
-                        gatewaysFromOperator.push(value.cgw_idCGW);
-                    });
-                }
-    
-                if (f != null)
-                    f();
-            });
-        ************************/
-    console.log("Llamando a GetGatewaysToOp");
+    Trace("users.js:GetGatewaysToOp. idOperador ", idOperador);
+
 };
 
 /** AGL */
-var OperationExt = function(elem, checkVis) {
-    console.log("Llamando a OperationExt " + $(elem).prop("checked").toString() + " " + checkVis.toString());
+/**
+ * OperationExt
+ * @param {any} elem
+ * @param {any} checkVis
+ */
+var OperationExt = function (elem, checkVis) {
+
+    Trace("users.js:OperationExt. checkVis %s, elem ", checkVis, elem);
+
     if (checkVis == true) {
         if ($(elem).prop("checked")) {
             $('#1').prop("checked", true);

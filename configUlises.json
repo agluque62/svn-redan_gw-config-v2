@@ -1,154 +1,155 @@
 {
   "Ulises": {
     "HistoricsDeep": 90,
-    "LoginTimeOut": 120,
+    "LoginTimeOut": 60,
     "LoginSystemTrace": false,
     "Region": "Región Centro",
     "BackupServiceDomain": "192.168.0.212:8082",
-    "Version": "1.0",
-    "SubVersion": "7#04",
-    "Date": "17/12/2019",
+    "Version": "1.1",
+    "SubVersion": "1",
+    "Date": "11/11/2020",
     "NodeJS": "8.*.*",
-    "MySQL": "5.6",
+    "MySQL": "5.7.17",
     "Files": [
       {
         "Name": "app.js",
         "Path": "/",
-        "fileSizeInBytes": 21030,
-        "md5": "85a7b602df20a76cf6d48d8ff2c2d4fe",
-        "date": "20/2/2019"
+        "fileSizeInBytes": 24439,
+        "md5": "d7e25dbabf674f13c136c8af61ab7ad0",
+        "date": "26/10/2020"
       },
       {
         "Path": "/lib/",
         "Name": "authentication.js",
         "fileSizeInBytes": 193,
         "md5": "5c8f2ad4a4d7f8525435461cc6848370",
-        "date": "13/2/2019"
+        "date": "21/4/2020"
       },
       {
         "Path": "/lib/",
         "Name": "configurations.js",
-        "fileSizeInBytes": 118726,
-        "md5": "b38014825fdd0b4911e7243dcdab10f7",
-        "date": "19/2/2019"
+        "fileSizeInBytes": 118734,
+        "md5": "f597c17bda0834267352cf436ac6b847",
+        "date": "13/7/2020"
       },
       {
         "Path": "/lib/",
         "Name": "externalResources.js",
-        "fileSizeInBytes": 8179,
-        "md5": "87a4285de9b42da662693f70e24be02c",
-        "date": "13/2/2019"
+        "fileSizeInBytes": 9086,
+        "md5": "ee25f2a0ef1e810192f87754df9036fb",
+        "date": "26/10/2020"
       },
       {
         "Path": "/lib/",
         "Name": "gateways.js",
-        "fileSizeInBytes": 233216,
-        "md5": "02124ee2f68d9f1e4ed3a17061afb46d",
-        "date": "19/2/2019"
+        "fileSizeInBytes": 237726,
+        "md5": "0c8995a6b3959b51fc3aa908b2a725ac",
+        "date": "14/7/2020"
       },
       {
         "Path": "/lib/",
         "Name": "get_cfg_report.js",
-        "fileSizeInBytes": 3449,
-        "md5": "3a77d352addad6ff11533a94c0b9cd98",
-        "date": "26/10/2018"
+        "fileSizeInBytes": 3444,
+        "md5": "dfc4fa508623c251972475fdc4a36f79",
+        "date": "21/4/2020"
       },
       {
         "Path": "/lib/",
         "Name": "hardware.js",
-        "fileSizeInBytes": 74140,
-        "md5": "434d95b49985a99bed39453a5f107850",
-        "date": "19/2/2019"
+        "fileSizeInBytes": 73116,
+        "md5": "79b78aec1876936049ae47109afd983b",
+        "date": "10/7/2020"
       },
       {
         "Path": "/lib/",
         "Name": "historics.js",
-        "fileSizeInBytes": 62349,
-        "md5": "fab83284396317dc06dfac4b2444aa1c",
-        "date": "13/2/2019"
+        "fileSizeInBytes": 60569,
+        "md5": "ecd7ca9a61fdf3b43e37953aad7db110",
+        "date": "21/4/2020"
       },
       {
         "Path": "/lib/",
         "Name": "jsonTemplate.js",
-        "fileSizeInBytes": 16887,
-        "md5": "08e74d137eaec53f25b87a3bf50381ea",
-        "date": "19/2/2019"
+        "fileSizeInBytes": 17649,
+        "md5": "510abee58df40f21eb4685111da5630c",
+        "date": "10/7/2020"
       },
       {
         "Path": "/lib/",
         "Name": "radioDestinations.js",
-        "fileSizeInBytes": 17817,
-        "md5": "18ba544071dccd2f7afdf8326ccd8fbc",
-        "date": "13/2/2019"
+        "fileSizeInBytes": 14102,
+        "md5": "9842bf3313347555911ba56f7bbb305d",
+        "date": "5/10/2017"
       },
       {
         "Path": "/lib/",
         "Name": "resources.js",
-        "fileSizeInBytes": 79270,
-        "md5": "2c9b2a15498e97ae127813947e5ece1a",
-        "date": "13/2/2019"
+        "fileSizeInBytes": 58396,
+        "md5": "b2f97d64e16cc0febdeb6b99191af7cc",
+        "date": "5/10/2017"
       },
       {
         "Path": "/lib/",
         "Name": "services.js",
-        "fileSizeInBytes": 48609,
-        "md5": "769cc1f582439766874c39371c74a494",
-        "date": "13/2/2019"
+        "fileSizeInBytes": 30577,
+        "md5": "2a95a1b38d5dcd98c581a336573e9290",
+        "date": "5/10/2017"
       },
       {
         "Path": "/lib/",
         "Name": "sites.js",
-        "fileSizeInBytes": 43595,
-        "md5": "422abb7138127399a23c0fe0af4fa8a4",
-        "date": "13/2/2019"
+        "fileSizeInBytes": 28682,
+        "md5": "639a5167726050780e039920b95ad221",
+        "date": "5/10/2017"
       },
       {
         "Path": "/lib/",
         "Name": "tableBss.js",
-        "fileSizeInBytes": 11442,
-        "md5": "2415255a25a39843767f1ab1ddbb854d",
-        "date": "13/2/2019"
+        "fileSizeInBytes": 9484,
+        "md5": "34701367fefeb3c61cd5d26efe14f77d",
+        "date": "5/10/2017"
       },
       {
         "Path": "/lib/",
         "Name": "ug5kdb.js",
-        "fileSizeInBytes": 4283,
-        "md5": "9acc5f7718f950fe587178822290b863",
-        "date": "15/2/2019"
+        "fileSizeInBytes": 9484,
+        "md5": "34701367fefeb3c61cd5d26efe14f77d",
+        "date": "5/10/2017"
       },
       {
         "Path": "/lib/",
         "Name": "users.js",
-        "fileSizeInBytes": 20085,
-        "md5": "f92df2c193b0a456005defd96f55c0a4",
-        "date": "15/2/2019"
+        "fileSizeInBytes": 16443,
+        "md5": "27bc43d89192dfbe55310534b9f37565",
+        "date": "5/10/2017"
       },
       {
         "Path": "/lib/",
         "Name": "version.js",
-        "fileSizeInBytes": 3047,
-        "md5": "14b2b617986377e368591ae234456f59",
-        "date": "15/2/2019"
+        "fileSizeInBytes": 1916,
+        "md5": "be34a592277787add7c31deff58614fc",
+        "date": "5/10/2017"
       }
     ],
     "dbhost": "localhost",
     "dbuser": "root",
-    "dbpassword": "U5K-G",
+    "dbpassword": "cd40",
     "dbdatabase": "ug5kv2",
-    "log2file": "silly",
+    "log2file": "info",
     "logfile_path": "./logs/ug5kserv.log",
-    "logfile_maxfiles": 16,
-    "logfile_sizefile": 4000000,
+    "logfile_maxfiles": 4,
+    "logfile_sizefile": 1000000,
     "log2con": "info",
-    "dblogEnable": false,
     "morgan": false,
     "maxCycleTime": 30000,
-    "refreshTime": 1000
+    "refreshTime": 1000,
+    "R16Mode": true,
+    "LoadIndexControlEnabled": false
   },
-	"MemorySupervisor": {
-		"Tick": 60000,
-		"PercentLimit": 300,
-		"ResetIntervalStart": "08:00 pm",
-		"ResetIntervalEnd": "06:00 am"
-	}
+  "MemorySupervisor": {
+    "Tick": 15000,
+    "PercentLimit": 115,
+    "ResetIntervalStart": "08:00 pm",
+    "ResetIntervalEnd": "06:00 am"
+  }
 }

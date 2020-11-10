@@ -1,133 +1,6 @@
 
 block parameters
-	script(type='text/javascript' src='/javascripts/parametersRadio.js')
-	script(type='text/javascript' src='/javascripts/parametersTel.js')
 
-script.
-	function loadForm(element){
-		var tabs=[];
-		switch (element.rel){
-			case "FormOrigen":
-				tabs=document.getElementById('ListMenuRanges').getElementsByTagName("a");
-				$('#FormDestino').hide();
-				break;
-			case "FormDestino":
-				tabs=document.getElementById('ListMenuRanges').getElementsByTagName("a");
-				$('#FormOrigen').hide();
-				break;
-		}
-		$('#'+element.rel).show();
-		for (var i=0; i < tabs.length; i++)
-		{
-			if(tabs[i].rel == element.rel) 
-				tabs[i].className="selected";
-			else
-				tabs[i].className="";
-		}
-	}
-
-	function loadParam(element){
-		var tabs=[];
-		switch (element.rel){
-			case "FormHw":
-				tabs=document.getElementById('ListMenuParameters').getElementsByTagName("a");
-				//$('#FormJitter').hide();
-				$('#FormRadio').hide();
-				$('#FormTel').hide();
-				$('#FormLists').hide();
-				$('#FormCommunications').hide();
-				$('#FormATS').hide();
-				//$('#DivContent').animate({height:'150px'});
-			break;
-			// case "FormJitter":
-			// 	tabs=document.getElementById('ListMenuParameters').getElementsByTagName("a");
-			// 	$('#FormHw').hide();
-			// 	$('#FormRadio').hide();
-			// 	$('#FormTel').hide();
-			// 	$('#FormLists').hide();
-			// 	$('#FormCommunications').hide();
-			// 	$('#FormATS').hide();
-			// break;
-			case "FormRadio":
-				GetRemoteRadioResources();
-				tabs=document.getElementById('ListMenuParameters').getElementsByTagName("a");
-				$('#FormHw').hide();
-				//$('#FormJitter').hide();
-				$('#FormTel').hide();
-				$('#FormLists').hide();
-				$('#FormCommunications').hide();
-				$('#FormATS').hide();
-			break;
-			case "FormTel":
-				GetRemoteTfnoResources();
-				tabs=document.getElementById('ListMenuParameters').getElementsByTagName("a");
-				$('#FormHw').hide();
-				$('#rowSelectTResourceType').hide();
-				$('#rowFilterPhResource').hide();
-				$('#rowFilterPhResourceBt').hide();
-				$('#FormRadio').hide();
-				//$('#FormJitter').hide();
-				$('#FormLists').hide();
-				$('#FormCommunications').hide();
-				$('#FormATS').hide();
-			break;
-			case "FormLists":
-				tabs=document.getElementById('ListMenuParameters').getElementsByTagName("a");
-				$('#FormHw').hide();
-				$('#FormTel').hide();
-				$('#FormRadio').hide();
-				$('#FormTel').hide();
-				//$('#FormJitter').hide();
-				$('#FormATS').hide();
-				if($("#SRestriccion option:selected").val() == 0) {
-						$('#BlackList').attr('style', 'display:table-column');
-						$('#WhiteList').attr('style', 'display:table-column');
-				}
-				if($("#SRestriccion option:selected").val() == 1) {
-					$('#BlackList').attr('style', 'display:table');
-					$('#WhiteList').attr('style', 'display:table-column');
-				}
-				if($("#SRestriccion option:selected").val() == 2) {
-					$('#BlackList').attr('style', 'display:table-column');
-					$('#WhiteList').attr('style', 'display:table');
-				}
-				//$('#SRestriccion option:eq(0)').prop('selected', true);
-				//$('#DivContent').animate({height:'300px'});
-			break;
-			case "FormCommunications":
-				GetRemoteRadioResources();
-				tabs=document.getElementById('ListMenuParameters').getElementsByTagName("a");
-				$('#FormHw').hide();
-				$('#rowSelectFResourceType').hide();
-				$('#rowSelectTResourceType').hide();
-				$('#rowFilterPhResource').hide();
-				$('#rowFilterPhResourceBt').hide();
-				$('#rowFilterFResource').hide();
-				$('#rowFilterFResourceBt').hide();
-				$('#FormRadio').hide();
-				$('#FormTel').hide();
-				//$('#FormJitter').hide();
-				$('#FormLists').hide();
-				$('#FormATS').hide();
-				break;
-			case "FormATS":
-				tabs=document.getElementById('ListMenuParameters').getElementsByTagName("a");
-				$('#FormHw').hide();
-				$('#FormRadio').hide();
-				$('#FormTel').hide();
-				$('#FormJitter').hide();
-				$('#FormLists').hide();
-			break;
-		}
-		$('#'+element.rel).show();
-		for (var i=0; i < tabs.length; i++)
-		{
-			if(tabs[i].rel == element.rel) 
-				tabs[i].className="selected";
-			else
-				tabs[i].className="";
-		}
-	}
 div(id="FormParameters")
 	div.menu#DivParameters(style='width: 100%')
 		#tabs(style='margin-left: 10px; width: 96%')
@@ -149,8 +22,12 @@ div(id="FormParameters")
 				|      
 				li
 					a(href='#' style='width: 180px' rel='FormATS', onclick='loadParam(this)' class='ATS' tkey='ATSNumberRange')
+				|      
+				li
+					a(href='#' style='width: 180px' rel='FormPhColl', onclick='loadParam(this)' ) Colaterales
 		
 		.contentTab#DivContent(style='width:96%; margin-left: 10px; overflow-y:auto;height:auto')
+			// FORM Parametros Audio.
 			#FormHw(style='margin-left:5px')
 				label(style='color:black' tkey='HardwareParameters')
 				div(style='border-top: 1px solid black; width:97%;')
@@ -180,32 +57,7 @@ div(id="FormParameters")
 								select#CbGranularity
 									option(value='0' tkey='Estricto') 
 									option(value='1' tkey='Normal')
-					//
-						tr
-							td(colspan=3 align='left')
-								label(tkey='JitterBufferDelay')
-							td.New
-								input.textbox#TbJitterBufferDelay(type='text' style='width:50px' value=0 onblur='ValidateNumber(this,"ErrorValue")' onfocus='this.oldValue=this.value')
-			//
-				#FormJitter(style='display:none;margin-left:5px')
-					label(style='color:black' tkey='AudioParameters')
-					div(style='border-top: 1px solid black; width:97%;')
-						table#paramJitter(style='padding: 5px 0') 
-							tr
-								td
-									label(tkey='MinimumValue')
-								td
-									input.textbox#TbMin(type='text' style='width:50px' value=0 onblur='ValidateNumber(this,"ErrorValue")' onfocus='this.oldValue=this.value')
-							tr
-								td
-									label(tkey='MaximumValue')
-								td
-									input.textbox#TbMax(type='text' style='width:50px' value=0 onblur='ValidateNumber(this,"ErrorValue")' onfocus='this.oldValue=this.value')
-							tr
-								td
-									label(tkey='JitterBufferDelay')
-								td
-									input.textbox#TbJitterBufferDelay(type='text' style='width:50px' value=0 onblur='ValidateNumber(this,"ErrorValue")' onfocus='this.oldValue=this.value')
+			// FORM Parametros de Radio
 			#FormRadio(style="width:auto; display: none;margin-left:5px")
 				label(style='color:black' tkey='RadioParameters')
 				div(style='border-top: 1px solid black; width:97%;')
@@ -244,13 +96,6 @@ div(id="FormParameters")
 								select#LbPttType(type='select' disabled)
 									option(value='0') Hardware
 									option(value='1' tkey='Tone')
-						//
-							tr
-								td(colspan=2)
-									label(tkey='MaximumTimePTT')
-								td
-									input.textbox#TbTiempoMaxPtt(type='text' style='width:50px' onblur='ValidateNumber(this,"ErrorValue")' onfocus='this.oldValue=this.value')
-									| sec.
 						tr#BSSMethodRow
 							td
 								label(tkey='BSSMethod')
@@ -283,13 +128,6 @@ div(id="FormParameters")
 								label(tkey='BSSEnable')
 							td.New
 								input#CbBssEnable(type='checkbox' onclick='OnCbBssEnable(this)')
-						//
-							tr#SquelchDeactRow
-								td(colspan=2)
-									label(tkey='SquelchDeactTimeout')
-								td.New
-									input.textbox#TbSqDesactivacion(type='text' style='width:50px' onblur='ValidateNumber(this,"ErrorValue")' onfocus='this.oldValue=this.value')
-									| dBm
 						tr#InternalDelayRow
 							td#LblClimax
 								label(tkey='GRSInternalDelay')
@@ -349,228 +187,130 @@ div(id="FormParameters")
 								select#LbSipPriority(type='select')
 									option(value='0' tkey='Normal')
 									option(value='1' tkey='Emergencia')
-					//
-						tr#AudioInputSignalForcedRow
-							td(colspan=2)
-								label(tkey='AudioInputSignalForced')
-							td.New
-								input#CbInputSignalForced(type='checkbox')
+			// FORM Parámetros Telefonía.
 			#FormTel(style="width:auto; display: none;margin-left:5px")
 				label(style='color:black' tkey='PhoneParameters')
 				div(style='border-top: 1px solid black; width:97%;')
-					table
+					table#paramPhone(style='border-spacing: 10px 5px; width: 100%; table-layout: fixed') 
 						tr
-							td
-								table#paramPhone(style='border-spacing: 10px 5px; width: 100%; table-layout: fixed') 
-									tr
-										td(style='width:40%')
-											label(tkey='TypeTel')
-										td.New
-											select#LbTypeTel(type='select' onchange='OnChangeType(this)')
-												option(value='0') PP-BL
-												option(value='1') PP-BC
-												option(value='2') PP-AB
-												option(value='3') ATS-R2
-												option(value='4') ATS-N5
-												option(value='5') LCEN
-												option(value='6') ATS-QSIG
-											//	
-												option(value='7') TUN-LOC
-												option(value='8') TUN-REM
-										td(style='vertical-align: top;padding-top: 30px;')
-											label(style='color:var(--main-color)' tkey='TelephonicResources')  
-											div(style='border-top: 1px solid var(--main-color); width:auto; padding: 0 0 5px 0')
-									tr(class='LCEN BL BC AB')
-										td
-											label(tkey='AGVN User Name')
-										td.New
-											input.textbox#TbTelATSUser(type='text' placeholder="ATS Number" style="font-size:100%; height:16px; width:50px;" onblur='ValidateAtsNumber(this,"ErrorATSNumber")' onfocus='this.oldValue=this.value' value='349999')
-									tr(class='AB')
-										td
-											label(tkey='Detecta Inversion Polaridad')
-										td.New
-											select#DetInversionPol
-												option(value=0 tkey='No')
-												option(value=1 tkey='Si')
-									tr
-										td
-											label(tkey='RemoteURI')
-										td
-										td.New(rowspan='12')
-											table#facedResources(style='height: 210px;border-style: double;width: 100%;')
-												tr
-													td(align='center')
-														select#CBFacedTelType(style='width:140px;' onchange='SelectTelType($("#CBFacedTelType option:selected").val())')
-												tr#rowSelectTResourceType
-													td(align='center')
-														select#CBFaced2ResourcesType(style='width:140px;' onchange='SelectPhResourcesType($("#CBFaced2ResourcesType option:selected").val())')
-															option(value='-2') Filtrar recursos...
-															option(disabled='disabled') ------------
-															option(value='4') Buscar por Alias
-															option(value='5') Buscar por URI
-															option(disabled='disabled') ------------
-															option(value='-1') Todos (Teléfono)
-												tr#rowFilterPhResource
-													td(align='center')
-														input.textbox#FilterPhResource(type='text' style='width:140px' placeholder="Carácteres a buscar...")
-												tr#rowFilterPhResourceBt
-													td(align='center')
-														a.ButtonNucleo#BtnFindPhFilterRes(onclick='FilterPhResourcesBy()') Buscar recursos
-												tr#rowSelectTelSite
-													td(align='center')
-														select#CBFacedTelSite(style='width:140px;' onchange='SelectTelGtw($("#name").val(),$("#CBFacedTelSite option:selected").val())')
-												tr#rowSelectTelGtw
-													td(align='center')
-														select#CBFacedTelGtw(style='width:140px;' onchange='SelectTelResource($("#name").val(),$("#CBFacedTelSite option:selected").val(),$("#CBFacedTelGtw option:selected").val())')
-												tr
-													td(align='center')
-														select#CBFacedTelResources(style='width:140px;')
-									tr
-										td.New(style='padding-top: 8px;vertical-align:top')
-											input.UriTextbox#TbRemoteUri(type='text' placeholder="NombreRecurso@IP:Puerto" style="font-size:95%; font-family: Courier, Monaco, monospace; height:16px;" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value')
-										td.New(align='right' style='vertical-align: top;')
-											a.ButtonNucleo(onclick='MakeFacedTelUri("#TbRemoteUri")') <
-									//
-										tr
-											td
-												label(tkey='UpdatePeriod')
-											td.New
-												input#CbRUpdatePeriod(type='checkbox' onclick='OnClickUpdatePeriod(this)')
-										tr
-											td
-												label(tkey='UpdatePeriodSeconds')
-											td.New
-												input.textbox#TbUpdatePeriod(type='text' style='width:50px' onblur='ValidateUpdatePeriod(this,"ErrorUpdatePeriodSeconds")' onfocus='this.oldValue=this.value' disabled)
-									tr(class='ATS LCEN')
-										td
-											label(tkey='AutomaticAnswer' )
-										td.New
-											input#CbResp(type='checkbox' onclick='OnClickPeriodoRespuesta(this)')
-									tr#OptionsIntervalRow(class='ATS LCEN' style='display: none;')
-										td
-											label(tkey='OPTIONSInterval' )
-										td.New
-											input.textbox#TbOptionsInterval(type='text' style='width:50px' value='0' onblur='ValidateTonosRespuesta(this,"ErrorOPTIONSInterval")' onfocus='this.oldValue=this.value')
-									tr(class='EyM')
-										td
-											label(tkey='DestinationType' )
-										td.New
-											select#LbDestinationType(type='select' )
-												option(value='0' tkey='Resource')
-												option(value='1' tkey='VCS')
-									//
-										tr
-											td
-												label(tkey='ATSQSIGMode' class='QSIG')
-											td.New
-												select#LbAtsModo(type='select' class='QSIG')
-													option(value='0' tkey='Net')
-													option(value='1' tkey='User')
-									tr( class='ATS')
-										td
-											label(tkey='Side')
-										td.New
-											select#LbLado(type='select')
-												option(value='0') A
-												option(value='1') B
-									tr( class='ATS')
-										td
-											label(tkey='LocalTestNumber')
-										td.New
-											input.textbox#TbLocalNumText(type='text' style='width:50px' onblur='ValidateAtsNumber(this,"ErrorATSNumber")' onfocus='this.oldValue=this.value')
-									tr( class='ATS')
-										td
-											label(tkey='RemoteTestNumber')
-										td.New
-											input.textbox#TbRemoteNumText(type='text' style='width:50px' onblur='ValidateAtsNumber(this,"ErrorATSNumber")' onfocus='this.oldValue=this.value')
-									tr(class='ATS LCEN')
-										td
-											label(tkey='OPTIONSSupervision' )
-										td.New
-											input#CbOptionsSupervision(type='checkbox' onclick='OnClickSupervision(this)')
-									tr#ReleaseRow(style='display: none;')
-										td
-											label(tkey='ReleaseTime' )
-										td.New
-											select#TbReleaseTime(type='select' style='width:50px')
-												option(value='5') 5
-												option(value='10') 10
-												option(value='15') 15
-												option(value='20') 20
-												option(value='25') 25
-												option(value='30') 30
-									tr#InterruptToneRow(class='ATS')
-										td
-											label(tkey='InterruptToneTime' )
-										td.New
-											select#CbInterruptToneTime(type='select' style='width:50px')
-												option(value='5') 5
-												option(value='6') 6
-												option(value='7') 7
-												option(value='8') 8
-												option(value='9') 9
-												option(value='10') 10
-												option(value='11') 11
-												option(value='12') 12
-												option(value='13') 13
-												option(value='14') 14
-												option(value='15') 15
+							td(style='width:60%')
+								label(tkey='TypeTel')
+							td.New
+								select#LbTypeTel(type='select' onchange='OnChangeType(this)')
+									option(value='0') PP-BL
+									option(value='1') PP-BC
+									option(value='2') PP-AB
+									option(value='3') ATS-R2
+									option(value='4') ATS-N5
+									option(value='5') LCEN
+									option(value='6') ATS-QSIG
 
-										//
-											td
-												label(tkey='EMType' class='EyM')
-											td
-												select#LbEMType(type='select' class='EyM')
-													option(value='0' tkey='TypeI')
-													option(value='1' tkey='TypeII')
-													option(value='2' tkey='TypeIII')
-													option(value='3' tkey='TypeIV')
-													option(value='4' tkey='TypeV')
-													option(value='5' tkey='Owner')
-											tr
-												td
-													label(tkey='EMSide' class='EyM')
-												td
-													select#LbEMLado(type='select' class='EyM')
-														option(value='0') E&M
-														option(value='1') PLR
-												td
-													label(tkey='24 wires' class='EyM')
-												td
-													select#LbWires(type='select' class='EyM')
-														option(value='0' tkey='2Wires')
-														option(value='1' tkey='4Wires')
-									tr(class='BL')
-										td
-											label(tkey='VoxDetection' )
-										td.New
-											input#CbVox(type='checkbox' onclick='OnVoxDetection(this)')
-									tr(class='BL')
-										td
-											label(tkey='VoxThreshold')
-										td.New
-											input.textbox#TbUmbral(type='text' style='width:50px' value='-15' onblur='ValidateVAD(this,"ErrorThreshold")' onfocus='this.oldValue=this.value')
-									tr(class='BL')
-										td
-											label(tkey='InactivityTime')
-										td.New
-											input.textbox#TbInactividad(type='text' style='width:50px' value='0' onblur='ValidateNumberColaVox(this,"ErrorInactivityTime")' onfocus='this.oldValue=this.value')
+						tr(class='LCEN BL BC AB')
+							td
+								label(tkey='AGVN User Name')
+							td.New
+								input.textbox#TbTelATSUser(type='text' placeholder="ATS Number" style="font-size:100%; height:16px; width:50px;" onblur='ValidateAtsNumber(this,"ErrorATSNumber")' onfocus='this.oldValue=this.value' value='349999')
+						
+						tr(class='AB BC BL ATS')
+							td
+								label(tkey='NoED137Calls') Permite Llamadas No ED137
+							td.New
+								select#NoED1377Calls
+									option(value=0 tkey='No')
+									option(value=1 tkey='Si')
+
+						tr(class='BL')
+							td
+								label(tkey='VoxDetection' )
+							td.New
+								input#CbVox(type='checkbox' onclick='OnVoxDetection(this)')
+						
+						tr(class='BL')
+							td
+								label(tkey='VoxThreshold')
+							td.New
+								input.textbox#TbUmbral(type='text' style='width:50px' value='-15' onblur='ValidateVAD(this,"ErrorThreshold")' onfocus='this.oldValue=this.value')
+						
+						tr(class='BL')
+							td
+								label(tkey='InactivityTime')
+							td.New
+								input.textbox#TbInactividad(type='text' style='width:50px' value='0' onblur='ValidateNumberColaVox(this,"ErrorInactivityTime")' onfocus='this.oldValue=this.value')
+
+						tr(class='AB')
+							td
+								label(tkey='Detecta Inversion Polaridad')
+							td.New
+								select#DetInversionPol
+									option(value=0 tkey='No')
+									option(value=1 tkey='Si')
+						
+						tr(class='AB')
+							td
+								label(tkey='Detecta Fallo Linea') Detecta Fallo Linea
+							td.New
+								select#LineFault
+									option(value=0 tkey='No')
+									option(value=1 tkey='Si')
+						
+						tr(class='ATS LCEN')
+							td
+								label(tkey='AutomaticAnswer' )
+							td.New
+								input#CbResp(type='checkbox' onclick='OnClickPeriodoRespuesta(this)')
+						
+						tr#OptionsIntervalRow(style='display: none;')
+							td
+								label(tkey='OPTIONSInterval' )
+							td.New
+								input.textbox#TbOptionsInterval(type='text' style='width:50px' value='0' onblur='ValidateTonosRespuesta(this,"ErrorOPTIONSInterval")' onfocus='this.oldValue=this.value')
+						
+						tr( class='ATS')
+							td
+								label(tkey='Side')
+							td.New
+								select#LbLado(type='select')
+									option(value='0') A
+									option(value='1') B
+						
+						tr( class='ATS')
+							td
+								label(tkey='LocalTestNumber')
+							td.New
+								input.textbox#TbLocalNumText(type='text' style='width:50px' onblur='ValidateAtsNumber(this,"ErrorATSNumber")' onfocus='this.oldValue=this.value')
+						
+						tr( class='ATS')
+							td
+								label(tkey='RemoteTestNumber')
+							td.New
+								input.textbox#TbRemoteNumText(type='text' style='width:50px' onblur='ValidateAtsNumber(this,"ErrorATSNumber")' onfocus='this.oldValue=this.value')
+						
+						tr#InterruptToneRow(class='ATS')
+							td
+								label(tkey='InterruptToneTime' )
+							td.New
+								select#CbInterruptToneTime(type='select' style='width:50px')
+									option(value='5') 5
+									option(value='6') 6
+									option(value='7') 7
+									option(value='8') 8
+									option(value='9') 9
+									option(value='10') 10
+									option(value='11') 11
+									option(value='12') 12
+									option(value='13') 13
+									option(value='14') 14
+									option(value='15') 15
+						
+						tr(class='EyM')
+							td
+								label(tkey='DestinationType' )
+							td.New
+								select#LbDestinationType(type='select' )
+									option(value='0' tkey='Resource')
+									option(value='1' tkey='VCS')
+			// FORM Listas Blancas y NEGRAS
 			#FormLists(style="width:auto; display: none;margin-left:5px")
-				//label(style='color:black'  tkey='BWGlobalList')
-				//div(style='border-top: 1px solid black; width:97%;padding-top:5px')
-				//table#NewsUris(style='padding-top:10px;padding-bottom: 15px;width: 100%; border-spacing: 5px;')
-					tr
-						td.New
-							select#ListUris(type='select' style='width:150px')
-						td.New(colspan=2)
-							input.UriTextbox#NewUri(style='display:none' placeholder="NombreRecurso@IP:Puerto" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value')
-					tr
-						td.New
-							a.ButtonNucleo#BtnAddUri(onclick='AddUri(this)' style='position:relative' tkey='AddURI')						
-						td.New
-							a.ButtonNucleo#BtnRemoveUri(onclick='RemoveUri()' style='position:relative' tkey='RemoveURI')
-					tr
-						td.New			
 				label(style='color:black' tkey='BWLists')
 				div(style='border-top: 1px solid black; width:97%;padding-top:5px;padding-bottom: 10px')
 					table
@@ -637,10 +377,7 @@ div(id="FormParameters")
 						tr#AddUriRow16(align='center' style='height:40px')
 							td.New
 								input.UriTextbox#Uri8WL(type="text" placeholder="NombreRecurso@IP:Puerto" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value')
-
-					//select#AssignedUriList(type='select' style='width:150px')
-							//td.New
-							//	a.ButtonNucleo(onclick='AddUriToList(this,function(){AddGatewayToList($(\'#DivGateways\').data(\'idCgw\'))})' tkey='Add')
+			// FORM Colaterales Radio.
 			#FormCommunications(style='width:auto; display:none;margin-left:5px')
 				label(style='color:black' tkey='Communications')
 				table
@@ -777,16 +514,6 @@ div(id="FormParameters")
 																		input.UriTextbox#UriRxB3(type="text" placeholder="NombreRecurso@IP:Puerto" style="font-size:95%; font-family: Courier, Monaco, monospace; height:16px;" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value')
 																	td.New
 																		a.ButtonNucleo#BtnSelectRxB3(onclick='MakeFacedUri("#UriRxB3")') <
-									//tr
-									//	td
-									//		table#TblEmplazamiento(style='width:100%;padding-bottom:15px')
-									//			tr(align="center")
-									//				td.New
-									//					a.ButtonNucleo#BtnUpdateSite(style='display:none' onclick='UpdateSite(function(){AddGatewayToList($(\'#DivGateways\').data(\'idCgw\'))})' tkey='UpdateSite')
-									//				td.New
-									//					a.ButtonNucleo#BtnAddSite(onclick='CommitSite(function(){AddGatewayToList($(\'#DivGateways\').data(\'idCgw\'))})' tkey='AddSite')
-									//				td.New
-									//					a.ButtonNucleo#BtnRemoveSite(onclick='RemoveSite(function(){AddGatewayToList($(\'#DivGateways\').data(\'idCgw\'))})' tkey='RemoveSite')
 
 						td(style='vertical-align:top')
 							table#facedResources(style='padding: 5px 0; height:210px')
@@ -824,6 +551,7 @@ div(id="FormParameters")
 								tr#rowSelectFResource
 									td(align='center')
 										select#CBFacedResources(style='width:140px;' onchange='SelectBtnsResources($("#CBFacedResources option:selected"))')
+			// FORM Filtros ATS
 			#FormATS(style='width:auto; display:none;margin-left:5px')
 				label(style='color:black' tkey='ATSNumberRange')
 				div(style='border-top: 1px solid black; width:97%;margin-top: 20px;padding-bottom: 5px')
@@ -832,7 +560,7 @@ div(id="FormParameters")
 							li
 								a.selected(href='#', rel='FormOrigen', onclick='loadForm(this)' tkey='Origin')
 							|      
-							li
+							li(class="ATS")
 								a(href='#', rel='FormDestino', onclick='loadForm(this)' tkey='Destination')
 					.contentTab(style='width:auto;margin-left: 10px; overflow-y:auto;overflow-x: hidden; height: auto; padding-top:10px')
 						form#FormOrigen
@@ -860,8 +588,6 @@ div(id="FormParameters")
 										input#OrigenInicio4(type='text' style='width:55px' onblur='ValidateAtsNumber(this,"ErrorATSNumber")' onfocus='this.oldValue=this.value')
 									td.New(align='center')
 										input#OrigenFinal4(type='text' style='width:55px' onblur='ValidateAtsNumber(this,"ErrorATSNumber")' onfocus='this.oldValue=this.value')
-								//	td.New(align='center' colspan=2)
-								//			a.ButtonNucleo#ButtonAddRange(onclick='AddRange(this,true)' tkey='AddRange')
 						form#FormDestino(style='display:none')
 							table#rangeAtsDestinationNueva.range
 								tr(style='height:20px')
@@ -887,5 +613,109 @@ div(id="FormParameters")
 										input#DestinoInicio4(type='text' style='width:55px' onblur='ValidateAtsNumber(this,"ErrorATSNumber")' onfocus='this.oldValue=this.value')
 									td.New(align='center')
 										input#DestinoFinal4(type='text' style='width:55px' onblur='ValidateAtsNumber(this,"ErrorATSNumber")' onfocus='this.oldValue=this.value')
-								//td.New(align='center' colspan='2')
-									//		a.ButtonNucleo(onclick='AddRange(this,false)' tkey='AddRange')
+			// FORM Colaterales Telefonia
+			#FormPhColl(style="width:auto; display: none;margin-left:5px")
+				label(style='color:black' ) Colaterales 
+				div(style='border-top: 1px solid black; width:97%;')
+					table#paramPhoneColl(style='border-spacing: 10px 5px; width: 100%; table-layout: fixed border: 2px solid red')
+						tr
+							// URIS y Parámetros...
+							td(style='width:60%; padding: 5px;' valign='top')
+								table
+									tr
+										td(style='width:80%')
+											label(tkey='RemoteURI')
+										td
+									tr
+										td.New(style='padding-top: 8px;vertical-align:top')
+											input.UriTextbox#TbRemoteUri(type='text' placeholder="NombreRecurso@IP:Puerto" style="font-size:95%; font-family: Courier, Monaco, monospace; height:16px;" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value')
+										td.New(align='right' style='vertical-align: top;')
+											a.ButtonNucleo(onclick='MakeFacedTelUri("#TbRemoteUri")') <<
+									tr
+										td
+											table(style='width:100%')
+												tr
+													td(style='width:70%')
+														label(tkey='OPTIONSSupervision' )
+													td.New
+														input#CbOptionsSupervision(type='checkbox' onclick='OnClickSupervision()')
+												tr#OptionsMode(style='display: none;')
+													td
+														label(tkey='Options Mode') Options Response 
+													td.New
+														input#CbOptionsMode(type='checkbox')
+									tr(class='ATS BL BC AB')
+										td
+											hr
+										td
+											hr
+									tr(class='ATS BL BC AB')
+										td(style='width:80%')
+											label(tkey='RemoteURIAdd') Uri Remota Adicional
+										td
+									tr(class='ATS BL BC AB')
+										td.New(style='padding-top: 8px;vertical-align:top')
+											input.UriTextbox#TbAddRemoteUri(type='text' placeholder="NombreRecurso@IP:Puerto" style="font-size:95%; font-family: Courier, Monaco, monospace; height:16px;" onblur='ValidateUriNoSIP(this,"ErrorURI")' onfocus='this.oldValue=this.value')
+										td.New(align='right' style='vertical-align: top;')
+											a.ButtonNucleo(onclick='MakeFacedTelUri("#TbAddRemoteUri")') <<
+									tr(class='ATS BL BC AB')
+										td
+											table(style='width:100%')
+												tr
+													td(style='width:70%')
+														label(tkey='OPTIONSSupervision' )
+													td.New
+														input#CbAddOptionsSupervision(type='checkbox' onclick='OnClickSupervision()')
+												tr#AddOptionsMode(style='display: none;')
+													td
+														label(tkey='Options Mode') Options Response 
+													td.New
+														input#CbAddOptionsMode(type='checkbox')
+									tr#ReleaseRowSeparator
+										td
+											hr
+										td
+											hr
+									tr#ReleaseRow(style='display: none;')
+										td
+											label(tkey='ReleaseTime' )
+										td.New
+											select#TbReleaseTime(type='select' style='width:50px')
+												option(value='5') 5
+												option(value='10') 10
+												option(value='15') 15
+												option(value='20') 20
+												option(value='25') 25
+												option(value='30') 30
+							// Para Recuperar URIS de la configuracion.
+							td(style='padding-top: 5px')
+								label(style='color:var(--main-color)' tkey='TelephonicResources')  
+								table#facedResources(style='height: 210px;border-style: double;width: 100%;')
+									tr
+										td(align='center')
+											select#CBFacedTelType(style='width:90%;' onchange='SelectTelType($("#CBFacedTelType option:selected").val())')
+									tr#rowSelectTResourceType
+										td(align='center')
+											select#CBFaced2ResourcesType(style='width:90%;' onchange='SelectPhResourcesType($("#CBFaced2ResourcesType option:selected").val())')
+												option(value='-2') Filtrar recursos...
+												option(disabled='disabled') ------------
+												option(value='4') Buscar por Alias
+												option(value='5') Buscar por URI
+												option(disabled='disabled') ------------
+												option(value='-1') Todos (Teléfono)
+									tr#rowFilterPhResource
+										td(align='center')
+											input.textbox#FilterPhResource(type='text' style='width:140px' placeholder="Carácteres a buscar...")
+									tr#rowFilterPhResourceBt
+										td(align='center')
+											a.ButtonNucleo#BtnFindPhFilterRes(onclick='FilterPhResourcesBy()') Buscar recursos
+									tr#rowSelectTelSite
+										td(align='center')
+											select#CBFacedTelSite(style='width:90%;' onchange='SelectTelGtw($("#name").val(),$("#CBFacedTelSite option:selected").val())')
+									tr#rowSelectTelGtw
+										td(align='center')
+											select#CBFacedTelGtw(style='width:90%;' onchange='SelectTelResource($("#name").val(),$("#CBFacedTelSite option:selected").val(),$("#CBFacedTelGtw option:selected").val())')
+									tr
+										td(align='center')
+											select#CBFacedTelResources(style='width:90%;')
+

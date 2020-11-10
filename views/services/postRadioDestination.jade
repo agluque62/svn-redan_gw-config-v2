@@ -1,28 +1,5 @@
 block destinations
 
-script.
-		function loadDest(element){
-			var tabs=[];
-			switch (element.rel){
-				case "FormResources":
-					tabs=document.getElementById('ListMenuDestinations').getElementsByTagName("a");
-					$('#FormUris').hide();
-					break;
-				case "FormUris":
-					tabs=document.getElementById('ListMenuDestinations').getElementsByTagName("a");
-					$('#FormResources').hide();
-					break;
-			}
-			$('#'+element.rel).show();
-			for (var i=0; i < tabs.length; i++)
-			{
-				if(tabs[i].rel == element.rel) 
-					tabs[i].className="selected";
-				else
-					tabs[i].className="";
-			}
-		}
-
 
 div(id="FormRadioDestinations", style="display: none" ondragend="dragEnd(event)")
 	div.menu.fadeNucleo#DivDestinations(style="position:relative")

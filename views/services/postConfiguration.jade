@@ -3,46 +3,35 @@ block configuration
 
 script.
     // AGL. Para intentar hacer el UPLOAD con AJAX
-    $(document).ready(function(){
-    
-        setTimeout(EnableAplicarCambios(),5000);
-        setTimeout(SynchronizedGateways(),refreshTime);
+    $(document).ready(function () {
+
+        setTimeout(EnableAplicarCambios(), 5000);
+        setTimeout(SynchronizedGateways(), refreshTime);
 
         console.log('Buscando UploadForm....' + $('#UploadForm')[0]);
-        $('#UploadForm').submit(function(e){
+        $('#UploadForm').submit(function (e) {
             e.preventDefault();
-            var title = 'Texto a pasar...'; 
+            var title = 'Texto a pasar...';
             console.log('UploadForm submit');
 
             $(this).ajaxSubmit({
-              data: {title: title},
-              contentType: 'application/json',
-              success: function(response){
-                console.log(response);
-                   if (response.err) {
+                data: { title: title },
+                contentType: 'application/json',
+                success: function (response) {
+                    console.log(response);
+                    if (response.err) {
                         alertify.error(response.err);
-                    }     
+                    }
                     else if (response.msg) {
                         alertify.success(response.msg);
                     }
-                CloseImportConfiguration();
-                GetConfigurations();              
+                    CloseImportConfiguration();
+                    GetConfigurations();
                 }
-           });
-          return false;
+            });
+            return false;
         });
     });
-
-    function validateUploadForm() {
-        if( document.getElementById("fileselectbtn").files.length == 0 ){
-            console.log("no files selected");
-            alertify.error('No hay ningun fichero seleccionado');
-            return false;
-        }
-        return true;
-    }
-
-    // Fin de la modificacion....
 
 div(id="FormConfiguration", style="display: none; width: 350px")
     div.menu.fadeNucleo#DivConfigurations(style='position:relative')

@@ -49,6 +49,7 @@ script.
     var lastObject = null;
     var json_file = '/localconfig';
     function getData() {
+        Trace("local_config.jade:GetData.");
         $.ajax({
             type: 'GET', url: json_file, async: false, contentType: "application/json", dataType: 'json',
             success: function (data) {
@@ -82,6 +83,7 @@ script.
     }
 
     function setData() {
+        Trace("local_config.jade:SetData.");
         var editor_data = editor.getValue();
         lastObject.Region = editor_data.Region;
         lastObject.BackupServiceDomain = editor_data.BackupServiceDomain;
@@ -111,7 +113,7 @@ script.
     }
 
     function ConfigEdit() {
-
+        Trace("local_config.jade:ConfigEdit.");
         if(!alertify.cfgLocal) {
             //define a new dialog
             alertify.dialog('cfgLocal',function factory(){

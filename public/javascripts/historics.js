@@ -1,14 +1,30 @@
+/**  */
+/**********************************************************************************************************/
+/****** Module: historics.js												*******************************/
+/****** Description: Módulo de soporte a la gestion de historicos			*******************************/
+/**********************************************************************************************************/
 const ROWS_BY_PAGE = 20;
 var dataToPrint = [];
 var filterReport = '';
 var subHeader = "";
 
-/** 20170508 AGL. Calculo de Pagina en curso inicial */
+/**
+ * InitialPage
+ * @param {any} howMany
+ * 20170508 AGL. Calculo de Pagina en curso inicial 
+ */
 var InitialPage = function(howMany) {
     return howMany == 0 ? 0 : 1;
 };
+/**
+ * AddRecordsForReport
+ * @param {any} value
+ * @param {any} filter
+ */
+var AddRecordsForReport = function (value, filter) {
 
-var AddRecordsForReport = function(value, filter) {
+    Trace("historic.js:AddRecordsForReport. [value, filter] ", value, filter);
+
     filterReport = filter;
 
     var TipoAlarma = '';
@@ -40,8 +56,15 @@ var AddRecordsForReport = function(value, filter) {
 
     dataToPrint.push(rowToPrint);
 };
+/**
+ * AddRecordsForReportEvents
+ * @param {any} value
+ * @param {any} filter
+ */
+var AddRecordsForReportEvents = function (value, filter) {
 
-var AddRecordsForReportEvents = function(value, filter) {
+    Trace("historic.js:AddRecordsForReportEvent. [value, filter] ", value, filter);
+
     filterReport = filter;
     // Data to print
     var rowToPrint = [];
@@ -54,8 +77,13 @@ var AddRecordsForReportEvents = function(value, filter) {
 
     dataToPrint.push(rowToPrint);
 };
+/**
+ * LoadGatewayInActiveConfiguration
+ * */
+var LoadGatewaysInActiveConfiguration = function () {
 
-var LoadGatewaysInActiveConfiguration = function() {
+    Trace("historic.js:LoadGatewaysInActiveConfiguration.");
+
     $("#GotoGatewaysLocalConfiguration").empty();
     $.ajax({
         type: 'GET',
@@ -103,12 +131,13 @@ var LoadGatewaysInActiveConfiguration = function() {
         }
     });
 };
+/**
+ * GetOverallHistorics
+ * */
+var GetOverallHistorics = function () {
 
-/**********************************************************************************************************/
-/****** Module: historics.js												*******************************/
-/****** Description: Módulo de soporte a la gestion de historicos			*******************************/
-/**********************************************************************************************************/
-var GetOverallHistorics = function() {
+    Trace("historic.js:GetOverallHistorics");
+
     $('#BtnToPdfEvents').hide();
     $('#BtnToPdf').show();
     $('#BtnToExcel').show();
@@ -197,8 +226,13 @@ var GetOverallHistorics = function() {
         });
     });
 };
+/**
+ * GetOverallHistoricsEvents
+ * */
+var GetOverallHistoricsEvents = function () {
 
-var GetOverallHistoricsEvents = function() {
+    Trace("historic.js:GetOverallHistoricsEvents");
+
     $('#BtnToPdf').hide();
     $('#BtnToPdfEvents').show();
     $('#BtnToExcel').hide();
@@ -253,8 +287,13 @@ var GetOverallHistoricsEvents = function() {
         });
     });
 };
+/**
+ * GetOverallHistoricsAlarms
+ * */
+var GetOverallHistoricsAlarms = function () {
 
-var GetOverallHistoricsAlarms = function() {
+    Trace("historic.js:GetOverallHistoricsAlarms");
+
     $('#BtnToPdfEvents').hide();
     $('#BtnToPdf').show();
     $('#BtnToExcel').show();
@@ -340,8 +379,15 @@ var GetOverallHistoricsAlarms = function() {
         });
     });
 };
+/**
+ * GetRangeHistorics
+ * @param {any} start
+ * @param {any} howMany
+ */
+var GetRangeHistorics = function (start, howMany) {
 
-var GetRangeHistorics = function(start, howMany) {
+    Trace("historic.js:GetRangeHistorics. start %s, howMany %s.", start, howMany);
+
     $('#BtnToPdfEvents').hide();
     $('#BtnToPdf').show();
     $('#BtnToExcel').show();
@@ -399,8 +445,15 @@ var GetRangeHistorics = function(start, howMany) {
         });
     });
 };
+/**
+ * GetRangeHistoricsEvents
+ * @param {any} start
+ * @param {any} howMany
+ */
+var GetRangeHistoricsEvents = function (start, howMany) {
 
-var GetRangeHistoricsEvents = function(start, howMany) {
+    Trace("historic.js:GetRangeHistoricsEvents. start %s, howMany %s", start, howMany);
+
     $('#BtnToPdfEvents').show();
     $('#BtnToPdf').hide();
     $('#BtnToExcel').hide();
@@ -431,8 +484,15 @@ var GetRangeHistoricsEvents = function(start, howMany) {
         });
     });
 };
+/**
+ * GetRangeHistoricsAlarms
+ * @param {any} start
+ * @param {any} howMany
+ */
+var GetRangeHistoricsAlarms = function (start, howMany) {
 
-var GetRangeHistoricsAlarms = function(start, howMany) {
+    Trace("historic.js:GetRangeHistoricsAlarms. start %s, howMany %s", start, howMany);
+
     $('#BtnToPdfEvents').hide();
     $('#BtnToPdf').show();
     $('#BtnToExcel').show();
@@ -490,8 +550,14 @@ var GetRangeHistoricsAlarms = function(start, howMany) {
         });
     });
 };
-
+/**
+ * Filter
+ * @param {any} page
+ */
 function Filter(page) {
+
+    Trace("historic.js:Filter. page ", page);
+
     switch ($('#TblHistoricos').data('filtering')) {
         case 'none':
             GetRangeHistorics(page * ROWS_BY_PAGE, ROWS_BY_PAGE);
@@ -516,8 +582,13 @@ function Filter(page) {
             break;
     }
 }
-
+/**
+ * GotoNextPage
+ * */
 function GotoNextPage() {
+
+    Trace("historic.js:GotoNextPage.");
+
     if ($('#Page').data('page') < $('#FormHistorics').data('numPages') - 1) {
         var page = ($('#Page').data('page') + 1);
         $('#Page').data('page', page);
@@ -525,8 +596,13 @@ function GotoNextPage() {
         Filter(page);
     }
 }
-
+/**
+ * GotoPreviousPage
+ * */
 function GotoPreviousPage() {
+
+    Trace("historic.js:GotoPreviousPage");
+
     if ($('#Page').data('page') > 0) {
         var page = ($('#Page').data('page') - 1);
         $('#Page').data('page', page);
@@ -534,8 +610,13 @@ function GotoPreviousPage() {
         Filter(page);
     }
 }
-
+/**
+ * GotoFirstPage
+ * */
 function GotoFirstPage() {
+
+    Trace("historic.js:GotoFirstPage.");
+
     if ($('#Page').data('page') > 0) {
         var page = 0;
         $('#Page').data('page', page);
@@ -543,8 +624,13 @@ function GotoFirstPage() {
         Filter(page);
     }
 }
-
+/**
+ * GotoLastPage
+ * */
 function GotoLastPage() {
+
+    Trace("historic.js:GotoLastPage");
+
     if ($('#Page').data('page') < $('#FormHistorics').data('numPages') - 1) {
         var page = $('#FormHistorics').data('numPages') - 1;
         $('#Page').data('page', page);
@@ -552,8 +638,12 @@ function GotoLastPage() {
         Filter(page);
     }
 }
-
+/**
+ * ShowFilterGroups
+ * */
 function ShowFilterGroups() {
+
+    Trace("historic.js:ShowFilterGroups.");
 
     startHistoricDate('IDateStartGroup');
     todayDateTime('IDateEndGroup');
@@ -588,8 +678,14 @@ function ShowFilterGroups() {
         }
     });
 }
-
+/**
+ * FilteringByGroup
+ * @param {any} noRange
+ */
 function FilteringByGroup(noRange) {
+
+    Trace("historic.js:FilteringByGroup. noRange ", noRange);
+
     $('#BtnToPdfEvents').hide();
     $('#BtnToPdf').show();
     $('#BtnToExcel').show();
@@ -691,8 +787,14 @@ function FilteringByGroup(noRange) {
         });
     });
 }
-
+/**
+ * todayDateTime
+ * @param {any} data
+ */
 function todayDateTime(data) {
+
+    Trace("historic.js:todayDateTime. data ", data);
+
     var field = document.getElementById(data);
     var date = new Date();
     var day = date.getDate();
@@ -713,8 +815,14 @@ function todayDateTime(data) {
 
     field.value = year + '-' + month + '-' + day + 'T' + hours + ':' + minutes;
 }
-
+/**
+ * startHistoricDate
+ * @param {any} data
+ */
 function startHistoricDate(data) {
+
+    Trace("historic.js:startHistoricDate. data ", data);
+
     var field = document.getElementById(data);
     var date = new Date();
     var day = date.getDate();
@@ -729,8 +837,14 @@ function startHistoricDate(data) {
 
     field.value = year + '-' + month + '-' + day + 'T00:00';
 }
-
+/**
+ * startStatisticsData
+ * @param {any} data
+ */
 function startStatisticsDate(data) {
+
+    Trace("historic.js:startStatisticsDate. data", data);
+
     var field = document.getElementById(data);
     var date = new Date();
 
@@ -738,9 +852,13 @@ function startStatisticsDate(data) {
 
     field.value = year + '-01-01T00:00';
 }
-
-
+/**
+ * ShowFilterDate
+ * */
 function ShowFilterDate() {
+
+    Trace("historic.js:ShowFilterDate");
+
     $('#FormHistorics').show();
     $('#AddFilterCode').hide();
     $('#AddFormHistorics').hide();
@@ -757,8 +875,14 @@ function ShowFilterDate() {
     $('#BtnToExcel').hide();
     $('#BtnToExcelEvents').hide();
 }
-
+/**
+ * FilteringByDate
+ * @param {any} noRange
+ */
 function FilteringByDate(noRange) {
+
+    Trace("historic.js:FilteringByDate. noRange ", noRange);
+
     $('#BtnToPdfEvents').hide();
     $('#BtnToPdf').show();
     $('#BtnToExcel').show();
@@ -858,8 +982,13 @@ function FilteringByDate(noRange) {
         });
     });
 }
-
+/**
+ * ShowFilterComponent
+ * */
 function ShowFilterComponent() {
+
+    Trace("historic.js:ShowFilterComponent.");
+
     startHistoricDate('IDateStartComponent');
     todayDateTime('IDateEndComponent');
     $('#FormHistorics').show();
@@ -891,8 +1020,14 @@ function ShowFilterComponent() {
         }
     });
 }
-
+/**
+ * FilteringByComponent
+ * @param {any} noRange
+ */
 function FilteringByComponent(noRange) {
+
+    Trace("historic.js:FilteringByComponent. noRange ", noRange);
+
     $('#BtnToPdfEvents').hide();
     $('#BtnToPdf').show();
     $('#BtnToExcel').show();
@@ -991,8 +1126,13 @@ function FilteringByComponent(noRange) {
         });
     });
 }
-
+/**
+ * ShowFilterCode
+ * */
 function ShowFilterCode() {
+
+    Trace("historic.js:ShowFilterCode.");
+
     startHistoricDate('IDateStartCode');
     todayDateTime('IDateEndCode');
     $('#FormHistorics').show();
@@ -1024,8 +1164,14 @@ function ShowFilterCode() {
         }
     });
 }
-
+/**
+ * FilteringByCode
+ * @param {any} noRange
+ */
 function FilteringByCode(noRange) {
+
+    Trace("historic.js:FilteringByCode. noRange ", noRange);
+
     $('#BtnToPdf').hide();
     $('#BtnToPdfEvents').show();
     $('#BtnToExcel').hide();
@@ -1099,8 +1245,17 @@ function FilteringByCode(noRange) {
         });
     });
 }
-
+/**
+ * GenerateHistoricEventArray
+ * @param {any} idHw
+ * @param {any} idIncidencia
+ * @param {any} params
+ * @param {any} usuario
+ */
 function GenerateHistoricEventArray(idHw, idIncidencia, params, usuario) {
+
+    Trace("historic.js:GenerateHistoricEventArray, idHw %s, idIncidencia %s, usuario %s, params ", idHw, idIncidencia, usuario, params);
+
     var listOfParams = '';
     for (var i = 0; i < params.length; i++) {
         listOfParams += params[i] + ((i == params.length - 1) ? '' : ' - ');
@@ -1122,8 +1277,17 @@ function GenerateHistoricEventArray(idHw, idIncidencia, params, usuario) {
         }
     });
 }
-
+/**
+ * GenerateHistoricEvent
+ * @param {any} idHw
+ * @param {any} idIncidencia
+ * @param {any} param
+ * @param {any} usuario
+ */
 function GenerateHistoricEvent(idHw, idIncidencia, param, usuario) {
+
+    Trace("historic.js:GenerateHistoricEvent: idHw %s, idIncidencia %s, usuario %s, params ", idHw, idIncidencia, usuario, param);
+
     var strUrl = '/historics/';
     $.ajax({
         type: 'POST',
@@ -1141,9 +1305,13 @@ function GenerateHistoricEvent(idHw, idIncidencia, param, usuario) {
     });
 }
 
-
 // FUNCIONES PANEL ESTADISTICAS
+/**
+ * ShowFilterDateStatistics
+ * */
 function ShowFilterDateStatiscs() {
+
+    Trace("historic.js:ShowFilterDateStatistics.");
 
     $('#FormStatiscs').show();
     $('#AddFormStatistics').hide();
@@ -1154,8 +1322,13 @@ function ShowFilterDateStatiscs() {
     $('#AddFilterComponentEstadisticas').hide();
     $('#AddFilterCodeEstadisticas').hide();
 }
-
+/**
+ * FilteringByDateStatistics
+ * */
 function FilteringByDateStatistics() {
+
+    Trace("historic.js:FilteringByDateStatistics.");
+
     $('#DivStatistics').animate({ width: '725px' }, function() {
         $('#AddFormStatistics').attr('style', 'height:181px; width:520px')
             .fadeIn(500);
@@ -1176,8 +1349,13 @@ function FilteringByDateStatistics() {
         });
     });
 }
-
+/**
+ * ShowFilterComponentStatistics
+ * */
 function ShowFilterComponentStatiscs() {
+
+    Trace("historic.js:ShowFilterComponentStatistics");
+
     startStatisticsDate('IDateStartStatisticsComponent');
     todayDateTime('IDateEndStatisticsComponent');
     $('#FormStatiscs').show();
@@ -1212,8 +1390,13 @@ function ShowFilterComponentStatiscs() {
         }
     });
 }
-
+/**
+ * FilteringByComponentStatistics
+ * */
 function FilteringByComponentStatistics() {
+
+    Trace("historic.js:FilteringByComponentStatistics");
+
     $('#DivStatistics').animate({ width: '725px' }, function() {
         $('#BtnStatsToPdf').show();
         $('#BtnStatsToExcel').show();
@@ -1251,8 +1434,13 @@ function FilteringByComponentStatistics() {
         });
     });
 }
-
+/**
+ * ShowFilterCodeStatiscs
+ * */
 function ShowFilterCodeStatiscs() {
+
+    Trace("historic.js:ShowFilterCodeStatiscs");
+
     startStatisticsDate('IDateStartStatisticsCode');
     todayDateTime('IDateEndStatisticsCode');
     $('#FormStatiscs').show();
@@ -1287,8 +1475,13 @@ function ShowFilterCodeStatiscs() {
         }
     });
 }
-
+/**
+ * FilteringByCodeStatistics
+ * */
 function FilteringByCodeStatistics() {
+
+    Trace("historic.js:FilteringByCodeStatistics");
+
     $('#DivStatistics').animate({ width: '725px' }, function() {
         $('#AddFormStatistics').attr('style', 'height:138px; width:345px')
             .fadeIn(500);
@@ -1319,4 +1512,297 @@ function FilteringByCodeStatistics() {
             }
         });
     });
+}
+
+/** 20201103. From HISTORIC.JADE */
+/**
+ * selectEndingDate
+ * @param {any} crtIni
+ * @param {any} crtFin
+ */
+function selectEndingDate(crtIni, crtFin) {
+
+    Trace("historic.js:selectEndingDate");
+
+    var fechaH = $(crtIni)[0].valueAsDate;
+    fechaH.setDate(fechaH.getDate());
+    $(crtFin)[0].valueAsDate = fechaH;
+    $(crtFin).attr('min', $(crtFin).val());
+}
+/**
+ * ExportHistoricsToPdf
+ * @param {any} rows
+ * @param {any} filter
+ */
+function ExportHistoricsToPdf(rows, filter) {
+
+    Trace("historic.js:ExportHistoricsToPdf");
+
+    var header = [];
+
+    alertify.success('Generando fichero PDF');
+
+    translateWord('DateTime', function (dateTime) {
+        translateWord('Code', function (code) {
+            translateWord('Group', function (group) {
+                translateWord('Component', function (component) {
+                    translateWord('Description', function (description) {
+                        translateWord('Type', function (type) {
+                            translateWord('Acknowled', function (acknowled) {
+                                translateWord('TypeAlarm', function (typealarm) {
+                                    translateWord('User', function (user) {
+
+                                        header[0] = "Fecha-\nHora";
+                                        header[1] = group;
+                                        header[2] = component;
+                                        header[3] = description;
+                                        header[4] = type;
+                                        header[5] = acknowled;
+                                        header[6] = typealarm;
+                                        header[7] = user;
+
+                                        var doc = new jsPDF('l');
+                                        doc.setFontType("bold");
+                                        doc.setFontSize(11);
+                                        doc.text(7, 15, "HISTORICOS: " + filter);
+                                        doc.autoTableSetDefaults({ headerStyles: { fillColor: [255, 50, 40] } });// Red
+                                        doc.autoTable(header, rows, {
+                                            startY: 20,
+                                            margin: { horizontal: 7 },
+                                            bodyStyles: { valign: 'top' },
+                                            columnStyles: {
+                                                0: { columnWidth: 30, overflow: 'linebreak' },
+                                                1: { columnWidth: 30, overflow: 'linebreak' },
+                                                2: { columnWidth: 30, overflow: 'linebreak' },
+                                                3: { columnWidth: 90, overflow: 'linebreak' },
+                                                4: { columnWidth: 20, overflow: 'linebreak' },
+                                                5: { columnWidth: 25, overflow: 'linebreak' },
+                                                6: { columnWidth: 25, overflow: 'linebreak' },
+                                                7: { columnWidth: 30, overflow: 'linebreak' }
+                                            }
+                                        });
+                                        doc.save('Historicos.pdf');
+                                    })
+                                })
+                            })
+                        })
+                    })
+                })
+            })
+        })
+    })
+}
+/**
+ * ExportHistoricsToPdfEvents
+ * @param {any} rows
+ * @param {any} filter
+ */
+function ExportHistoricsToPdfEvents(rows, filter) {
+    var header = [];
+
+    Trace("historics.js:ExportHistoricsToPdfEvents.")
+    alertify.success('Generando fichero PDF');
+
+    translateWord('DateTime', function (dateTime) {
+        translateWord('Code', function (code) {
+            translateWord('Group', function (group) {
+                translateWord('Component', function (component) {
+                    translateWord('Description', function (description) {
+                        translateWord('Type', function (type) {
+                            translateWord('User', function (user) {
+                                header[0] = { text: dateTime, style: 'tableHeader' }
+                                header[1] = { text: group, style: 'tableHeader' }
+                                header[2] = { text: component, style: 'tableHeader' }
+                                header[3] = { text: description, style: 'tableHeader' }
+                                header[4] = { text: type, style: 'tableHeader' }
+                                header[5] = { text: '', style: 'tableHeader' }
+                                header[6] = { text: '', style: 'tableHeader' }
+                                header[7] = { text: user, style: 'tableHeader' }
+                                var start = 0;
+                                var cuantos = 300;
+                                var items = rows.slice(start, cuantos);
+                                while (items.length > 0) {
+                                    var data = [];
+                                    data.push(header);
+                                    $.each(items, function (index, value) {
+                                        //Dos columnas menos que hay que quitar
+                                        data.push(value);
+                                    })
+
+                                    translateWord('Historics', function (historic) {
+                                        var docDefinition = {
+                                            footer: function (currentPage, pageCount) { return { text: currentPage.toString() + ' / ' + pageCount, alignment: 'center', margin: [0, 5, 0, 0] } },
+                                            background: function (currentPage) {
+                                                if (currentPage > 1)
+                                                    return { text: filter, style: 'subheader' };
+                                            },
+                                            // a string or { width: number, height: number }
+                                            pageSize: 'A4',
+                                            // by default we use portrait, you can change it to landscape if you wish
+                                            pageOrientation: 'landscape',
+                                            content: [
+                                                { text: historic, style: 'header' },
+                                                { text: filter, style: 'subheader' },
+                                                {
+                                                    style: 'tableExample',
+                                                    table: {
+                                                        headerRows: 1,
+                                                        body: data
+                                                    }
+                                                },
+                                            ],
+                                            styles: {
+                                                header: {
+                                                    fontSize: 18,
+                                                    bold: true,
+                                                    margin: [0, 0, 0, 10],
+                                                    color: 'red',
+                                                    alignment: 'center'
+                                                },
+                                                subheader: {
+                                                    fontSize: 16,
+                                                    bold: true,
+                                                    color: '#D2747D',
+                                                    margin: [0, 10, 0, 5]
+                                                },
+                                                tableExample: {
+                                                    margin: [0, 5, 0, 15]
+                                                },
+                                                tableHeader: {
+                                                    bold: true,
+                                                    fontSize: 12,
+                                                    color: 'black'
+                                                }
+                                            },
+                                            defaultStyle: {
+                                                // alignment: 'justify'
+                                                fontSize: 10
+                                            }
+                                        };
+
+                                        pdfMake.createPdf(docDefinition).open();
+                                    })
+                                    //pdfMake.createPdf(docDefinition).download('U5K-G-' + start + '.pdf');	
+                                    items = rows.slice(++start * cuantos, (start * cuantos) + cuantos);
+                                }
+                            })
+                        })
+                    })
+                })
+            })
+        })
+    })
+}
+/**
+ * ExportStatisticsToPdf
+ * */
+function ExportStatisticsToPdf() {
+    var header = [];
+    var detail = [];
+
+    Trace("historics.js:ExportStatisticsToPdf.");
+
+    translateWord('TasaEventosFallos', function (tasafallos) {
+        translateWord('MTBF', function (mtbf) {
+            header[0] = { text: tasafallos, style: 'tableHeader' }
+            header[1] = { text: mtbf, style: 'tableHeader' }
+
+            var data = [];
+            data.push(header);
+
+            detail[0] = $('#tasa').val();
+            detail[1] = $('#mtbf').val();
+
+            data.push(detail);
+
+            var docDefinition = {
+                footer: { text: ' 1/1 ', alignment: 'center', margin: [0, 5, 0, 0] },
+                background: function (currentPage) {
+                    if (currentPage > 1)
+                        return { text: "Estadísticas", style: 'subheader' };
+                },
+                // a string or { width: number, height: number }
+                pageSize: 'A4',
+
+                content: [
+                    { text: "Estadísticas", style: 'header' },
+                    { text: subHeader, style: 'subheader' },
+                    {
+                        style: 'tableExample',
+                        table: {
+                            headerRows: 1,
+                            body: data
+                        }
+                    },
+                ],
+                styles: {
+                    header: {
+                        fontSize: 18,
+                        bold: true,
+                        margin: [0, 0, 0, 10],
+                        color: 'red',
+                        alignment: 'center'
+                    },
+                    subheader: {
+                        fontSize: 16,
+                        bold: true,
+                        color: '#D2747D',
+                        margin: [0, 10, 0, 5]
+                    },
+                    tableExample: {
+                        margin: [0, 5, 0, 15]
+                    },
+                    tableHeader: {
+                        bold: true,
+                        fontSize: 13,
+                        color: 'black'
+                    }
+                },
+                defaultStyle: {
+                    // alignment: 'justify'
+                }
+            };
+
+            pdfMake.createPdf(docDefinition).open();
+        })
+    })
+}
+/**
+ * doCsv
+ * @param {any} tableName
+ */
+function doCsv(tableName) {
+
+    Trace("historics.js:doCsv. tableName ", tableName);
+
+    var table = document.getElementById(tableName).innerHTML;
+    var data = table.replace(/<thead>/g, '')
+        .replace(/<\/thead>/g, '')
+        .replace(/<tbody>/g, '')
+        .replace(/<\/tbody>/g, '')
+        .replace(/<tr>/g, '')
+        .replace(/<\/tr>/g, '\r\n')
+        .replace(/<th [a-z|A-Z|\s|\d|=|"]+>/g, '')
+        .replace(/<\/th>/g, ';')
+        .replace(/<td>/g, '')
+        .replace(/<\/td>/g, ';')
+        .replace(/\t/g, '')
+        .replace(/\/n/g, '');
+
+    var myLink = document.createElement('a');
+    myLink.download = 'HistoricosRedan.csv';
+    myLink.href = "data:application/csv," + escape(data);
+    myLink.click();
+}
+/**
+ * doCsvStatistics
+ * */
+function doCsvStatistics() {
+
+    Trace("historics.js:doCsvStatistics.");
+
+    var myLink = document.createElement('a');
+    myLink.download = 'EstadisticasRedan.csv';
+    myLink.href = "data:application/csv," + escape(subHeader + ";\r\n") + escape("Tasa Eventos/Fallos(%);Tiempo Medio(Días);\r\n" + $(tasa).val() + ";" + $(mtbf).val());
+    myLink.click();
 }

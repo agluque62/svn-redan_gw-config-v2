@@ -10,7 +10,10 @@ var tbbssModified = false;
 /*  PARAMS: 						*/
 /*  REV 1.0.2 VMG					*/
 /************************************/
-var PutTable = function() {
+var PutTable = function () {
+
+    Trace("tableBss.js:putTable.");
+
     var listValues = [];
     for (var i = 0; i < 6; i++) {
         listValues[i] = $('#CbRssi' + i + ' option:selected').val();
@@ -62,20 +65,14 @@ var PutTable = function() {
         }
     });
 };
-
 /************************************/
 /*	FUNCTION: GetTablesBss	 		*/
 /*  PARAMS: 						*/
 /*  REV 1.0.2 VMG					*/
 /************************************/
-var GetTablesBss = function(f) {
-    /** 20170511 AGL PERFILES */
-    //	if (Authorize($('#BodyRedan').data('perfil'),[ccAdminProfMsc,ccConfiProfMsc])==false) {
-	/*if ((($('#BodyRedan').data('perfil') & 16) != 16) && (($('#BodyRedan').data('perfil') & 64) != 64)) {
-		*****************************/
-    //		alertify.error('No tiene asignados permisos para la gestión de las tablas de calificación de audio.');
-    //		return;
-    //	}
+var GetTablesBss = function (f) {
+
+    Trace("tableBss.js:GetTablesBss.");
 
     $('#AddTableBss').hide();
     $("#FormTableBss").show();
@@ -99,13 +96,15 @@ var GetTablesBss = function(f) {
                 f();
         });
 };
-
 /************************************/
 /*	FUNCTION: GetTablesBss	 		*/
 /*  PARAMS: idTable (IN)			*/
 /*  REV 1.0.2 VMG					*/
 /************************************/
-var GetTable = function(idTable) {
+var GetTable = function (idTable) {
+
+    Trace("tableBss.js:GetTable. idTable ", idTable);
+
     $('#DivTableBss').animate({ width: '950px' });
     $('#AddTableBss').show();
 
@@ -170,13 +169,14 @@ var GetTable = function(idTable) {
         $('#RowValuesTable').show();
     }
 };
-
 /************************************/
 /*	FUNCTION: PostTable	 			*/
 /*  PARAMS: 						*/
 /*  REV 1.0.2 VMG					*/
 /************************************/
 var PostTable = function() {
+
+    Trace("tableBss.js:PostTable.");
 
     if ($('#IdTable').val() == '') {
         alertify.alert('El nombre de la tabla no puede ser vacío. Utilize un nombre correcto.');
@@ -221,15 +221,15 @@ var PostTable = function() {
         });
     }
 };
-
-
-
 /************************************/
 /*	FUNCTION: DelTable	 			*/
 /*  PARAMS: 						*/
 /*  REV 1.0.2 VMG					*/
 /************************************/
-var DelTable = function() {
+var DelTable = function () {
+
+    Trace("tableBss.js:DelTable.");
+
     alertify.confirm('Ulises G 5000 R', '¿Eliminar la tabla de calificación de audio ' + $('#IdTable').val() + '?',
         function() {
             $.ajax({

@@ -1,26 +1,5 @@
 block sites
 
-	script(type='text/javascript' src='/javascripts/hardware.js')
-
-script.
-		function CheckingAnyChange(element,f){
-			f();//Llama directamente a GetActiveCfgAndActivate
-		}
-
-		function ResetOldValue(element){
-			var tabs=[];
-			
-			var myElement=document.getElementById(element)
-			if (myElement != null){
-				tabs = myElement.getElementsByTagName("input");
-		 
-				for (var i=0; i < tabs.length; i++){
-					if(tabs[i].oldValue != null){
-						 tabs[i].oldValue = tabs[i].value
-					}
-				}
-			}
-		}
 
 div(id="FormSites", style="display: none; width: 350px")
 	div.menu.fadeNucleo#DivSites(style="position:relative")

@@ -1,9 +1,7 @@
-
 /**************************************************************************************************************/
 /****** Module: configurations.js												*******************************/
 /****** Description: Módulo de soporte a la gestion de configuraciones			*******************************/
 /**************************************************************************************************************/
-
 var blockDrag = false;
 var configModified = false;
 var isActiveConfig = false;
@@ -13,7 +11,10 @@ var configBackup = false;
 /*  PARAMS: 						*/
 /*  REV 1.0.2 VMG					*/
 /************************************/
-var GetConfigurations = function(refreshActiva, f) {
+var GetConfigurations = function (refreshActiva, f) {
+
+    Trace("configurations.js:GetConfigurations: refreshActiva ", refreshActiva);
+
     var cfgString = '';
     translateWord('Configurations', function(result) {
         $('#TitleH3').text(result);
@@ -69,9 +70,14 @@ var GetConfigurations = function(refreshActiva, f) {
         }
     });
 };
+/**
+ * GetConfiguration
+ * @param {any} cfg
+ */
+var GetConfiguration = function (cfg) {
 
+    Trace("configurations.js:GetConfiguration. cfg ", cfg);
 
-var GetConfiguration = function(cfg) {
     if (cfg != '-1') {
         $.ajax({
             type: 'GET',
@@ -137,7 +143,10 @@ var GetConfiguration = function(cfg) {
 /*  PARAMS: 						*/
 /*  REV 1.0.2 VMG					*/
 /************************************/
-var ShowCfg = function(cfg) {
+var ShowCfg = function (cfg) {
+
+    Trace("configurations.js:ShowCfg. cfg ", cfg);
+
     $('#AssignatedGatewaysDiv').hide();
     translateWord('Configurations', function(result) {
         $('#TitleH3').text(result + ': ' + cfg.name);
@@ -240,8 +249,15 @@ var ShowCfg = function(cfg) {
         }
     });
 };
+/**
+ * ShowCfgByName
+ * @param {any} cfgName
+ * @param {any} cfgId
+ */
+var ShowCfgByName = function (cfgName, cfgId) {
 
-var ShowCfgByName = function(cfgName, cfgId) {
+    Trace("configurations.js:ShowCfgByName. cfgName %s, cfgId", cfgName, cfgId);
+
     // Mostrar sus gateways
     var lista = '#cfg-' + cfgName;
     $('.gtwList').hide();
@@ -275,7 +291,10 @@ var ShowCfgByName = function(cfgName, cfgId) {
 /*  PARAMS: 						*/
 /*  REV 1.0.2 VMG					*/
 /************************************/
-var PostConfiguration = function() {
+var PostConfiguration = function () {
+
+    Trace("configurations.js:PostConfiguration");
+
     if ($('#name').val().length == 0) {
         alertify.alert('Ulises G 5000 R', "Identificador de la configuración no válido.");
         alertify.error("Identificador de la configuración no válido.");
@@ -322,7 +341,10 @@ var PostConfiguration = function() {
 /*  PARAMS: 						*/
 /*  REV 1.0.2 VMG					*/
 /************************************/
-var PutConfiguration = function() {
+var PutConfiguration = function () {
+
+    Trace("configurations.js:PutConfiguration.");
+
     if ($('#name').val().length == 0) {
         alertify.alert('Ulises G 5000 R', "Identificador de la configuración no válido.");
         alertify.error("Identificador de la configuración no válido.");
@@ -395,7 +417,10 @@ var PutConfiguration = function() {
 /*  PARAMS: 						*/
 /*  REV 1.0.2 VMG					*/
 /************************************/
-var DelConfiguration = function() {
+var DelConfiguration = function () {
+
+    Trace("configurations.js:DelConfiguration");
+
     if ($('#activa').prop('checked')) {
         // La configuración activa no se puede borrar
         alertify.alert('Ulises G 5000 R', "No se permite eliminar la configuración activa.");
@@ -431,12 +456,17 @@ var DelConfiguration = function() {
             });
     }
 };
+/**
+ * postGatewayToConfig
+ * @param {any} cfgId
+ * @param {any} idGtw
+ */
+var postGatewayToConfig = function (cfgId, idGtw) {
 
-var postGatewayToConfig = function(cfgId, idGtw) {
+    Trace("configurations.js:postGatewayToConfig. cfgId %s, idGtw ", cfgId, idGtw);
+
     var sourceGtw = link_enlaces_libres[idGtw].valor;
     var sourceIdCfgOfGtw = link_enlaces_libres[idGtw].idCFG;
-
-
     // Si la pasarela ya existe en esta configuracion, sólo hay que asignarla
     if (sourceIdCfgOfGtw == cfgId)
         AssignGatewayToConfig(cfgId, idGtw);
@@ -508,8 +538,15 @@ var postGatewayToConfig = function(cfgId, idGtw) {
         });
     }
 };
+/**
+ * AssignGatewayToConfig
+ * @param {any} cfgId
+ * @param {any} sourceGtw
+ */
+var AssignGatewayToConfig = function (cfgId, sourceGtw) {
 
-var AssignGatewayToConfig = function(cfgId, sourceGtw) {
+    Trace("configurations.js:AssignGatewayToConfig. cfgId %s, sourceGtw ", cfgId, sourceGtw);
+
     // Copiar sourceGtw	
     $.ajax({
         type: 'POST',
@@ -527,8 +564,15 @@ var AssignGatewayToConfig = function(cfgId, sourceGtw) {
         }
     });
 };
+/**
+ * deleteGatewayFromConfig
+ * @param {any} cfgId
+ * @param {any} gtwId
+ */
+var deleteGatewayFromConfig = function (cfgId, gtwId) {
 
-var deleteGatewayFromConfig = function(cfgId, gtwId) {
+    Trace("configurations.js:DeleteGatewayFromConfig. cfgId %s, gtwId ", cfgId, gtwId);
+
     $.ajax({
         type: 'DELETE',
         url: '/configurations/' + cfgId + '/gateways/' + gtwId,
@@ -550,7 +594,10 @@ var deleteGatewayFromConfig = function(cfgId, gtwId) {
 /*												*/
 /*  REV 1.0.2 VMG								*/
 /************************************************/
-var UpdateSynchroStateInConfig = function(data) {
+var UpdateSynchroStateInConfig = function (data) {
+
+    // Trace("configurations.js:UpdateSynchroStateInConfig. data ", data);
+
     if (data.length != 0) {
         $.each(data, function(index, value) {
             $(".list li").each(function(index) {
@@ -616,8 +663,13 @@ var UpdateSynchroStateInConfig = function(data) {
         });
     }
 };
+/**
+ * ClickViewFreeGateways
+ * */
+var ClickViewFreeGateways = function () {
 
-var ClickViewFreeGateways = function() {
+    Trace("configurations.js:ClickViewFreeGateways.");
+
     if ($('#CBViewFreeGateways').prop('checked')) {
         $('#CBFreeGateways').show();
         $('#freeGatewaysList').show();
@@ -631,8 +683,13 @@ var ClickViewFreeGateways = function() {
 		$('#AssignatedGatewaysDiv > table > tbody > tr:nth-child(3) > td').attr('style','display:table-column')
 */	}
 };
+/**
+ * ClickCBFreeGateways
+ * */
+var ClickCBFreeGateways = function () {
 
-var ClickCBFreeGateways = function() {
+    Trace("configurations.js:ClickFreeGateways.");
+
     var cfgId = $('#CBFreeGateways option:selected').val();
 
     $("#freeGatewaysList").empty();
@@ -710,8 +767,15 @@ var ClickCBFreeGateways = function() {
         });
     }
 };
+/**
+ * GetGatewaysBelongConfiguration
+ * @param {any} show
+ * @param {any} cfgId
+ */
+var GetGatewaysBelongConfiguration = function (show, cfgId) {
 
-var GetGatewaysBelongConfiguration = function(show, cfgId) {
+    Trace("configurations.js:GetGatewaysBelongConfiguration. show %s, cfgId ", show, cfgId);
+
     link_enlaces = {};
 
     if (!show) {
@@ -852,7 +916,10 @@ var GetGatewaysBelongConfiguration = function(show, cfgId) {
 /*  PARAMS: 						*/
 /*  REV 1.0.2 VMG					*/
 /************************************/
-var CopyConfiguration = function() {
+var CopyConfiguration = function () {
+
+    Trace("configurations.js:CopyConfiguration");
+
     if ($('#nameCopy').val().length == 0) {
         alertify.alert('Ulises G 5000 R', "Identificador de la configuración no válido.");
         alertify.error("Identificador de la configuración no válido.");
@@ -896,8 +963,14 @@ var CopyConfiguration = function() {
         }
     });
 };
+/**
+ * ShowCopyConfiguration
+ * @param {any} on
+ */
+var ShowCopyConfiguration = function (on) {
 
-var ShowCopyConfiguration = function(on) {
+    Trace("configurations.js:ShowCopyConfiguration. on ", on);
+
     if (on === true) {
         if ($('#AssignatedGatewaysDiv').is(':visible')) {
             // translateWord('Gateways',function(result){
@@ -920,7 +993,10 @@ var ShowCopyConfiguration = function(on) {
 /*  PARAMS: 								*/
 /*  REV 1.0.2 VMG							*/
 /********************************************/
-var ExistGatewayWithoutResources = function(idCfg, f) {
+var ExistGatewayWithoutResources = function (idCfg, f) {
+
+    Trace("configurations.js:ExistGatewaysWithoutResources. idCfg ", idCfg);
+
     var retorno = false;
     $.ajax({
         type: 'GET',
@@ -1000,7 +1076,10 @@ var ExistGatewayWithoutResources = function(idCfg, f) {
 /*  PARAMS: 						*/
 /*  REV 1.0.2 VMG					*/
 /************************************/
-var ExistGatewaysOut = function(idCfg, f) {
+var ExistGatewaysOut = function (idCfg, f) {
+
+    Trace("configurations.js:ExistGatewaysOut. idCfg ", idCfg);
+
     var retorno = false;
     $.ajax({
         type: 'GET',
@@ -1044,7 +1123,10 @@ var ExistGatewaysOut = function(idCfg, f) {
 /*  PARAMS: 						*/
 /*  REV 1.0.2 VMG					*/
 /************************************/
-var ActiveCfg = function(f) {
+var ActiveCfg = function (f) {
+
+    Trace("configurations.js:ActiveCfg");
+
     alertify.confirm('Ulises G 5000 R', "¿Desea activar la configuración \"" + $('#name').val() + "\"?",
         function() {
             ExistGatewaysOut($('#DivConfigurations').data('idCFG'), function(existe) {
@@ -1174,15 +1256,18 @@ var ActiveCfg = function(f) {
 			},
 			 function(){ alertify.error('Cancelado');}
 	);
-};
+};*/
+
 /****************************************/
 /*	FUNCTION: GetActiveCfgAndActivate 	*/
 /*  PARAMS: 							*/
 /*  REV 1.0.2 VMG						*/
 /****************************************/
 var GetActiveCfgAndActivate = function (isAutomaticActive) {
-    console.log('GetActiveCfgAndActivate entering: ' + isAutomaticActive);
-    /** 20170516 AGL Este filtro ya no parece tener sentido. Comprobar... */
+
+    Trace("configurations.js:GetActiveCfgAndActivate. isAutomaticActive ", isAutomaticActive);
+
+/** 20170516 AGL Este filtro ya no parece tener sentido. Comprobar... */
     $.ajax({
         type: 'GET',
         //url: '/configurations/active',
@@ -1342,8 +1427,17 @@ var GetActiveCfgAndActivate = function (isAutomaticActive) {
         }
     });
 };
+/**
+ * GotoGateway
+ * @param {any} id
+ * @param {any} name
+ * @param {any} idSite
+ * @param {any} nameSite
+ */
+var GotoGateway = function (id, name, idSite, nameSite) {
 
-var GotoGateway = function(id, name, idSite, nameSite) {
+    Trace("configurations.js:GotoGateway. id %s, name %s, idSite %s, nameSite %s.", id, name, idSite, nameSite);
+
     hidePrevious('#FormSites', '#AddFormsite', '#DivSites');
     GetSites(function() {
         ShowSite(nameSite, idSite);
@@ -1351,13 +1445,15 @@ var GotoGateway = function(id, name, idSite, nameSite) {
     });
 };
 
-
 /************************************/
 /*	FUNCTION: GenerateData 			*/
 /*  PARAMS: 						*/
 /*  REV 1.0.2 VMG					*/
 /************************************/
-var GenerateData = function(idCfg, f) {
+var GenerateData = function (idCfg, f) {
+
+    Trace("configurations.js:GenerateData. idCfg ", idCfg);
+
     $.ajax({
         type: 'GET',
         url: '/configurations/SP_cfg/' + idCfg,
@@ -1372,12 +1468,23 @@ var GenerateData = function(idCfg, f) {
         }
     });
 };
-//allowDrop(ev)
+/**
+ * checkDraggableItem
+ * */
 function checkDraggableItem() {
+
+    Trace("configurations.js:checkDraggableItem");
+
     alertify.alert('Ulises G 5000 R', "Estas seguro?");
 }
-
+/**
+ * getBase64Image
+ * @param {any} img
+ */
 function getBase64Image(img) {
+
+    Trace("configurations.js:getBase64Image");
+
     var canvas = document.createElement("canvas");
     canvas.width = img.width;
     canvas.height = img.height;
@@ -1387,8 +1494,16 @@ function getBase64Image(img) {
     return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 }
 
-/** 20170522 AGL Export to CSV */
-var resSubtipoString = function(tipo, subtipo) {
+/**
+ * resSubtipoString
+ * 20170522 AGL Export to CSV
+ * @param {any} tipo
+ * @param {any} subtipo
+ */
+var resSubtipoString = function (tipo, subtipo) {
+
+    Trace("configurations.js:resSubtipoString. tipo %s, subtipo %s", tipo, subtipo);
+
     if (tipo == 1) {
         var subtiposradio = ["Local-Simple", "Local-P/R", "Local FD-Simple", "Local FD-P/R",
             "Remoto RxTx", "Remoto Tx", "Remoto Rx"];
@@ -1400,7 +1515,16 @@ var resSubtipoString = function(tipo, subtipo) {
     }
     return "????";
 };
-var resColateralString = function(tipo, subtipo, reg) {
+/**
+ * resColateralString
+ * @param {any} tipo
+ * @param {any} subtipo
+ * @param {any} reg
+ */
+var resColateralString = function (tipo, subtipo, reg) {
+
+    Trace("configurations.js:resColateralString. tipo %s, subtipo %s, reg ", tipo, subtipo, reg);
+
     if (tipo == 1) {
         switch (subtipo) {
             case 0:	// Simple
@@ -1429,293 +1553,6 @@ var resColateralString = function(tipo, subtipo, reg) {
     return "????;????;????;????;????";
 };
 
-/** 20170904. Obsoleta-eliminar */
-var ExportCfgToExcel_v0 = function(idCfg, empl) {
-    GenerateData(idCfg, function(result) {
-        var rows = result.result;
-        var cfgName = "";
-        var csvData = "Configuracion;" +
-            // "Emplazamiento;"+
-            "Pasarela;" +
-            "Slot;" +
-            "Posicion;" +
-            "Recurso;" +
-            "Tipo;" +
-            "Subtipo;" +
-            "Colateral TEL;" +
-            "Colateral TxA;" +
-            "Colateral RxA;" +
-            "Colateral TxB;" +
-            "Colateral RxB\r\n";
-        $.each(rows, function(index, reg) {
-            var item = (reg.cfg_name + ";") +
-                // empl.toString() + ";" + 
-                (reg.cgw_name + ";") +
-                (reg.slave + ";") +
-                (reg.posicion + ";") +
-                (reg.resource_name + ";") +
-                (reg.resource_tipo == 1 ? "RADIO;" : reg.resource_tipo == 2 ? "TELEFONICO;" : "????;") +
-                (resSubtipoString(reg.resource_tipo,
-                    reg.resource_tipo == 1 ? reg.tipo_rad : reg.tipo_tel) + ";") +
-                (resColateralString(reg.resource_tipo,
-                    reg.resource_tipo == 1 ? reg.tipo_rad : reg.tipo_tel, reg) + ";") +
-                "\r\n";
-            csvData += item;
-            cfgName = reg.cfg_name;
-        });
-
-        var myLink = document.createElement('a');
-        myLink.download = 'Cfg_' + cfgName + '-' + $('#_hfecha').text() + '_InformeCfg.csv';
-        myLink.href = "data:application/csv," + escape(csvData);
-        myLink.click();
-    });
-};
-
-/** 20170904. Obsoleta-eliminar */
-var ExportCfgToPdf_v0 = function(idCfg) {
-    // Llamar al SP para generar la tabla con los datos necesarios
-    GenerateData(idCfg, function(result) {
-
-        // Generate report
-        var header = [
-            { text: 'Pasarela', style: 'tableHeader' },
-            { text: 'Slot', style: 'tableHeader' },
-            { text: 'Posicion', style: 'tableHeader' },
-            { text: 'Recurso', style: 'tableHeader' },
-            { text: 'Tipo', style: 'tableHeader' },
-            { text: 'Subtipo', style: 'tableHeader' },
-            { text: 'Colateral', style: 'tableHeader' }
-        ];
-
-
-        if (result.errno === 1305) {
-            console.log('Error: ' + result.code);
-            return;
-        }
-        var start = 0;
-        var cuantos = 300;
-        var rows = result.result;
-        var items = rows.slice(start, cuantos);
-        var lastGateway = '';
-        var cfgName = items[0].cfg_name;
-        while (items.length > 0) {
-            // ** Array of arrays!! **/
-            var data = [];
-            data.push(header);
-
-            $.each(items, function(index, value) {
-                var row = [];
-                var uris = [];
-                var red = 'black';
-
-                if (value.resource_tipo == 2) {
-                    red = (value.uri_remota == null || value.uri_remota == '') ? 'red' : 'black';
-                    // Telefónico
-                    row.push({ text: value.cgw_name, color: red });
-                    row.push({ text: value.slave.toString(), color: red });
-                    row.push({ text: value.posicion.toString(), color: red });
-                    row.push({ text: value.resource_name, color: red });
-                    row.push({ text: "TELEFONICO", color: red });
-                    switch (value.tipo_tel) {
-                        case "0":
-                            row.push({ text: 'PP-BL', color: red });
-                            break;
-                        case "1":
-                            row.push({ text: 'PP-BC', color: red });
-                            break;
-                        case "2":
-                            row.push({ text: 'PP-AB', color: red });
-                            break;
-                        case "3":
-                            row.push({ text: 'ATS-R2', color: red });
-                            break;
-                        case "4":
-                            row.push({ text: 'ATS-N5', color: red });
-                            break;
-                        case "5":
-                            row.push({ text: 'LCEN', color: red });
-                            break;
-                        case "6":
-                            row.push({ text: 'ATS-QSIG', color: red });
-                            break;
-                        case "7":
-                            row.push({ text: 'TUN-LOC', color: red });
-                            break;
-                        case "8":
-                            row.push({ text: 'TUN-REM', color: red });
-                            break;
-                    }
-                    row.push({ text: value.uri_remota != null ? value.uri_remota : '', color: red });
-
-                    data.push(row);
-                }
-                else {
-                    // Radio
-                    switch (value.tipo_rad) {
-                        case "0": // Local-Simple
-                            red = ((value.uriTxA == null || value.uriRxA == null) ? 'red' : 'black');
-
-                            row.push({ text: value.cgw_name, color: red });
-                            row.push({ text: value.slave.toString(), color: red });
-                            row.push({ text: value.posicion.toString(), color: red });
-                            row.push({ text: value.resource_name, color: red });
-                            row.push({ text: "RADIO", color: red });
-                            row.push({ text: "Local-Simple", color: red });
-                            uris.push({ text: 'Tx:' + (value.uriTxA != null ? value.uriTxA : ''), color: red });
-                            uris.push({ text: 'Rx:' + (value.uriRxA != null ? value.uriRxA : ''), color: red });
-                            row.push(uris);
-                            break;
-                        case "1": // Local-P/R
-                            red = (value.uriTxA == null || value.uriRxA == null || value.uriTxB == null || value.uriRxB == null) ? 'red' : 'black';
-
-                            row.push({ text: value.cgw_name, color: red });
-                            row.push({ text: value.slave.toString(), color: red });
-                            row.push({ text: value.posicion.toString(), color: red });
-                            row.push({ text: value.resource_name, color: red });
-                            row.push({ text: 'RADIO', color: red });
-                            row.push({ text: 'Local-P/R', color: red });
-                            uris.push({ text: 'Tx A:' + (value.uriTxA != null ? value.uriTxA : ''), color: red });
-                            uris.push({ text: 'Tx B:' + (value.uriTxB != null ? value.uriTxB : ''), color: red });
-                            uris.push({ text: 'Rx A:' + (value.uriRxA != null ? value.uriRxA : ''), color: red });
-                            uris.push({ text: 'Rx B:' + (value.uriRxB != null ? value.uriRxB : ''), color: red });
-                            row.push(uris);
-                            break;
-                        case "2": // Local FD-Simple
-                            red = (value.uriTxA == null || value.uriRxA == null) ? 'red' : 'black';
-
-                            row.push({ text: value.cgw_name, color: red });
-                            row.push({ text: value.slave.toString(), color: red });
-                            row.push({ text: value.posicion.toString(), color: red });
-                            row.push({ text: value.resource_name, color: red });
-                            row.push({ text: 'RADIO', color: red });
-                            row.push({ text: 'Local FD-Simple', color: red });
-                            uris.push({ text: 'Tx:' + (value.uriTxA != null ? value.uriTxA : ''), color: red });
-                            uris.push({ text: 'Rx:' + (value.uriRxA != null ? value.uriRxA : ''), color: red });
-                            row.push(uris);
-                            break;
-                        case "3": // Local FD-P/R
-                            red = (value.uriTxA == null || value.uriRxA == null || value.uriTxB == null || value.uriRxB == null);
-
-                            row.push({ text: value.cgw_name, color: red });
-                            row.push({ text: value.slave.toString(), color: red });
-                            row.push({ text: value.posicion.toString(), color: red });
-                            row.push({ text: value.resource_name, color: red });
-                            row.push({ text: 'RADIO', color: red });
-                            row.push({ text: 'Local FD-P/R', color: red });
-                            uris.push({ text: 'Tx A:' + (value.uriTxA != null ? value.uriTxA : ''), color: red });
-                            uris.push({ text: 'Tx B:' + (value.uriTxB != null ? value.uriTxB : ''), color: red });
-                            uris.push({ text: 'Rx A:' + (value.uriRxA != null ? value.uriRxA : ''), color: red });
-                            uris.push({ text: 'Rx B:' + (value.uriRxB != null ? value.uriRxB : ''), color: red });
-                            row.push(uris);
-                            break;
-                        case "4": // Remoto RxTx
-                            row.push({ text: value.cgw_name, color: red });
-                            row.push({ text: value.slave.toString(), color: red });
-                            row.push({ text: value.posicion.toString(), color: red });
-                            row.push({ text: value.resource_name, color: red });
-                            row.push({ text: 'RADIO', color: red });
-                            row.push('Remoto RxTx');
-                            row.push('');
-                            break;
-                        case "5": // Remoto Tx
-                            row.push({ text: value.cgw_name, color: red });
-                            row.push({ text: value.slave.toString(), color: red });
-                            row.push({ text: value.posicion.toString(), color: red });
-                            row.push({ text: value.resource_name, color: red });
-                            row.push({ text: 'RADIO', color: red });
-
-                            row.push('Remoto Tx');
-                            row.push('');
-                            break;
-                        case "6": // Remoto Rx
-                            row.push({ text: value.cgw_name, color: red });
-                            row.push({ text: value.slave.toString(), color: red });
-                            row.push({ text: value.posicion.toString(), color: red });
-                            row.push({ text: value.resource_name, color: red });
-                            row.push({ text: 'RADIO', color: red });
-
-                            row.push('Remoto Rx');
-                            row.push('');
-                            break;
-                    }
-                    data.push(row);
-                }
-            });
-
-            var base64 = getBase64Image(document.getElementById("imgLogo"));
-            var docDefinition = {
-                footer: function(currentPage, pageCount) { return { text: currentPage.toString() + ' / ' + pageCount, alignment: 'center', margin: [0, 5, 0, 0] }; },
-                /*				background: function(currentPage){
-                                    if (currentPage > 1)
-                                        return	{ text: lastGateway, style: 'subheader'};
-                                },
-                */				// a string or { width: number, height: number }
-                pageSize: 'A4',
-                // by default we use portrait, you can change it to landscape if you wish
-                pageOrientation: 'landscape',
-                content: [
-                    {
-                        layout: 'noBorders',
-                        table: {
-                            widths: [100, '*'],
-                            body: [
-                                [
-                                    {
-                                        image: 'data:image/jpeg;base64,' + base64,
-                                        alignment: 'left'
-                                    },
-                                    { text: $('#_hfecha').text() + ' ' + $('#_hsolohora').text(), style: 'subheader', alignment: 'right' }
-                                ]
-                            ]
-                        }
-                    },
-                    { text: 'CONFIGURACION: ' + cfgName, style: 'header' },
-                    //{ text:  data[start + 1][0], style: 'subheader' },
-                    {
-                        style: 'tableExample',
-                        table: {
-                            headerRows: 1,
-                            // keepWithHeaderRows: 1,
-                            // dontBreakRows: true,
-                            body: data
-                        }
-                    }
-                ],
-                styles: {
-                    header: {
-                        fontSize: 18,
-                        bold: true,
-                        margin: [0, 0, 0, 10],
-                        color: 'red',
-                        alignment: 'center'
-                    },
-                    subheader: {
-                        fontSize: 12,
-                        bold: true,
-                        color: '#D2747D',
-                        margin: [0, 10, 0, 5]
-                    },
-                    tableExample: {
-                        margin: [0, 5, 0, 15]
-                    },
-                    tableHeader: {
-                        bold: true,
-                        fontSize: 13,
-                        color: 'black'
-                    }
-                },
-                defaultStyle: {
-                    // alignment: 'justify'
-                }
-            };
-
-            //pdfMake.createPdf(docDefinition).open();
-            pdfMake.createPdf(docDefinition).download('U5K-G-' + cfgName + '-' + $('#_hfecha').text() + '.pdf');
-            items = rows.slice(++start * cuantos, (start * cuantos) + cuantos);
-        }
-    });
-};
-
 /** 20170904. Nuevas Versiones de Informes de Configuracion*/
 /** */
 /* */
@@ -1726,8 +1563,15 @@ var RdTypes = [
 var PhTypes = [
     "BL", "BC", "AB", "ATS-R2", "ATS-N5", "LCEN", "ATS-QSIG"
 ];
-/***/
+
+/**
+ * PdfPrintGws
+ * @param {any} gws
+ */
 function PdfPrintGws(gws) {
+
+    Trace("configurations.js:PdfPrintGws. gws", gws);
+
     var content = [];
     content.push({ text: gws.length.toString() + ' Pasarelas en la configuracion', style: 'level0' });
     for (igw = 0; igw < gws.length; igw++) {
@@ -1738,8 +1582,15 @@ function PdfPrintGws(gws) {
     }
     return content;
 }
-/**/
+/**
+ * PdfPrintGw
+ * @param {any} content
+ * @param {any} gw
+ */
 function PdfPrintGw(content, gw) {
+
+    Trace("configurations.js:PdfPrintGw. gw", gw);
+
     content.push({ text: 'Pasarela ' + gw.gw + ', en ' + gw.site, style: 'level1' });
     content.push({ text: 'Configuracion Radio. ' + gw.radios.length + ' Recursos.', style: 'level2' });
     if (gw.radios.length > 0) {
@@ -1772,8 +1623,15 @@ function PdfPrintGw(content, gw) {
         }
     }
 }
-/** */
+/**
+ * PdfPrintRadioRs
+ * @param {any} content
+ * @param {any} rd
+ */
 function PdfPrintRadioRs(content, rd) {
+
+    Trace("configurations.js:PdfPrintRadioRs. rd ", rd);
+
     var rdInfo1 = ('(' + (rd.columna.toString() + '/' + rd.fila) + ')');
     rdInfo1 += (': ' + rd.nombre);
     var rdInfo2 = (rd.frecuencia.toFixed(3) + ' MHz.');
@@ -1795,8 +1653,15 @@ function PdfPrintRadioRs(content, rd) {
         ], style: 'level3'
     });
 }
-/** */
+/**
+ * PdfPrintPhoneRs
+ * @param {any} content
+ * @param {any} ph
+ */
 function PdfPrintPhoneRs(content, ph) {
+
+    Trace("configurations.js:PdfPrintPhoneRs. ph ", ph);
+
     var phInfo1 = ('(' + (ph.columna.toString() + '/' + ph.fila) + ')');
     phInfo1 += (': ' + ph.nombre);
     var phInfo2 = (PhTypes[ph.tipo_interfaz_tel]);
@@ -1809,17 +1674,29 @@ function PdfPrintPhoneRs(content, ph) {
         ], style: 'level3'
     });
 }
-
-/** */
+/**
+ * PdfPrintRadioCol
+ * @param {any} content
+ * @param {any} col
+ */
 function PdfPrintRadioCol(content, col) {
+
+    Trace("configurations.js:PdfPrintRadioCol. col ", col);
+
     var clInfo = 'EMPL ' + Math.round(col.nivel_colateral / 2);
     clInfo += (', ' + col.tipo);
     clInfo += (': ' + col.uri);
     content.push({ text: clInfo, style: 'level5' });
 }
+/**
+ * ExportCfgToExcel
+ * @param {any} idCfg
+ * @param {any} empl
+ */
+var ExportCfgToExcel = function (idCfg, empl) {
 
-/** */
-var ExportCfgToExcel = function(idCfg, empl) {
+    Trace("configurations.js:ExportCfgToExcel. idCfg ", idCfg);
+
     GenerateData(idCfg, function(gws) {
         var cfgName = gws.length == 0 ? "NO-GW" : gws[0].cfg;
         var strData = 'Config' +
@@ -1899,8 +1776,14 @@ var ExportCfgToExcel = function(idCfg, empl) {
         //    hiddenElement.click();		
     });
 };
+/**
+ * ExportCfgToPdf
+ * @param {any} idCfg
+ */
+var ExportCfgToPdf = function (idCfg) {
 
-var ExportCfgToPdf = function(idCfg) {
+    Trace("configurations.js:ExportCfgToPdf. idCfg ", idCfg);
+
     // Llamar al SP para generar la tabla con los datos necesarios
     GenerateData(idCfg, function(data) {
         var cfgName = data.length == 0 ? "NO-GW" : data[0].cfg;
@@ -1996,7 +1879,12 @@ var refreshTime = 1000;
 /** Para no forrar al servidor... */
 var answered1 = true;
 var answered2 = true;
+/**
+ * SynchronizedGateways
+ * */
 function SynchronizedGateways() {
+
+    // Se llama de forma periodica => Trace("configurations.js:SynchronizedGateways.");
 
     if (answered1 == true) {
         answered1 = false;
@@ -2039,8 +1927,13 @@ function SynchronizedGateways() {
     }
     setTimeout(function () { SynchronizedGateways() }, refreshTime);
 }
-
+/**
+ * EnableAplicarCambios.
+ * */
 function EnableAplicarCambios() {
+
+    // Se llama de Forma Periodica => Trace("configurations.js:EnableAplicarCambios.");
+
     //Quitamos el translate para no pedir continuamente el fichero de lang
     //translateWord('Activate',function(result){
 
@@ -2066,3 +1959,19 @@ function EnableAplicarCambios() {
     }
     setTimeout(function () { EnableAplicarCambios(); }, 1000);
 }
+
+/** 20201103. From PostConfiguration.jade */
+/**
+ * validateYploadForm
+ * */
+function validateUploadForm() {
+
+    Trace("configuration.js:validateUploadForm.");
+    if (document.getElementById("fileselectbtn").files.length == 0) {
+        console.log("no files selected");
+        alertify.error('No hay ningun fichero seleccionado');
+        return false;
+    }
+    return true;
+}
+

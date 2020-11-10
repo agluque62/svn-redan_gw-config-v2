@@ -23,6 +23,8 @@ function OnCbBssMethod(obj) {
 /****************************************/
 function ShowUris(data) {
 
+    Trace("hardware.js:ShowUris. data ", data);
+
     loadUriSites(true);
 
     if (data != null && data.uris != null) {
@@ -66,8 +68,14 @@ function ShowUris(data) {
         }
     }
 }
-
+/**
+ * loadUriSites
+ * @param {any} isClean
+ */
 function loadUriSites(isClean) {
+
+    Trace("hardware.js:loadUriSites. isClean ", isClean);
+
     if (isClean) {
         //Limpiar Campos
         $('#UriTxA1').val('');
@@ -144,7 +152,13 @@ function loadUriSites(isClean) {
         $('#RxBRow3').show();
     }
 }
-var GetHardware = function() {
+/**
+ * GetHardware
+ * */
+var GetHardware = function () {
+
+    Trace("hardware.js:GetHardware");
+
     //$('#Component').text('Hardware');	// Titulo
     //$("#NewHardware").show();
     //$('#BtnShowSlaves').hide();
@@ -167,8 +181,14 @@ var GetHardware = function() {
         }
     });
 };
-
+/**
+ * LoadUri
+ * @param {any} data
+ */
 function LoadUri(data) {
+
+    Trace("hardware.js:LoadUri. data ", data);
+
     var options = '';
     //var optionsAssigned = '<option value="0">Select URI</option>';
 
@@ -184,8 +204,14 @@ function LoadUri(data) {
         $('#ListUris option:eq(1)');
     } else if (DEBUG) alertify.error("Lista URIS vacia...");
 }
-
+/**
+ * LoadAssignedUriList
+ * @param {any} data
+ */
 function LoadAssignedUriList(data) {
+
+    Trace("hardware.js:LoadAssignedUriList. data ", data);
+
     var optionsAssigned = '<option value="0">Selecciona URI</option>';
 
     for (var i = 0; data != 'NO_DATA' && i < data.uris.length; i++) {
@@ -194,8 +220,13 @@ function LoadAssignedUriList(data) {
     $('#AssignedUriList').html(optionsAssigned);
     $('#AssignedUriList option:eq(1)');
 }
-
+/**
+ * NextSlave
+ * */
 function NextSlave() {
+
+    Trace("hardware.js:NextSlave");
+
     $('#SlavesZone table:nth-child(' + numTable + ')').hide();
     $('#SlavesZone').animate({ left: '600px' });
 
@@ -205,8 +236,13 @@ function NextSlave() {
     $('#SlavesZone').animate({ left: '0' });
     $('#SlavesZone table:nth-child(' + numTable + ')').show();
 }
-
+/**
+ * PrevSlave
+ * */
 function PrevSlave() {
+
+    Trace("hardware.js:PrevSlave");
+
     $('#SlavesZone').animate({ left: '600px' });
     $('#SlavesZone table:nth-child(' + numTable + ')').hide();
 
@@ -216,16 +252,14 @@ function PrevSlave() {
     $('#SlavesZone table:nth-child(' + numTable + ')').show();
     $('#SlavesZone').animate({ left: '0' });
 }
-
+/**
+ * GetSlave
+ * @param {any} idSlave
+ */
 function GetSlave(idSlave) {
-	/*
-	$.ajax({type: 'GET', 
- 		url: '/destinations', 
- 		success: function(data){
- 			ShowFrequencies(data)
- 		}
-	});
-*/
+
+    Trace("hardware.js:GetSlave. idSlave", idSlave);
+
     $.ajax({
         type: 'GET',
         url: '/sites',
@@ -266,8 +300,13 @@ function GetSlave(idSlave) {
         }
     });
 }
-
+/**
+ * NewSlave
+ * */
 function NewSlave() {
+
+    Trace("hardware.js:NewSlave.");
+
     if (!$('#BigSlavesZone').is(':visible')) {
         $('#DivHardware').animate({ width: '635px' });
         $('#BigSlavesZone').show();
@@ -295,8 +334,13 @@ function NewSlave() {
     ShowNewSlave();
     $('#SlavesZone').animate({ bottom: '0' });
 }
-
+/**
+ * ShowNewSlave
+ * */
 function ShowNewSlave() {
+
+    Trace("hardware.js:ShowNewSlave");
+
     translateWord('Hardware', function(result) {
         $('#HardwareH3').text(result);
     });
@@ -318,12 +362,15 @@ function ShowNewSlave() {
     $('#BtnCopySlave').hide();
     $('#BtnRemoveSlave').hide();
 }
-
+/**
+ * AddSlave
+ * @param {any} gatewayName
+ * @param {any} slot
+ * @param {any} f
+ */
 function AddSlave(gatewayName, slot, f) {
-    // if ($('#IdSlave').val().length == 0){
-    // 	alert('The name of slave card is invalid.')
-    // 	return;
-    // }
+
+    Trace("hardware.js:AddSlave. gwName %s, slot %s", gatewayName, slot);
 
     $.ajax({
         type: 'POST',
@@ -358,8 +405,13 @@ function AddSlave(gatewayName, slot, f) {
         }
     });
 }
-
+/**
+ * UpdateSlave
+ * */
 function UpdateSlave() {
+
+    Trace("hardware.js:UpdateSlave");
+
     if ($('#CBEmplazamientoOfSlave option:selected').val() != '-1' &&
         // Si el grupo no existe se da de alta
         $('#CBGroupOfSlave option:selected').val() == '-1') {
@@ -425,8 +477,13 @@ function UpdateSlave() {
         });
     }
 }
-
+/**
+ * DeleteSlave
+ * */
 function DeleteSlave() {
+
+    Trace("hardware.js:DeleteSlave.");
+
     alertify.confirm('Ulises G 5000 R', "¿Eliminar la tarjeta esclava \"" + $('#SlaveId').val() + "\"?",
         function() {
             $.ajax({
@@ -456,9 +513,17 @@ function DeleteSlave() {
     );
 
 }
-
+/**
+ * AssigSlaveToGateway
+ * @param {any} idSlave
+ * @param {any} idCgw
+ * @param {any} myRank
+ */
 function AssigSlaveToGateway(idSlave, idCgw, myRank) {
     var url = '/gateways/' + idCgw + '/hardware/' + idSlave;
+
+    Trace("hardware.js:AssigSlaveToGateway. url %s, rank ", url, rank);
+
     $.ajax({
         type: 'POST',
         dataType: 'json',
@@ -483,9 +548,17 @@ function AssigSlaveToGateway(idSlave, idCgw, myRank) {
         // }
     });
 }
-
+/**
+ * ReleaseSlaveFromGateway
+ * @param {any} idCgw
+ * @param {any} idSlave
+ * @param {any} rank
+ */
 function ReleaseSlaveFromGateway(idCgw, idSlave, rank) {
     var url = '/gateways/' + idCgw + '/hardware/' + idSlave;
+
+    Trace("hardware.js:ReleaseSlaveFromGateway. url %s, rank ", url, rank);
+
     $.ajax({
         type: 'DELETE',
         dataType: 'json',
@@ -519,6 +592,9 @@ function ReleaseSlaveFromGateway(idCgw, idSlave, rank) {
 /****************************************/
 function changeSlaveFromGateway(rank, idSlave, idCgw) {
     var url = '/gateways/' + idCgw + '/hardware/' + idSlave;
+
+    Trace("hardware.js:changeSlaveFromGateway. url %s, rank ", url, rank);
+
     $.ajax({
         type: 'PUT',
         dataType: 'json',
@@ -542,8 +618,14 @@ function changeSlaveFromGateway(rank, idSlave, idCgw) {
         }
     });
 }
-
+/**
+ * CopySlave
+ * @param {any} commit
+ */
 function CopySlave(commit) {
+
+    Trace("hardware.js:CopySlave. commit ", commit);
+
     if (!commit) {
         $('#BtnUpdateSlave').hide();
         $('#BtnRemoveSlave').hide();
@@ -598,8 +680,13 @@ function CopySlave(commit) {
         CancelCopySlave();
     }
 }
-
+/**
+ * CancelCopySlave
+ * */
 function CancelCopySlave() {
+
+    Trace("hardware.js:CancelCopySlave");
+
     translateWord('Copy', function(result) {
         $('#BtnCopySlave').text(result);
     });
@@ -617,8 +704,14 @@ function CancelCopySlave() {
     $('#BtnUpdateSlave').show();
     $('#BtnRemoveSlave').show();
 }
-
+/**
+ * ShowDataSlave
+ * @param {any} data
+ */
 function ShowDataSlave(data) {
+
+    Trace("hardware.js:ShowDataSlave. data ", data);
+
     var table = '';
     var row = '';
     var lastItem = '';
@@ -689,6 +782,8 @@ function ShowDataSlave(data) {
  */
 function BlockResourceZone(block, fila) {
 
+    Trace("hardware.js:BlockResourceZone. fila %s, block ", fila, block);
+
     if (block && blockZone && fila - 1 != lastSelectedResource) {
         // Si hay un recurso seleccionado y pulsan sobre otro distinto se ignora
         //$('table.resource').attr('style','display:block');
@@ -747,8 +842,14 @@ function BlockResourceZone(block, fila) {
         $('#TblTools').attr('style', 'display:table-row');
     }
 }
-
+/**
+ * ShowNewResource
+ * @param {any} fila
+ */
 function ShowNewResource(fila) {
+
+    Trace("hardware.js:ShowNewResource. fila ", fila);
+
     // Si hay un recurso seleccionado y pulsan sobre otro distinto se ignora
     /** 20170511. AGL PERFILES. TODO. Que perfiles estan permitidos??? */
     if (Authorize($('#BodyRedan').data('perfil'), [ccAdminProfMsc, ccConfiProfMsc]) == false) {
@@ -810,8 +911,14 @@ function ShowNewResource(fila) {
 	$('#BtnResourceParameters').hide();
 	$('#BtnListasBN').hide();*/
 }
-
+/**
+ * ShowLittleSlaves
+ * @param {any} data
+ */
 function ShowLittleSlaves(data) {
+
+    Trace("hardware.js:ShowLittleSlaves. data ", data);
+
     var freeSlaves = [];
 
     $("#listSlaves").empty();
@@ -823,8 +930,14 @@ function ShowLittleSlaves(data) {
         }
     });
 }
-
+/**
+ * ShowResource
+ * @param {any} visible
+ */
 function ShowResource(visible) {
+
+    Trace("hardware.js:ShowResource. visible ", visible);
+
     if (visible > 0) {
         // Obtener datos del recurso idRecurso
         $.ajax({
@@ -868,8 +981,15 @@ function ShowResource(visible) {
         }
     */
 }
-
+/**
+ * ShowDataOfResource
+ * @param {any} data
+ * @param {any} f
+ */
 function ShowDataOfResource(data, f) {
+
+    Trace("hardware.js:ShowDataOfResource. data ", data);
+
     if (data != null && data.recursos.length > 0) {
         // Guardar el POS_idPOS del recurso: se utiliza en RemoveResource()
         $('table.resource').data('idPos', data.recursos[0].POS_idPOS);
@@ -993,8 +1113,14 @@ function ShowDataOfResource(data, f) {
         // }
     }
 }
-
+/**
+ * UpdateUriFromList
+ * @param {any} index
+ */
 function UpdateUriFromList(index) {
+
+    Trace("hardware.js:UpdateUriFromList. index ", index);
+
     var uri = $('#WhiteBlackList tr:nth-child(' + (index + 1) + ')').data('idurilistas');
     var rsc = $('table.resource').data('idRecurso');
     //	var black=$('#WhiteBlackList tr:nth-child(' + (index + 1) + ') td:nth-child(2) input').prop('checked');
@@ -1021,8 +1147,14 @@ function UpdateUriFromList(index) {
         }
     });
 }
-
+/**
+ * RemoveUriFromList
+ * @param {any} index
+ * @param {any} f
+ */
 function RemoveUriFromList(index, f) {
+
+    Trace("hardware.js:RemoveUriFromList. index", index);
 
     alertify.confirm('Ulises G 5000 R', "¿Eliminar la URI \"" + $('#WhiteBlackList tr:nth-child(' + (index) + ')').children().html() + "\"?",
         function() {
@@ -1070,12 +1202,15 @@ function RemoveUriFromList(index, f) {
     );
 
 }
-
 /**
+ * GetListsFromResource
  * Obtiene las listas blancas y negras del recurso
  * @param {int} rsc id del recurso
  */
 function GetListsFromResource(rsc) {
+
+    Trace("hardware.js:GetListFromResource. rsc", rsc);
+
     $.ajax({
         type: 'GET',
         url: '/resources/' + rsc + '/lists',
@@ -1084,8 +1219,13 @@ function GetListsFromResource(rsc) {
         }
     });
 }
-
+/**
+ * ShowListsFromResource
+ * @param {any} data
+ */
 function ShowListsFromResource(data) {
+
+    Trace("hardware.js:ShowListFromResource. data ", data);
 
     /** 20170511. AGL. Perfiles */
     var clase = Authorize($('#BodyRedan').data('perfil'), [ccAdminProfMsc, ccConfiProfMsc]) == false ? " class='New NotAllowedTd'" : "";
@@ -1178,8 +1318,15 @@ function ShowListsFromResource(data) {
     // });
 
 }
-
+/**
+ * AddUriToList
+ * @param {any} element
+ * @param {any} f
+ */
 function AddUriToList(element, f) {
+
+    Trace("hardware.js:AddUriToList");
+
     var index = element.parentElement.parentElement.rowIndex;
     var uri = $('#AssignedUriList option:selected').val();
     var rsc = $('table.resource').data('idRecurso');
@@ -1225,8 +1372,12 @@ function AddUriToList(element, f) {
         }
     }
 }
-
+/**
+ * RemoveUri
+ * */
 function RemoveUri() {
+
+    Trace("hardware.js:RemoveUri");
 
     alertify.confirm('Ulises G 5000 R', "¿Eliminar la URI \"" + $('#ListUris option:selected').val() + "\"?",
         function() {
@@ -1274,8 +1425,14 @@ function RemoveUri() {
     );
 
 }
-
+/**
+ * AddUri
+ * @param {any} element
+ */
 function AddUri(element) {
+
+    Trace("hardware.js:AddUri. element ", element);
+
     var index = element.parentElement.parentElement.rowIndex;
 
     translateWord('Add', function(result) {
@@ -1293,10 +1450,15 @@ function AddUri(element) {
     $('#NewUri').val('');
     $('#NewUri').show();
 }
-
+/**
+ * CommitUri
+ * @param {any} index
+ */
 function CommitUri(index) {
     var uri = ($('#NewUri').val() != '' ? 'sip:' + $('#NewUri').val() : $('#NewUri').val());
     var rsc = $('table.resource').data('idRecurso');
+
+    Trace("hardware.js:CommitUri. index %s, rsc %s, uri ", index, rsc, uri);
 
     $('#NewUri').hide();
     translateWord('AddURI', function(result) {
@@ -1349,8 +1511,13 @@ function CommitUri(index) {
 
     CancelAddUri();
 }
-
+/**
+ * CancelAddUri
+ * */
 function CancelAddUri() {
+
+    Trace("hardware.js:CancelAddUri.");
+
     translateWord('AddURI', function(result) {
         $('#BtnAddUri').attr('onclick', 'AddUri(this)');
         $('#BtnAddUri').animate({ top: '0' });
@@ -1365,11 +1532,12 @@ function CancelAddUri() {
 
     $('#NewUri').hide();
 }
-
+/**
+ * ResetResourcePanel
+ * */
 function ResetResourcePanel() {
-    //$('#Resource').attr('style','display:table-row');
-    //$('.resource tr:nth-child(4)').show();	
-    //$('.resource tr:nth-child(7)').show();
+
+    Trace("hardware.js:ResetResourcePanel");
 
     $('#DestinationRow').attr('style', 'display:table-row');
     $('#BlackWhiteRow').attr('style', 'display:table-row');
@@ -1401,21 +1569,17 @@ function ResetResourcePanel() {
     $('#TbInactividad').val('0');
 
 }
-/*
-var ShowFrequencies = function(data){
-	$("#SFrecuencia").empty();
-
-	translateWord('AddDestination',function(result){
-		var actualiza=result;	
-    	var options = '<option value="" disabled selected>' + actualiza + '</option>';
-		$.each(data.destinations, function(index, value){
-			options += '<option value="' + value.idDESTINOS + '">' + value.name + '</option>';
-		});
-		$('#SFrecuencia').html(options);
-	});
-}
-*/
+/**
+ * AddResource
+ * @param {any} slaveId
+ * @param {any} col
+ * @param {any} fila
+ * @param {any} f
+ */
 function AddResource(slaveId, col, fila, f) {
+
+    Trace("hardware.js:AddResource. slaveId %s, col %s, fil %s", slaveId, col, fil);
+
     var idSlave = slaveId;	//$('#SlaveId').val();
 
     // Permitir dar de alta recursos solo si tiene un identificador
@@ -1631,15 +1795,31 @@ function AddResource(slaveId, col, fila, f) {
 }
 
 /** 20170516 AGL. Validaciones  */
+/**
+ * localValidateAtsNumber
+ * @param {any} num
+ */
 function localValidateAtsNumber(num) {
+
+    Trace("hardware.js:localValidateAtsNumber. num ", num);
+
     if (num=="")
         return true;
     var regx_atsval = /^[2-3][0-9]{5}$/;
     var matchVal = num.match(regx_atsval);
     return matchVal ? true : false;
 }
-
+/**
+ * UpdateResource
+ * @param {any} slaveId
+ * @param {any} col
+ * @param {any} fila
+ * @param {any} f
+ */
 function UpdateResource(slaveId, col, fila, f) {
+
+    Trace("hardware.js:UpdateResource. slaveId %s, col %s, fil %s", slaveId, col, fila);
+
     loadingContent();
     if ($('#SResourceType option:selected').val() == 1) { //Recurso Radio
         if ($('#LbTypeRadio option:selected').val() == 0) { //Radio Local Simple
@@ -1714,44 +1894,21 @@ function UpdateResource(slaveId, col, fila, f) {
             UpdateResourceReally(slaveId, col, fila, f);
     }
 }
-
-/*function UpdateResource(slaveId, col, fila, loadIndex, totalIndex, f) {
-	if ($('#LbTypeRadio option:selected').val() == 0 && ( ($('#UriRxA')[0].value == '')
-		|| ($('#UriRxA')[0].value == null) ) && ( ($('#UriTxA')[0].value == '')
-		|| ($('#UriTxA')[0].value == null) ) ) {
-		alertify.confirm('Ulises G 5000 R', "Los Campos URI para Tx y Rx tienen que tener un valor",
-			function(){
-				GotoResource(fila, col, true, loadIndex, totalIndex)
-			},
-			function(){ alertify.error('Cancelado');}
-		);
-	}
-	else
-		UpdateResourceReally(slaveId, col, fila, loadIndex, totalIndex, f);
-}*/
-
+/**
+ * UpdateResourceReally
+ * @param {any} slaveId
+ * @param {any} col
+ * @param {any} fila
+ * @param {any} f
+ */
 function UpdateResourceReally(slaveId, col, fila, f) {
 
-    var idSlave = slaveId; // $('#SlaveId').val();
-    //var newIndex=0;
-    //$('#DivHardware').animate({width: '712px'})
-    //$('#BigSlavesZone').animate({width: '505px'});
+    Trace("hardware.js:UpdateResourceReally. slaveId %s, col %s, fila %s", slaveId, col, fila);
 
-	/*if ($('#SResourceType option:selected').val() == 1) { //Radio
-		if ( ($('#LbTypeRadio option:selected').val()==2) || ($('#LbTypeRadio option:selected').val()==3) )
-			newIndex=8;
-		else
-			newIndex=2;
-	}
-	else
-		newIndex=1;
-	
-	var newTotal = parseInt(totalIndex) + (newIndex - parseInt(loadIndex));*/
+    var idSlave = slaveId;
 
     /** 20170511 AGL. PERFILES */
     if (Authorize($('#BodyRedan').data('perfil'), [ccAdminProfMsc, ccConfiProfMsc]) == true) {
-        /*if (($('#BodyRedan').data('perfil') & 1) != 1){
-            ***************************************************/
         if ($('#TbNameResource').val().length > 0) {
             if ($('#SResourceType option:selected').val() == 1) {
                 if ($('#IdDestination').val() == '') {
@@ -1822,18 +1979,16 @@ function UpdateResourceReally(slaveId, col, fila, f) {
         blockZone = false;
         //GetSlave(idSlave);
     }
-
-    // $('#BtnRemoveResource').hide();
-    // $('#BtnResourceParameters').hide();
-    // $('#BtnListasBN').hide();
 }
-
 /****************************************/
 /*	FUNCTION: removeRadioResource 		*/
 /*  PARAMS: idResource					*/
 /*  REV 1.0.2 VMG						*/
 /****************************************/
 function removeRadioResource(idResource) {
+
+    Trace("hardware.js:removeRadioResource. idResource ", idResource);
+
     alertify.confirm('Ulises G 5000 R', "¿Eliminar el recurso \"" + $('#TbNameResource').val() + "\"?",
         function() {
             $.ajax({
@@ -1865,6 +2020,9 @@ function removeRadioResource(idResource) {
 /*  REV 1.0.2 VMG						*/
 /****************************************/
 function removePhoneResource(idResource) {
+
+    Trace("hardware.js:removePhoneResource. idResource ", idResource);
+
     alertify.confirm('Ulises G 5000 R', "¿Eliminar el recurso \"" + $('#TbNameResource').val() + "\"?",
         function() {
             $.ajax({
@@ -1890,8 +2048,13 @@ function removePhoneResource(idResource) {
         function() { alertify.error('Cancelado'); }
     );
 }
-
+/**
+ * RemoveResource
+ * @param {any} f
+ */
 function RemoveResource(f) {
+
+    Trace("hardware.js:RemoveResource");
 
     alertify.confirm('Ulises G 5000 R', "¿Eliminar el recurso \"" + $('#TbNameResource').val() + "\"?",
         function() {
@@ -1933,10 +2096,12 @@ function RemoveResource(f) {
     );
 
 }
-
+/**
+ * ResourceParameters
+ * */
 function ResourceParameters() {
-    // var fila = lastSelectedResource + 1;
-    // blockZone = true;
+
+    Trace("hardware.js:ResourceParameters");
 
     // Simular click sobre tab Hw.
     $('#aHw').click();
@@ -1956,8 +2121,15 @@ function ResourceParameters() {
         GetTelResourceParameters($('table.resource').data('idRecurso'), $('#TbNameResource').val());
     }
 }
-
+/**
+ * GetRadioResourceParameters
+ * @param {any} idRecurso
+ * @param {any} name
+ */
 function GetRadioResourceParameters(idRecurso, name) {
+
+    Trace("hardware.js:GetRadioResourcesParameters. idRecurso %s, name ", idRecurso, name);
+
     $.ajax({
         type: 'GET',
         url: '/resources/' + idRecurso + '/radioParameters',
@@ -1971,8 +2143,14 @@ function GetRadioResourceParameters(idRecurso, name) {
 
     //GetUris(idRecurso);
 }
-
+/**
+ * GetUris
+ * @param {any} idRecurso
+ */
 function GetUris(idRecurso) {
+
+    Trace("hardware.js:GetUris. idRecurso ", idRecurso);
+
     // Obtener los emplazamientos del recurso
 	/*$.ajax({type: 'GET',
 		url: '/resources/' + idRecurso + '/uris',
@@ -1982,8 +2160,14 @@ function GetUris(idRecurso) {
 		}
 	});*/
 }
-
+/**
+ * ShowRadioParamsOfResource
+ * @param {any} data
+ */
 function ShowRadioParamsOfResource(data) {
+
+    Trace("hardware.js:ShowRadioParamsOfResource. data ", data);
+
     // Reset panel comunicaciones
     ShowUriNumber(0);
 
@@ -2013,7 +2197,6 @@ function ShowRadioParamsOfResource(data) {
         $('#LblAD').show();
         $('#TbAdGain').show();
     }
-
 
     // Parametros jitter
     // $('#TbMin').val(data.parametros.Buffer_jitter.min);
@@ -2169,7 +2352,6 @@ function ShowRadioParamsOfResource(data) {
         }
     });
 
-
     if (data.parametros.radio.tipo == 2 || data.parametros.radio.tipo == 3) {
         // Solo se muestra si el tipo de radio es frecuencia desplazada simple o principal/reserva
         $('#BSSEnableRow').attr('style', 'display:table-row');
@@ -2230,8 +2412,15 @@ function ShowRadioParamsOfResource(data) {
 
     $('#TbModoCalculoClimax option[value="' + data.parametros.radio.iModoCalculoClimax + '"]').prop('selected', true);
 }
-
+/**
+ * GetTelResourceParameters
+ * @param {any} idRecurso
+ * @param {any} name
+ */
 function GetTelResourceParameters(idRecurso, name) {
+
+    Trace("hardware.js:GetTelResourceParameters. idRecurso %s, name ", idResource, name);
+
     $.ajax({
         type: 'GET',
         url: '/resources/' + idRecurso + '/phoneParameters',
@@ -2244,8 +2433,14 @@ function GetTelResourceParameters(idRecurso, name) {
         }
     });
 }
-
+/**
+ * GetAtsRange
+ * @param {any} rsc
+ */
 function GetAtsRange(rsc) {
+
+    Trace("hardware.js:GetAtsRange. rsc ", rsc);
+
     $.ajax({
         type: 'GET',
         url: '/resources/' + rsc + '/phoneParameters/range',
@@ -2255,8 +2450,14 @@ function GetAtsRange(rsc) {
         }
     });
 }
-
+/**
+ * ShowRangeAts
+ * @param {any} dataReceived
+ */
 function ShowRangeAts(dataReceived) {
+
+    Trace("hardware.js:ShowRangeAts. dataReceived ", dataReceived);
+
     var indexOrigen = 1;
     var indexDestino = 1;
     var data;
@@ -2324,8 +2525,14 @@ function ShowRangeAts(dataReceived) {
         });
     });
 }
-
+/**
+ * ShowTelParamsOfResources
+ * @param {any} data
+ */
 function ShowTelParamsOfResource(data) {
+
+    Trace("hardware.js:ShowTelParamsOfResources. data ", data);
+
     // Mantener datos del recurso
     var name = $('#NameResource').text();
     $('#NameResource').text(name + ' ' + $('#DivParameters').data('nombreRecurso'));
@@ -2375,8 +2582,14 @@ function ShowTelParamsOfResource(data) {
         ShowOptions($('#LbTypeTel option:selected').val());
     }
 }
-
+/**
+ * GotoDestination
+ * @param {any} frecuencia
+ */
 function GotoDestination(frecuencia) {
+
+    Trace("hardware.js:GotoDestination. frecuencia", frecuencia);
+
     hidePrevious('#FormRadioDestinations', '#AddFormDestinations', '#DivDestinations');
     GetRadioDestinations();
     if (frecuencia != -1) {
@@ -2386,8 +2599,14 @@ function GotoDestination(frecuencia) {
         NewRadioDestination();
     }
 }
-
+/**
+ * 
+ * @param {any} element
+ */
 function ClickDaAgc(element) {
+
+    Trace("hardware.js:ClickDaAgc. element ", element);
+
     if (element.checked) {
         $('#LblDA').hide();
         $('#TbDaGain').hide();
@@ -2397,8 +2616,14 @@ function ClickDaAgc(element) {
         $('#TbDaGain').show();
     }
 }
-
+/**
+ * 
+ * @param {any} element
+ */
 function ClickAdAgc(element) {
+
+    Trace("hardware.js:ClickAdAgc. element ", element);
+
     if (element.checked) {
         $('#LblAD').hide();
         $('#TbAdGain').hide();
@@ -2408,8 +2633,13 @@ function ClickAdAgc(element) {
         $('#TbAdGain').show();
     }
 }
-
+/**
+ * SelectBss
+ * */
 function SelectBss() {
+
+    Trace("hardware.js:SelectBss.");
+
     if ($('#LbTypeRadio option:selected').val() >= 0 && $('#LbTypeRadio option:selected').val() <= 3) {
 
         if ($('#LbSquelchType option:selected').val() == 1)
@@ -2576,9 +2806,14 @@ function SelectBss() {
     }
 
 }
-
-
+/**
+ * UpdateSite
+ * @param {any} f
+ */
 function UpdateSite(f) {
+
+    Trace("hardware.js:UpdateSite");
+
     if (($('#UriTxA').val() != '') ||
         ($('#UriTxB').val() != '') ||
         ($('#UriRxA').val() != '') ||
@@ -2607,9 +2842,14 @@ function UpdateSite(f) {
         });
     }
 }
-
-
+/**
+ * CommitSite
+ * @param {any} f
+ */
 function CommitSite(f) {
+
+    Trace("hardware.js:CommitSite.");
+
     if (($('#UriTxA').val() != '') ||
         ($('#UriTxB').val() != '') ||
         ($('#UriRxA').val() != '') ||
@@ -2639,8 +2879,14 @@ function CommitSite(f) {
         );
     }
 }
-
+/**
+ * RemoveSite
+ * @param {any} f
+ */
 function RemoveSite(f) {
+
+    Trace("hardware.js:RemoveSite");
+
     alertify.confirm('Ulises G 5000 R', "¿Eliminar el colateral?",
         function() {
             $.ajax({
@@ -2660,10 +2906,14 @@ function RemoveSite(f) {
     );
 
 }
-
-
-
+/**
+ * ShowUriNumber
+ * @param {any} page
+ */
 function ShowUriNumber(page) {
+
+    Trace("hardware.js:ShowUriNumber. page ", page);
+
     if (page > 0) {
         $('#FormCommunications').data('idUri', destinationUris[page - 1].idUBICACIONES);
 
@@ -2714,8 +2964,14 @@ function ShowUriNumber(page) {
         //$('#FormCommunications')[0].reset();
     }
 }
-
+/**
+ * ShowDestinationSite
+ * @param {any} element
+ */
 function ShowDestinationSite(element) {
+
+    Trace("hardware.js:ShowDestinationSite. element ", element);
+
     var tabs = [];
     tabs = document.getElementById('ListMenuSites').getElementsByTagName("a");
     for (var i = 0; i < tabs.length; i++) {
@@ -2727,7 +2983,10 @@ function ShowDestinationSite(element) {
 
     ShowUriNumber(parseInt(element.rel));
 }
-
+/**
+ * OnCbBssEnable
+ * @param {any} cb
+ */
 function OnCbBssEnable(cb) {
     if (cb.checked) {
         $('#BigSlavesZone').animate({ height: '580px' });
@@ -2748,7 +3007,6 @@ function OnCbBssEnable(cb) {
         if ($('#TbClimaxDelay option:selected').val() == 2 || $('#TbClimaxDelay option:selected').val() == 1) {
             $('#ModoCalculoClimaxRow').attr('style', 'display:table-row');
         }
-
     }
     else {
         $('#BigSlavesZone').animate({ height: '512px' });
@@ -2765,8 +3023,15 @@ function OnCbBssEnable(cb) {
         $('#ModoCalculoClimaxRow').attr('style', 'display:table-column');
     }
 }
-
+/**
+ * OnChangeSite
+ * @param {any} sel
+ * @param {any} f
+ */
 function OnChangeSite(sel, f) {
+
+    Trace("hardware.js:OnChangeSite. sel ", sel);
+
     $("#CBGroupOfSlave").empty();
     $('#TBGroup').val('');
 
@@ -2795,24 +3060,33 @@ function OnChangeSite(sel, f) {
         }
     });
 }
-
+/**
+ * OnChangeTextGroup
+ * */
 function OnChangeTextGroup() {
+
+    Trace("hardware.js:OnChangeTextGroup.");
+
     var grupo = $('#TBGroup').val();
     // Si el grupo tecleado no está en la lista, seleccionamos el primero con valor -1
     if ($('#CBGroupOfSlave option').filter(function() { return $(this).html() == grupo; }).length == 0)
         $('#CBGroupOfSlave option[value="-1"]').prop('selected', true);
 }
-
+/**
+ * OnChangeGroup.
+ * */
 function OnChangeGroup() {
     $('#TBGroup').val($('#CBGroupOfSlave option:selected').text());
 }
-
 /****************************************/
 /*	FUNCTION: OnChangeResourceType 		*/
 /*  PARAMS: 							*/
 /*  REV 1.0.2 VMG						*/
 /****************************************/
 function OnChangeResourceType(sel) {
+
+    Trace("hardware.js:OnChangeResourceType. sel ", sel);
+
     if (sel.value == 1) {//Radio
         SelectBss();
         $('#CbGranularity option[value="0"]').prop('selected', true);
@@ -2825,6 +3099,8 @@ function OnChangeResourceType(sel) {
         $('#ListMenuParameters li:nth-child(4)').hide();
         $('#ListMenuParameters li:nth-child(5)').show();//Comunicaciones
         $('#ListMenuParameters li:nth-child(6)').hide();
+        /** 20200715. Nuevos Parametros de Telefonia */
+        $('#ListMenuParameters li:nth-child(7)').hide();// Colaterales Telefonicos
         //$('#DestinationRow').attr('style','display:table-row');
         //$('#BlackWhiteRow').attr('style','display:table-row');
     }
@@ -2840,7 +3116,10 @@ function OnChangeResourceType(sel) {
         $('#ListMenuParameters li:nth-child(3)').show();//Telefonico
         $('#ListMenuParameters li:nth-child(4)').hide();
         $('#ListMenuParameters li:nth-child(5)').hide();
-        $('#ListMenuParameters li:nth-child(6)').hide();
+        /** 20200717. Ahora todos los recursos tienen al menos rangos ats origen */
+        $('#ListMenuParameters li:nth-child(6)').show();
+        /** 20200715. Nuevos Parametros de Telefonia */
+        $('#ListMenuParameters li:nth-child(7)').show();// Colaterales Telefonicos
         //$('#DestinationRow').attr('style','display:table-column');
         //$('#BlackWhiteRow').attr('style','display:table-column');
     }
@@ -2849,8 +3128,14 @@ function OnChangeResourceType(sel) {
     var element = $('#aHw');
     loadParam(element[0]);
 }
-
+/**
+ * OnChangeRestriccion
+ * @param {any} sel
+ */
 function OnChangeRestriccion(sel) {
+
+    Trace("hardware.js:OnChangeRestriccion. sel ", sel);
+
     switch (sel.value) {
         case '0':
             $('#BlackList').attr('style', 'display:table-column');
@@ -2897,26 +3182,41 @@ function OnChangeRestriccion(sel) {
         }
         */
 }
-
-// Mostrar u ocultar CB selección tabla calificación audio
-
-
-// Mostrar u ocultar CB selección tabla calificación audio
+/**
+ * OnCbBssMethodAvailable
+ * Mostrar u oculta CB selección tabla calificacion audio
+ * @param {any} obj
+ */
 function OnCbBssMethodAvailable(obj) {
+
+    Trace("hardware.js:OnCbBssMethodAvailable. obj ", obj);
+
     if (obj.value == 0)
         $('#BSSAvailableRow .SoloRssi').hide();
     else
         $('#BSSAvailableRow .SoloRssi').show();
 }
-
+/**
+ * ClickEnableRegister
+ * @param {any} obj
+ */
 function ClickEnableRegister(obj) {
+
+    Trace("hardware.js:ClickEnableRegister. obj ", obj);
+
     if (obj.checked)
         $('.resource tr:nth-child(5)').show();
     else
         $('.resource tr:nth-child(5)').hide();
 }
-
+/**
+ * SetAudioTableCB
+ * @param {any} f
+ */
 function SetAudioTableCB(f) {
+
+    Trace("hardware.js:SetAudioTableCB");
+
     $.ajax({
         type: 'GET',
         url: '/tableBss',

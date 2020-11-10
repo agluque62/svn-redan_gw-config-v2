@@ -1,42 +1,6 @@
 //
 block hrr
 
-script.
-    var refreshTime=1000;
-    /*function SynchronizedGateways(){
-        $.ajax({
-            type: 'GET',
-            url: '/gateways/syncGateways/'+refreshTime,
-            success: function (data) {
-                UpdateSynchroStateInConfig(data);
-                UpdateSynchroStateInSites(data);
-            }
-        });
-
-        $.ajax({
-            type: 'GET',
-            url: '/alive',
-            success: function (data) {
-                if (!data.alive)
-                    $(location).attr('href', '/login');
-            }
-        });
-        setTimeout(function(){SynchronizedGateways()},refreshTime);
-    }*/
-
-    //setTimeout(SynchronizedGateways(),refreshTime);
-
-    /*function validateUploadForm() {
-        if( document.getElementById("fileselectbtn").files.length == 0 ){
-            console.log("no files selected");
-            alertify.error('No hay ningun fichero seleccionado');
-            return false;
-        }
-        return true;
-    }*/
-
-    // Fin de la modificacion....
-
 div(id="FormHRR", style="display: none; width: 350px")
     div.menu.fadeNucleo#DivHRR(style='position:relative')
         h3#TitleH3(tkey='HRR')

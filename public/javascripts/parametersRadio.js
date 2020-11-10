@@ -1,9 +1,19 @@
+/** */
+
+/**
+ * ResetRadioParameters
+ * */
 function ResetRadioParameters() {
+
+    Trace("parametersRadio.js:ResetRadioParameters");
+
     $('#NameResource').text('Resource: ');
 
     // Ocultar tab de telefonia
     $('#ListMenuParameters li:nth-child(3)').hide();
     $('#ListMenuParameters li:nth-child(6)').hide();
+    /** 20200715. Nuevos Parametros de Telefonia */
+    $('#ListMenuParameters li:nth-child(7)').hide();// Colaterales Telefonicos
     //  Mostrar tab de radio
     $('#ListMenuParameters li:nth-child(2)').show();
 
@@ -43,9 +53,13 @@ function ResetRadioParameters() {
     $('#LbPttPriority option[value=0]').prop('selected', true);
     $('#LbSipPriority option[value=0]').prop('selected', true);
 }
-
-
+/**
+ * AddRadioParameters
+ * */
 function AddRadioParameters() {
+
+    Trace("parametersRadio.js:AddRadioParameters");
+
     var hw = {
         RECURSO_idRECURSO: $('#DivParameters').data('idRecurso'),
         AD_AGC: $('#CbAdAgc').prop('checked') ? '1' : '0',
@@ -117,8 +131,14 @@ function AddRadioParameters() {
         }
     });
 }
-
+/**
+ * OnChangeClimax
+ * @param {any} sel
+ */
 function OnChangeClimax(sel) {
+
+    Trace("parametersRadio.js:OnChangeClimax. sel ", sel);
+
     if (sel.value == '2') {
         $('#CompensationRow').attr('style', 'display:table-row');
         //$('#TbGrsInternalDelay').show();
@@ -137,14 +157,19 @@ function OnChangeClimax(sel) {
         $('#ModoCalculoClimaxRow').attr('style', 'display:table-column');
     }
 }
-
+/**
+ * OnSelectSQActivation
+ * @param {any} sel
+ */
 function OnSelectSQActivation(sel) {
+
+    Trace("parametersRadio.js:OnSelectSQActivation. sel ", sel);
+
     if (sel.value != 1)
         $('#VadRow').attr('style', 'display:table-column');
     else
         $('#VadRow').attr('style', 'display:table-row');
 }
-
 /************************************************/
 /*	FUNCTION: GetRemoteTfnoResources 			*/
 /*  PARAMS: 									*/
@@ -152,6 +177,9 @@ function OnSelectSQActivation(sel) {
 /*  REV 1.0.2 VMG								*/
 /************************************************/
 function GetRemoteRadioResources() {
+
+    Trace("parametersRadio.js:GetRemoteRadioResources");
+
     var options = '';
 
     $('#CBFacedType').empty();
@@ -167,7 +195,6 @@ function GetRemoteRadioResources() {
     $('#CBFacedResources').empty();
 
 }
-
 /************************************************/
 /*	FUNCTION: SelectPhoneSite 					*/
 /*  PARAMS: resType: id de la configuración		*/
@@ -175,6 +202,9 @@ function GetRemoteRadioResources() {
 /*  REV 1.0.2 VMG								*/
 /************************************************/
 function SelectERType(resType) {
+
+    Trace("parametersRadio.js:SelectERType. resType ", resType);
+
     var cfgId = $('#DivConfigurations').data('idCFG');
 
     if (resType == 0)
@@ -182,7 +212,6 @@ function SelectERType(resType) {
     else
         SelectExtResource(resType);
 }
-
 /************************************************/
 /*	FUNCTION: SelectRadioExtResource 			*/
 /*  PARAMS: 									*/
@@ -190,6 +219,9 @@ function SelectERType(resType) {
 /*  REV 1.0.2 VMG								*/
 /************************************************/
 function SelectExtResource(resType) {
+
+    Trace("parametersRadio.js:SelectExtResource. resType ", resType);
+
     $('#CBFacedSite').empty();
     $('#CBFacedGtw').empty();
     $('#CBFacedResources').empty();
@@ -198,9 +230,7 @@ function SelectExtResource(resType) {
     $('#CBFacedResourcesType option[value="-2"]').prop('selected', true);
     $('#rowSelectFSite').hide();
     $('#rowSelectFGtw').hide();
-
 }
-
 /************************************************/
 /*	FUNCTION: SelectResourcesType 				*/
 /*  PARAMS: 									*/
@@ -208,6 +238,8 @@ function SelectExtResource(resType) {
 /*  REV 1.0.2 VMG								*/
 /************************************************/
 function SelectResourcesType(resType) {
+
+    Trace("parametersRadio.js:SelectResourcesType. resType ", resType);
 
     $('#FilterFResource').val('');
     $('#CBFacedResources').empty();
@@ -243,7 +275,6 @@ function SelectResourcesType(resType) {
             });
     }
 }
-
 /************************************************/
 /*	FUNCTION: FilterResourcesBy 				*/
 /*  PARAMS: 									*/
@@ -251,6 +282,8 @@ function SelectResourcesType(resType) {
 /*  REV 1.0.2 VMG								*/
 /************************************************/
 function FilterResourcesBy() {
+
+    Trace("parametersRadio.js:FilterResourcesBy");
 
     var filterType = parseInt($("#CBFacedResourcesType option:selected").val());
     var chars2Find = $('#FilterFResource').val();
@@ -283,6 +316,9 @@ function FilterResourcesBy() {
 /*  REV 1.0.2 VMG								*/
 /************************************************/
 function SelectSite(cfgId) {
+
+    Trace("parametersRadio.js:SelectSite. cfgId ", cfgId);
+
     $('#CBFacedSite').empty();
     $('#CBFacedGtw').empty();
     $('#CBFacedResources').empty();
@@ -291,7 +327,6 @@ function SelectSite(cfgId) {
     $('#rowSelectFResourceType').hide();
     $('#rowFilterFResource').hide();
     $('#rowFilterFResourceBt').hide();
-
 
     $.ajax({
         type: 'GET',
@@ -318,7 +353,6 @@ function SelectSite(cfgId) {
         }
     });
 }
-
 /************************************************/
 /*	FUNCTION: SelectGtw 						*/
 /*  PARAMS: siteId: id del emplazamiento		*/
@@ -326,6 +360,9 @@ function SelectSite(cfgId) {
 /*  REV 1.0.2 VMG								*/
 /************************************************/
 function SelectGtw(siteId) {
+
+    Trace("parametersRadio.js:SelectGtw. siteId ", siteId);
+
     $.ajax({
         type: 'GET',
         url: '/resources/remote/null/' + siteId + '/null/null',
@@ -363,6 +400,8 @@ function SelectResource(gtw) {
 
     var resId = $('#ResId').attr('res-id');
 
+    Trace("parametersRadio.js:SelectResource. resId ", resId);
+
     $.ajax({
         type: 'GET',
         url: '/resources/remote/null/null/' + gtw + '/' + resId,
@@ -387,12 +426,14 @@ function SelectResource(gtw) {
         }
     });
 }
-
+/**
+ * MakeFacedUri
+ * @param {any} target
+ */
 function MakeFacedUri(target) {
-    // if ($('#CBFacedCfg option:selected').val() == ""){
-    // 	alertify.error('Seleccione configuración');
-    // 	return;
-    // }
+
+    Trace("parametersRadio.js:MakeFacedUri. target ", target);
+
     if ($('#CBFacedSite option:selected').val() == "") {
         alertify.error('Seleccione emplazamiento');
         return;
@@ -408,13 +449,14 @@ function MakeFacedUri(target) {
 
     $(target).val($("#CBFacedResources option:selected").val());
 }
-
 /************************************/
 /*	FUNCTION: SelectBtnsResources	*/
 /*  PARAMS: 						*/
 /*  REV 1.0.2 VMG					*/
 /************************************/
 function SelectBtnsResources(element) {
+
+    Trace("parametersRadio.js:SelectBtnsResources. element ", element);
 
     //0 Radio Tx || 1 Radio TxRx || 2 Radio Rx
     switch (element["0"].attributes[1].nodeValue) {
@@ -499,5 +541,163 @@ function SelectBtnsResources(element) {
             $('#BtnSelectTxB3').addClass('NotAllowedTd');
             $('#BtnSelectTxB3').removeAttr("onclick");
             break;
+    }
+}
+
+/** 20201103. From postParameters.jade */
+/**
+ * loadForm
+ * @param {any} element
+ */
+function loadForm(element) {
+    Trace("parametersRadio.js:loadForm. element ", element);
+    var tabs = [];
+    switch (element.rel) {
+        case "FormOrigen":
+            tabs = document.getElementById('ListMenuRanges').getElementsByTagName("a");
+            $('#FormDestino').hide();
+            break;
+        case "FormDestino":
+            tabs = document.getElementById('ListMenuRanges').getElementsByTagName("a");
+            $('#FormOrigen').hide();
+            break;
+    }
+    $('#' + element.rel).show();
+    for (var i = 0; i < tabs.length; i++) {
+        if (tabs[i].rel == element.rel)
+            tabs[i].className = "selected";
+        else
+            tabs[i].className = "";
+    }
+}
+/**
+ * loadParam
+ * @param {any} element
+ */
+function loadParam(element) {
+    Trace("parametersRadio.js:loadParam. element ", element);
+    var tabs = [];
+    console.log("postParameters.loadParam", element);
+    switch (element.rel) {
+        case "FormHw":
+            tabs = document.getElementById('ListMenuParameters').getElementsByTagName("a");
+            //$('#FormJitter').hide();
+            $('#FormRadio').hide();
+            $('#FormTel').hide();
+            $('#FormLists').hide();
+            $('#FormCommunications').hide();
+            $('#FormPhColl').hide();
+            $('#FormATS').hide();
+            break;
+        // case "FormJitter":
+        // 	tabs=document.getElementById('ListMenuParameters').getElementsByTagName("a");
+        // 	$('#FormHw').hide();
+        // 	$('#FormRadio').hide();
+        // 	$('#FormTel').hide();
+        // 	$('#FormLists').hide();
+        // 	$('#FormCommunications').hide();
+        // 	$('#FormATS').hide();
+        // break;
+        case "FormRadio":
+            GetRemoteRadioResources();
+            tabs = document.getElementById('ListMenuParameters').getElementsByTagName("a");
+            $('#FormHw').hide();
+            //$('#FormJitter').hide();
+            $('#FormTel').hide();
+            $('#FormPhColl').hide();
+            $('#FormLists').hide();
+            $('#FormCommunications').hide();
+            $('#FormATS').hide();
+            break;
+        case "FormTel":
+            GetRemoteTfnoResources();
+            tabs = document.getElementById('ListMenuParameters').getElementsByTagName("a");
+            $('#FormHw').hide();
+            $('#rowSelectTResourceType').hide();
+            $('#rowFilterPhResource').hide();
+            $('#rowFilterPhResourceBt').hide();
+            $('#FormRadio').hide();
+            //$('#FormJitter').hide();
+            $('#FormLists').hide();
+            $('#FormCommunications').hide();
+            $('#FormPhColl').hide();
+            $('#FormATS').hide();
+            break;
+        case "FormLists":
+            tabs = document.getElementById('ListMenuParameters').getElementsByTagName("a");
+            $('#FormHw').hide();
+            $('#FormTel').hide();
+            $('#FormRadio').hide();
+            $('#FormPhColl').hide();
+            $('#FormTel').hide();
+            //$('#FormJitter').hide();
+            $('#FormATS').hide();
+            if ($("#SRestriccion option:selected").val() == 0) {
+                $('#BlackList').attr('style', 'display:table-column');
+                $('#WhiteList').attr('style', 'display:table-column');
+            }
+            if ($("#SRestriccion option:selected").val() == 1) {
+                $('#BlackList').attr('style', 'display:table');
+                $('#WhiteList').attr('style', 'display:table-column');
+            }
+            if ($("#SRestriccion option:selected").val() == 2) {
+                $('#BlackList').attr('style', 'display:table-column');
+                $('#WhiteList').attr('style', 'display:table');
+            }
+            //$('#SRestriccion option:eq(0)').prop('selected', true);
+            //$('#DivContent').animate({height:'300px'});
+            break;
+        case "FormCommunications":
+            GetRemoteRadioResources();
+            tabs = document.getElementById('ListMenuParameters').getElementsByTagName("a");
+            $('#FormHw').hide();
+            $('#rowSelectFResourceType').hide();
+            $('#rowSelectTResourceType').hide();
+            $('#rowFilterPhResource').hide();
+            $('#rowFilterPhResourceBt').hide();
+            $('#rowFilterFResource').hide();
+            $('#rowFilterFResourceBt').hide();
+            $('#FormRadio').hide();
+            $('#FormTel').hide();
+            //$('#FormJitter').hide();
+            $('#FormLists').hide();
+            $('#FormPhColl').hide();
+            $('#FormATS').hide();
+            break;
+        case "FormATS":
+            tabs = document.getElementById('ListMenuParameters').getElementsByTagName("a");
+            $('#FormHw').hide();
+            $('#FormRadio').hide();
+            $('#FormTel').hide();
+            $('#FormPhColl').hide();
+
+            $('#FormJitter').hide();
+            $('#FormLists').hide();
+            break;
+        case "FormPhColl":
+            GetRemoteTfnoResources();
+            tabs = document.getElementById('ListMenuParameters').getElementsByTagName("a");
+            $('#FormHw').hide();
+            $('#rowSelectTResourceType').hide();
+            $('#rowFilterPhResource').hide();
+            $('#rowFilterPhResourceBt').hide();
+            $('#FormRadio').hide();
+            //$('#FormJitter').hide();
+            $('#FormLists').hide();
+            $('#FormCommunications').hide();
+            $('#FormTel').hide();
+            $('#FormATS').hide();
+            OnClickSupervision();
+            break;
+    }
+    $('#' + element.rel).show();
+
+    console.log("postParameters.loadParam", element, tabs);
+
+    for (var i = 0; i < tabs.length; i++) {
+        if (tabs[i].rel == element.rel)
+            tabs[i].className = "selected";
+        else
+            tabs[i].className = "";
     }
 }

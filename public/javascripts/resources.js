@@ -3,8 +3,14 @@
 /****** Description: Módulo de soporte a la gestion de recursos			*******************************/
 /******************************************************************************************************/
 var link_resources = [];
+/**
+ * GetResources
+ * @param {any} gtw
+ */
+var GetResources = function (gtw) {
 
-var GetResources = function(gtw) {
+    Trace("resources.js:GetResources. gtw ", gwt);
+
     $.ajax({
         type: 'GET',
         url: '/gateways/' + gtw + '/resources',
@@ -29,8 +35,15 @@ var GetResources = function(gtw) {
         }
     });
 };
+/**
+ * 
+ * @param {any} rsc
+ * @param {any} gtw
+ */
+var GetResource = function (rsc, gtw) {
 
-var GetResource = function(rsc, gtw) {
+    Trace("resources.js:GetResource. rsc %s, gtw ", rsc, gtw);
+
     $.ajax({
         type: 'GET',
         url: '/gateways/' + gtw + '/resources/' + rsc,
@@ -54,23 +67,13 @@ var GetResource = function(rsc, gtw) {
         }
     });
 };
+/**
+ * GoBack
+ * */
+var GoBack = function () {
 
+    Trace("resources.js:GoBack");
 
-/*
-var GetResourcesBelongsGateway = function(){
-	var alto = $('#DivComponents').height();
-	var gtw = $('#IdTifx').val();
-
-	$('#DivComponents').height(alto);
-
-	$('#DivComponents').attr('class','disabledDiv');
-	$('#FormResources').show();
-
-	$('#h3IdGtw').text('Resources of gateway: ' + gtw);
-	GetResources(gtw);
-}
-*/
-var GoBack = function() {
     $('#DivComponents').height('auto');
 
     $('#DivComponents').attr('class', 'fadeNucleo');

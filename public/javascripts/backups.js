@@ -1,7 +1,12 @@
+/// Backup.js
 var MaxPages;
-
+/**
+ * GetParametersBackup
+ * */
 function GetParametersBackup() {
     var url = $('#BodyRedan').data('urlbackupservice');
+
+    Trace("backup.js:GetParametersBackup. url ", url);
 
     LoadSelects();
 
@@ -19,9 +24,13 @@ function GetParametersBackup() {
         }
     });
 }
-
+/**
+ * AcceptParametersBackup
+ * */
 function AcceptParametersBackup() {
     var url = $('#BodyRedan').data('urlbackupservice');
+
+    Trace("backup.js:AcceptParametersBackup. url ", url);
 
     $.ajax({
         type: 'POST',
@@ -43,8 +52,13 @@ function AcceptParametersBackup() {
         }
     });
 }
-
+/**
+ * LoadSelects
+ * */
 function LoadSelects() {
+
+    Trace("backup.js:LoadSelects");
+
     $('#horaBackup').empty();
     $('#minutosBackup').empty();
     $('#profundidad').empty();
@@ -70,9 +84,13 @@ function LoadSelects() {
         }));
     }
 }
-
+/**
+ * GetLogsBackup
+ * */
 function GetLogsBackup() {
     var url = $('#BodyRedan').data('urlbackupservice');
+
+    Trace("backup.js:GetLogsBackup. url ", url);
 
     $('#TableLog').fadeOut(500, function() {
         $('#FormLogs').show();
@@ -112,9 +130,13 @@ function GetLogsBackup() {
         });
     });
 }
-
+/**
+ * DeleteLogBackup
+ * */
 function DeleteLogBackup() {
     var url = $('#BodyRedan').data('urlbackupservice');
+
+    Trace("backup.js:DeleteLogBackup. url ", url);
 
     translateWord('ConfirmDeleteLog', function(result) {
         alertify.confirm('Ulises G 5000 R', result,
@@ -135,13 +157,22 @@ function DeleteLogBackup() {
         );
     });
 }
-
+/**
+ * GetHandBackup
+ * */
 function GetHandBackup() {
+
+    Trace("backup.js:GetHandBackup");
+
     $('#FormHandBackup').show();
 }
-
+/**
+ * MakeBackup
+ * */
 function MakeBackup() {
     var url = $('#BodyRedan').data('urlbackupservice');
+
+    Trace("backup.js:MakeBackup. url ", url);
 
     translateWord('ConfirmMakeBackup', function(result) {
         alertify.confirm('Ulises G 5000 R', result,

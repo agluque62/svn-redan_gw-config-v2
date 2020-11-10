@@ -13,7 +13,10 @@ function itemListStr(alias, uri) {
 /*  PARAMS: 						*/
 /*  REV 1.0.2 VMG					*/
 /************************************/
-var GetExtResources = function(filter, f) {
+var GetExtResources = function (filter, f) {
+
+    Trace("externalResources.js:GetExtResources. filter ", filter);
+
     /** 20170511 AGL PERFILES */
     if (Authorize($('#BodyRedan').data('perfil'), [ccAdminProfMsc, ccConfiProfMsc]) == false) {
 		/*if ((($('#BodyRedan').data('perfil') & 16) != 16) && (($('#BodyRedan').data('perfil') & 64) != 64)) {
@@ -61,7 +64,10 @@ var GetExtResources = function(filter, f) {
 /*  PARAMS: idExtResource (IN)		*/
 /*  REV 1.0.2 VMG					*/
 /************************************/
-var GetExtResource = function(idExtResource) {
+var GetExtResource = function (idExtResource) {
+
+    Trace("externalResources.js:GetExtResource. idExtResource ", idExtResource);
+
     $('#DivResources').animate({ width: '950px' });
     $('#AddResources').show();
 
@@ -102,7 +108,10 @@ var GetExtResource = function(idExtResource) {
 /*  PARAMS: 						*/
 /*  REV 1.0.2 VMG					*/
 /************************************/
-var PostExtResource = function() {
+var PostExtResource = function () {
+
+    Trace("externalResources.js:PostExtResource.");
+
     if ($('#aliasExtResource').val() == '' || $('#uriExtResource').val() == '') {
         alertify.alert('Los datos del recurso no pueden estar vacíos. Rellene todos los campos.');
         return;
@@ -142,7 +151,10 @@ var PostExtResource = function() {
 /*  PARAMS: 						*/
 /*  REV 1.0.2 VMG					*/
 /************************************/
-var DeleteExtResource = function() {
+var DeleteExtResource = function () {
+
+    Trace("externalResources.js:DeleteExtResource");
+
     alertify.confirm('Ulises G 5000 R', '¿Eliminar el recurso' + $('#aliasExtResource').val() + '?',
         function() {
             $.ajax({

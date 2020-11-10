@@ -1,8 +1,14 @@
+/**
+ * 
+ * */
 var destinationUris = [];
+/**
+ * 
+ * */
+var GetRadioDestinations = function () {
 
-var GetRadioDestinations = function() {
-    //$('#Component').text('Radio destinations');	// Titulo
-    //$('#DivComponents').attr('class','disabledDiv');
+    Trace("radioDestinatios.js:GetRadioDestinations");
+
     $('#FormRadioDestinations').show();
     $('#AddFormDestinations').hide();
     $('#DestinationsToolsTable').hide();
@@ -16,18 +22,27 @@ var GetRadioDestinations = function() {
 
     // GetFreeResources();
 };
+/**
+ * ShowDestinations
+ * @param {any} data
+ */
+var ShowDestinations = function (data) {
 
-var ShowDestinations = function(data) {
+    Trace("radioDestinatios.js:ShowDestinations. data ", data);
+
     $("#listDestinations").empty();
-    //$('#AddFormDestinations').hide();
-    //$('#DestinationsToolsTable').hide();
     $.each(data.destinations, function(index, value) {
         var item = $('<li><a onclick="ShowDestination(\'' + value.idDESTINOS + '\')">' + value.name + '</li>');
         item.appendTo($("#listDestinations"));
     });
 };
+/**
+ * NewRadioDestination
+ * */
+var NewRadioDestination = function () {
 
-var NewRadioDestination = function() {
+    Trace("radioDestinatios.js:NewRadioDestination");
+
     $('#FormRadioDestinations').show();
 
     $('#DivDestinations').animate({ width: '625px' });
@@ -47,8 +62,14 @@ var NewRadioDestination = function() {
 
     GetFreeResources();
 };
+/**
+ * AddRadioDestination
+ * @param {any} f
+ */
+var AddRadioDestination = function (f) {
 
-var AddRadioDestination = function(f) {
+    Trace("radioDestinatios.js:AddRadioDestination.");
+
     if ($('#IdDestination').val().length > 0) {
         $.ajax({
             type: 'POST',
@@ -78,8 +99,13 @@ var AddRadioDestination = function(f) {
         alertify.error("Identificador de frecuencia no válido.");
     }
 };
-
+/**
+ * GetResources
+ * */
 function GetResources() {
+
+    Trace("radioDestinatios.js:GetResources");
+
     $.ajax({
         type: 'GET',
         url: '/resources',
@@ -89,8 +115,13 @@ function GetResources() {
     }
     );
 }
-
+/**
+ * GetFreeResources
+ * */
 function GetFreeResources() {
+
+    Trace("radioDestinatios.js:GetFreeResources");
+
     $.ajax({
         type: 'GET',
         url: '/resources/free',
@@ -100,8 +131,14 @@ function GetFreeResources() {
     }
     );
 }
-
+/**
+ * ShowDestination
+ * @param {any} id
+ */
 function ShowDestination(id) {
+
+    Trace("radioDestinatios.js:ShowDestination. id ", id);
+
     if ($('#AddFormDestinations').is(':visible')) {
         $('#AddFormDestinations').hide();
         $('#DivDestinations').animate({ width: '125px' });
@@ -115,8 +152,6 @@ function ShowDestination(id) {
     $("#ResourceBag").data('resourceName', '');
     $('#BtnUpdate').text('Update')
         .attr('onclick', 'UpdateDestination()');
-    // Actulizar lista de recursos libres
-    //GetFreeResources();
 
     $.ajax({
         type: 'GET',
@@ -131,21 +166,16 @@ function ShowDestination(id) {
             $('#Reserva').prop('checked', data.destination.tipoConmutacion == 0);
 
             ResetForm();
-            /*
-            if (data.destination.idRecurso != null){
-                var item = $('<a id="' + data.destination.idRecurso +'" class="dragableItem" style="color:#bf2a36;height:auto;width:95px" draggable="true" ondragstart="dragAssigned(event)"">' + 
-                                "<img src='/images/iconRadio.gif' style='float: right'/>" + data.destination.resourceName + '</li>');
-                item.appendTo($("#ResourceBag"));
-                $("#ResourceBag").data('resourceName',data.destination.idRecurso);
-
-                $('#listResources #' + data.destination.resourceName).remove();
-            }
-            */
         }
     });
 }
-
+/**
+ * ResetForm
+ * */
 function ResetForm() {
+
+    Trace("radioDestinatios.js:ResetForm");
+
     var cuantos = $("#ListMenuSites li").length;
     for (var i = 0; i < cuantos - 1; i++) {
         $('#ListMenuSites li:nth-child(1)').remove();
@@ -156,8 +186,13 @@ function ResetForm() {
 
     SelectFirstItem('ListMenuDestinations');
 }
-
+/**
+ * UpdateDestination
+ * */
 function UpdateDestination() {
+
+    Trace("radioDestinatios.js:UpdateDestination");
+
     if ($('#IdDestination').val().length > 0) {
         $.ajax({
             type: 'PUT',
@@ -178,8 +213,12 @@ function UpdateDestination() {
         });
     }
 }
-
+/**
+ * DelDestination
+ * */
 function DelDestination() {
+
+    Trace("radioDestinatios.js:DelDestination");
 
     alertify.confirm('Ulises G 5000 R', "¿Eliminar la frecuencia: \"" + $('#IdDestination').val() + "\"?",
         function() {
@@ -207,17 +246,18 @@ function DelDestination() {
                     }
                 });
             }
-
-
-            //alertify.success('Ok'); 
         },
         function() { alertify.error('Cancelado'); }
     );
-
-
 }
-
+/**
+ * ShowResources
+ * @param {any} data
+ */
 function ShowResources(data) {
+
+    Trace("radioDestinatios.js:ShowResources. data ", data);
+
     $("#listResources").empty();
     $.each(data.recursos, function(index, value) {
         if (value.tipo == 1 && value.idRECURSO != $("#ResourceBag").data('resourceName')) {	// Solo recursos de radio y no está asignado a este destino
@@ -225,14 +265,20 @@ function ShowResources(data) {
                 value.idRECURSO + "' class='dragableItem' style='color:var(--main-color);height:auto;width:95px' draggable='true' ondragstart='drag(event)'>" +
                 "<img src='/images/iconRadio.gif' style='float: right'/>" +
                 value.name + "</div></li>");
-            //item.append($("<img src='/images/iconRadio.gif' style='float: right'/>"));
             item.appendTo($("#listResources"));
         }
     });
 }
-
+/**
+ * PostResourceToDestination
+ * @param {any} rscId
+ * @param {any} dstId
+ * @param {any} f
+ */
 function PostResourceToDestination(rscId, dstId, f) {
-    //	if ($('#IdDestination').val().length > 0){
+
+    Trace("radioDestinatios.js:PostResourceToDestination. rscId %s, dstId %s", rscId, dstId);
+
     $.ajax({
         type: 'POST',
         url: '/destinations/' + dstId + '/resources/' + rscId,
@@ -246,20 +292,21 @@ function PostResourceToDestination(rscId, dstId, f) {
             alertify.error('Error asignando recurso.');
         }
     });
-    //	}
 }
-
+/**
+ * DeleteResourceFromDestination
+ * @param {any} rscId
+ * @param {any} dstId
+ * @param {any} f
+ */
 function DeleteResourceFromDestination(rscId, dstId, f) {
-    //	if (confirm("Do you want to delete resource " + rscId + " from frequency " + dstId + "?") == true) {
-    //		if ($('#IdDestination').val().length > 0){
+
+    Trace("radioDestinatios.js:DeleteResourceFromDestination. rscId %s, dstId %s", rscId, dstId);
+
     $.ajax({
         type: 'DELETE',
         url: '/destinations/' + dstId + '/resources/' + rscId,
         success: function(data) {
-            /*			 			$("#ResourceBag").data('resourceName','');
-                                        $("#ResourceBag").empty();
-                                        GetFreeResources();
-            */
             if (f != null)
                 f();
         },
@@ -267,15 +314,22 @@ function DeleteResourceFromDestination(rscId, dstId, f) {
             alertify.error('Error eliminando recurso.');
         }
     });
-    //		}
-    //	}
 }
-
+/**
+ * allowDrop
+ * @param {any} ev
+ */
 function allowDrop(ev) {
     ev.preventDefault();
 }
-
+/**
+ * drag
+ * @param {any} ev
+ */
 function drag(ev) {
+
+    Trace("radioDestinatios.js:drag");
+
     if (ev.target.id == "") {
         ev.dataTransfer.setData("itemDragging", ev.target.parentElement.id);
         ev.dataTransfer.setData("itemDraggingParent", ev.target.parentElement.parentElement.parentElement.parentElement.id);
@@ -287,8 +341,14 @@ function drag(ev) {
 
     $('.dropable').addClass('target');
 }
-
+/**
+ * dragAssigned
+ * @param {any} ev
+ */
 function dragAssigned(ev) {
+
+    Trace("radioDestinatios.js:dragAssigned");
+
     if (ev.target.id == "") {
         ev.dataTransfer.setData("itemDragging", ev.target.parentElement.id);
         ev.dataTransfer.setData("itemDraggingParent", ev.target.parentElement.parentElement.id);
@@ -299,15 +359,17 @@ function dragAssigned(ev) {
     }
     $('.dropable').addClass('target');
 }
-
-/*****************************/
-/*** Asignar una recurso 	**/
-/*** libre a un destino		**/
-/*****************************/
+/**
+ * dropAssigned
+ * Asignar un recurso libre a un destino.
+ * @param {any} ev
+ */
 function dropAssigned(ev) {
+
+    Trace("radioDestinatios.js:dropAssigned");
+
     ev.preventDefault();
     $('.dropable').removeClass('target');
-
 
     if (ev.dataTransfer.getData("itemDraggingParent") == ev.target.id ||
         ev.dataTransfer.getData("itemDragging") == ev.target.id)
@@ -342,12 +404,15 @@ function dropAssigned(ev) {
             PostResourceToDestination(data, $('#IdDestination').data('id'));
     }
 }
-
-/*********************************/
-/*** Liberar un recurso 		**/
-/*** asignado de un destino 	**/
-/*********************************/
+/**
+ * dropFree
+ * Liberar un recurso asignado de un destino
+ * @param {any} ev
+ */
 function dropFree(ev) {
+
+    Trace("radioDestinatios.js:dropFree");
+
     ev.preventDefault();
     $('.dropable').removeClass('target');
 
@@ -356,20 +421,26 @@ function dropFree(ev) {
     if (ev.dataTransfer.getData("itemDraggingParent") == ev.target.id ||
         ev.dataTransfer.getData("itemDragging") == ev.target.id)
         return;
-    // var element = ev.target;
-    // if (element.localName === "a")
-    // 	element = element.parentElement;
-
-    // element.appendChild(document.getElementById(data));
     DeleteResourceFromDestination(data, $('#IdDestination').data('id'));
 }
-
+/**
+ * dragEnd
+ * @param {any} ev
+ */
 function dragEnd(ev) {
+
+    Trace("radioDestinatios.js:dragEnd");
+
     ev.preventDefault();
     $('.dropable').removeClass('target');
 }
-
+/**
+ * LoadSites
+ * */
 function LoadSites() {
+
+    Trace("radioDestinatios.js:LoadSites");
+
     $.ajax({
         type: 'GET',
         url: '/destinations/' + $('#IdDestination').data('id') + '/uris',
@@ -383,8 +454,12 @@ function LoadSites() {
     }
     );
 }
-
+/**
+ * RemoveSite
+ * */
 function RemoveSite() {
+
+    Trace("radioDestinatios.js:RemoveSite");
 
     alertify.confirm('Ulises G 5000 R', "¿Eliminar el emplazamiento \"" + $('#FormUris').data('idUri') + "\" de la frecuencia \"" + $('#IdDestination').data('id') + '\"?',
         function() {
@@ -397,9 +472,36 @@ function RemoveSite() {
                 }
             }
             );
-
-            //alertify.success('Ok'); 
         },
         function() { alertify.error('Cancelado'); }
     );
 }
+
+/** 20201103. From postRadioDestination.jade */
+/**
+ * loadDest
+ * @param {any} element
+ */
+function loadDest(element) {
+
+    Trace("radioDestinations.js:loadDest. element ", element)
+    var tabs = [];
+    switch (element.rel) {
+        case "FormResources":
+            tabs = document.getElementById('ListMenuDestinations').getElementsByTagName("a");
+            $('#FormUris').hide();
+            break;
+        case "FormUris":
+            tabs = document.getElementById('ListMenuDestinations').getElementsByTagName("a");
+            $('#FormResources').hide();
+            break;
+    }
+    $('#' + element.rel).show();
+    for (var i = 0; i < tabs.length; i++) {
+        if (tabs[i].rel == element.rel)
+            tabs[i].className = "selected";
+        else
+            tabs[i].className = "";
+    }
+}
+

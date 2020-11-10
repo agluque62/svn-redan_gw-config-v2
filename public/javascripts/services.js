@@ -1,10 +1,15 @@
-var CurrentService = {};
 /******************************************************************************************************/
 /****** Module: services.js												*******************************/
 /****** Description: Módulo de soporte a la gestion de servicios		*******************************/
 /******************************************************************************************************/
+var CurrentService = {};
+/**
+ * GetAllServices
+ * */
+var GetAllServices = function () {
 
-var GetAllServices = function() {
+    Trace("services.js:GetAllServices.");
+
     var urlString = '/services';
     $.ajax({
         type: 'GET',
@@ -16,10 +21,15 @@ var GetAllServices = function() {
         }
     });
 };
-
+/**
+ * GetService
+ * */
 function GetService() {
     var serviceId = $("#ListServices option:selected").val();
     var urlString = '/services/' + serviceId;
+
+    Trace("services.js:GetService. serviceId %s, urlString ", serviceId, urlString);
+
     $.ajax({
         type: 'GET',
         url: urlString,
@@ -47,9 +57,15 @@ function GetService() {
         }
     });
 }
-
+/**
+ * PostService
+ * @param {any} name
+ */
 function PostService(name) {
     var urlString = '/services/service';
+
+    Trace("services.js:PostService. name %s, urlString ", name, urlString);
+
     $.ajax({
         type: 'POST',
         url: urlString,
@@ -72,9 +88,16 @@ function PostService(name) {
         }
     });
 }
-
+/**
+ * PostNewService
+ * @param {any} name
+ * @param {any} callback
+ */
 function PostNewService(name, callback) {
     var urlString = '/services/service';
+
+    Trace("services.js:PostNewService. name %s, urlString ", name, urlString);
+
     $.ajax({
         type: 'POST',
         url: urlString,
@@ -98,10 +121,17 @@ function PostNewService(name, callback) {
         }
     });
 }
-
+/**
+ * CopyService
+ * @param {any} sourceService
+ * @param {any} targetService
+ */
 function CopyService(sourceService, targetService) {
     var urlString = '/services/service';
     CurrentService.name = targetService;
+
+    Trace("services.js:CopyService. source %s, target ", sourceService, targetService);
+
     $.ajax({
         type: 'COPY',
         url: urlString,
@@ -119,8 +149,15 @@ function CopyService(sourceService, targetService) {
         }
     });
 }
-
+/**
+ * AddServices
+ * @param {any} services
+ * @param {any} reset
+ */
 function AddServices(services, reset) {
+
+    Trace("services.js:AddServices. reset %s, services ", reset, services);
+
     if (reset) {
         translateWord('SelectService', function(result) {
             options += '<option value="" disabled selected>' + result + '</option>';
@@ -142,8 +179,14 @@ function AddServices(services, reset) {
         $('#ServicesFormGateway')[0].reset();
     }
 }
-
+/**
+ * EditNewService
+ * @param {any} cgwName
+ * @param {any} callback
+ */
 function EditNewService(cgwName, callback) {
+
+    Trace("services.js:EditNewService. cgwName ", cgwName);
 
     if ($('#PuertoLocalSIP').val().length == 0) {
         alertify.error("Debe introducir el puerto SIP");
@@ -193,8 +236,14 @@ function EditNewService(cgwName, callback) {
         callback(data);
     });
 }
-
+/**
+ * CloneService
+ * @param {any} button
+ */
 function CloneService(button) {
+
+    Trace("services.js:CloneService. button ", button);
+
     if (!$('#NewServiceEdit').is(':visible')) {
         $(button).text('Copy');
         $('#AddButton').hide();
@@ -212,9 +261,13 @@ function CloneService(button) {
         $('#RemoveButton').show();
     }
 }
-
+/**
+ * RemoveService
+ * */
 function RemoveService() {
     var serviceId = $("#ListServices option:selected").val();
+
+    Trace("services.js:RemoveService. serviceId ", serviceId);
 
     // Comprobar que el servicio que se pretende eliminar 
     // no este asignado a ninguna pasarela

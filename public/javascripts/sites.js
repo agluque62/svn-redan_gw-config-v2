@@ -1,5 +1,16 @@
+/**
+ * sites.js
+ * 
+ */
 
-var GetSites = function(f) {
+/**
+ * GetSites
+ * @param {any} f
+ */
+var GetSites = function (f) {
+
+    Trace("sites.js:GetSites.");
+
     $('#FormSites').show();
     $.ajax({
         type: 'GET',
@@ -16,7 +27,10 @@ var GetSites = function(f) {
 /*												*/
 /*  REV 1.0.2 VMG								*/
 /************************************************/
-var UpdateSynchroStateInSites = function(data) {
+var UpdateSynchroStateInSites = function (data) {
+
+    //Trace("sites.js:UpdateSynchroStateInSites. data ", data);
+
     if (data.length != 0) {
         $.each(data, function(index, value) {
             $(".gtwList li").each(function(index) {
@@ -48,8 +62,15 @@ var UpdateSynchroStateInSites = function(data) {
         });
     }
 };
-
+/**
+ * ShowSites
+ * @param {any} data
+ * @param {any} f
+ */
 function ShowSites(data, f) {
+
+    Trace("sites.js:ShowSites. data ", data);
+
     $("#listSites").empty();
     $('#AddFormsite').hide();
     $('#DivSites').animate({ width: '350px' });
@@ -71,18 +92,22 @@ function ShowSites(data, f) {
     if (f != null)
         f();
 }
-
+/**
+ * getOverDropS
+ * @param {any} ev
+ */
 function getOverDropS(ev) {
     //window.alert('Desde Sites');
 }
-
-
 /************************************/
 /*	FUNCTION: ShowSite 				*/
 /*  PARAMS: 						*/
 /*  REV 1.0.2 VMG					*/
 /************************************/
 function ShowSite(site, id) {
+
+    Trace("sites.js:ShowSite. id %s, site ", id, site);
+
     translateWord('Configurations', function(result) {
         var titulo = result + ': ' + $('#name').val();
         translateWord('Sites', function(result) {
@@ -185,17 +210,25 @@ function ShowSite(site, id) {
         //TimeStamp de las pasarelas
     });
 }
-
+/**
+ * dragGatewayToSite
+ * @param {any} ev
+ */
 function dragGatewayToSite(ev) {
+
+    Trace("sites.js:dragGatewayToSite");
+
     ev.dataTransfer.setData("itemDraggingGateway", ev.target.parentNode.dataset.texto);
     //    $('.dropable').addClass('target');
 }
-
 /****************************/
 /*** Cambiar una pasarela  **/
 /*** de emplazamiento      **/
 /****************************/
 function dropGatewayToSite(ev) {
+
+    Trace("sites.js:dropGatewayToSite,");
+
     ev.preventDefault();
     var data = ev.dataTransfer.getData("itemDraggingGateway");
 
@@ -220,10 +253,15 @@ function dropGatewayToSite(ev) {
     //else
     //	dropSiteToCfg(ev);
 }
-
+/**
+ * dropSiteToCfg
+ * @param {any} ev
+ */
 function dropSiteToCfg(ev) {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("itemDraggingGateway");
+
+    Trace("sites.js:dropSiteToCfg. data ", data);
 
     // Solo progresa la operación drag&drop si la configuración del emplazamiento origen 
     // es distinta de la configuración del emplazamiento destino
@@ -252,13 +290,15 @@ function dropSiteToCfg(ev) {
     }
 
 }
-
 /************************************/
 /*	FUNCTION: UpdateSingleSite 		*/
 /*  PARAMS: 						*/
 /*  REV 1.0.2 VMG					*/
 /************************************/
 function UpdateSingleSite() {
+
+    Trace("sites.js:UpdateSingleSite.");
+
     if ($('#IdSite').val().length > 0) {
         $.ajax({
             type: 'PUT',
@@ -293,13 +333,15 @@ function UpdateSingleSite() {
         });
     }
 }
-
 /************************************/
 /*	FUNCTION: AddSite 				*/
 /*  PARAMS: 						*/
 /*  REV 1.0.2 VMG					*/
 /************************************/
 function AddSite() {
+
+    Trace("sites.js:AddSite.");
+
     if ($('#NewSite').val().length > 0) {
         $.ajax({
             type: 'POST',
@@ -327,28 +369,39 @@ function AddSite() {
         });
     }
 }
-
+/**
+ * CreateSite,
+ * */
 function CreateSite() {
+
+    Trace("sites.js:CreateSite.");
+
     $('#AddFormConfiguration').hide();
     $('#NavMenu').addClass('disabledDiv');
     $('#NavConfiguration').addClass('disabledDiv');
 
     $('#FormNewSite').show();
 }
-
+/**
+ * CancelAddSite
+ * */
 function CancelAddSite() {
+
+    Trace("sites.js:CalcelAddSite.");
+
     $('#FormNewSite').hide();
     $('#AddFormConfiguration').show();
     $('#NavMenu').removeClass('disabledDiv');
     $('#NavConfiguration').removeClass('disabledDiv');
 }
-
 /************************************/
 /*	FUNCTION: DelSite	 			*/
 /*  PARAMS: 						*/
 /*  REV 1.0.2 VMG					*/
 /************************************/
-var DelSite = function() {
+var DelSite = function () {
+
+    Trace("sites.js:DelSite.");
 
     alertify.confirm('Ulises G 5000 R', "¿Eliminar el emplazamiento \"" + $('#IdSite').val() + "\"?" +
         "<br />Tenga en cuenta que se eliminarán todas las pasarelas asociadas a dicho emplazamiento.",
@@ -376,44 +429,13 @@ var DelSite = function() {
             alertify.error('Cancelado');
         });
 };
-
-/*function DelSite(){
-	if ($('#IdSite').data('idSite') == 1){
-		// Obligatorio para RCS tener en base de datos el emplazamiento con id=1
-		alertify.alert('Ulises G 5000 R',"No es posible eliminar el emplazamiento con identificador 1.");
-		alertify.error("No es posible eliminar el emplazamiento con identificador 1.");
-		return
-	}
-
-	alertify.confirm('Ulises G 5000 R', "¿Eliminar el emplazamiento \"" +$('#IdSite').val() + "\"?", 
-		function(){ 
-			if ($('#IdSite').val().length > 0){
-				$.ajax({type: 'DELETE', 
-				 		url: '/sites/' + $('#IdSite').data('idSite'), 
-				 		success: function(data){
-				 			if (data.data == 0){
-				 				alertify.alert('Ulises G 5000 R',"Un emplazamiento con pasarelas asignadas no puede ser eliminado.");
-				 			}
-				 			else{
-					 			alertify.success('El emplazamiento \"'+ $('#IdSite').val() + '\" ha sido eliminado.');
-					 			$('#IdSite').val('');
-					 			ShowCfg($('#DivConfigurations').data('cfgJson'));
-					 			//GetSites();
-					 		}
-				 		},
-				 		error: function(data){
-				 			alertify.error('Error eliminando emplazamiento \"'+ data.data + '\".');
-				 		}
-				});
-			}
-
-			//alertify.success('Ok'); 
-		}
-        , function(){ alertify.error('Cancelado')}
-    );
-}*/
-
+/**
+ * NewSite.
+ * */
 function NewSite() {
+
+    Trace("sites.js:NewSite.");
+
     if (!$('#AddFormsite').is(':visible')) {
         $('#AddFormsite').show();
         $('#DivSites').animate({ width: '715px' });
@@ -455,8 +477,15 @@ function NewSite() {
     $('#BtnRemove').hide();
     $('#BtnAddGateway').hide();
 }
-
+/**
+ * ShowHardwareGateway
+ * @param {any} id
+ * @param {any} name
+ */
 function ShowHardwareGateway(id, name) {
+
+    Trace("sites.js:ShowHardwareGateway. id %s, name ", id, name);
+
     translateWord('Configurations', function(result) {
         var titulo = result + ': ' + $('#name').val();
         translateWord('Sites', function(result) {
@@ -466,7 +495,6 @@ function ShowHardwareGateway(id, name) {
             });
         });
     });
-
 
     $('#IdSite').data('gatewayName', name);
     $('#IdSite').data('gatewayId', id);
@@ -499,13 +527,14 @@ function ShowHardwareGateway(id, name) {
         //})
     });
 }
-
 /************************************/
 /*	FUNCTION: ShowAssignedSlaves 	*/
 /*  PARAMS: 						*/
 /*  REV 1.0.2 VMG		NO TOCADO	*/
 /************************************/
 function GotoResource(row, col, update) {
+
+    Trace("sites.js:GotoResource. row %s, col %s, update ", row, col, update);
 
     if (update)
         $('#SResourceType').prop("disabled", true);
@@ -615,8 +644,13 @@ function GotoResource(row, col, update) {
     //$('#CbGranularity').attr("disabled", "disabled");
     //}
 }
-
+/**
+ * Close
+ * */
 function Close() {
+
+    Trace("sites.js:Close.");
+
     loadingContent();
     var t = $('#BigSlavesZone').data('t');
     var l = $('#BigSlavesZone').data('l');
@@ -629,13 +663,15 @@ function Close() {
         $('#Add').removeClass('disabledDiv');
     });
 }
-
 /************************************/
 /*	FUNCTION: GetMySlaves 			*/
 /*  PARAMS: 						*/
 /*  REV 1.0.2 VMG					*/
 /************************************/
 function GetMySlaves() {
+
+    Trace("sites.js:GetMySlaves.");
+
     Close();
     $('#AddFormsite').animate({ width: '790px', height: '470px' });
 
@@ -656,13 +692,15 @@ function GetMySlaves() {
         }
     });
 }
-
 /************************************/
 /*	FUNCTION: ShowAssignedSlaves 	*/
 /*  PARAMS: 						*/
 /*  REV 1.0.2 VMG		NO TOCADO	*/
 /************************************/
 function GetResource(rsc, f) {
+
+    Trace("sites.js:GetResource. rsc ", rsc);
+
     //	GetFrequencies(function(){
     if (rsc > 0) {
         $.ajax({
@@ -687,8 +725,14 @@ function GetResource(rsc, f) {
     }
     //	});
 }
-
+/**
+ * GetFrequencies
+ * @param {any} f
+ */
 function GetFrequencies(f) {
+
+    Trace("sites.js:GetFrequencies.");
+
     $.ajax({
         type: 'GET',
         url: '/destinations',
@@ -698,8 +742,13 @@ function GetFrequencies(f) {
         }
     });
 }
+/**
+ * CopySingleSite.
+ * */
+var CopySingleSite = function () {
 
-var CopySingleSite = function() {
+    Trace("sites.js:CopySingleSite.");
+
     $('#AddFormsite').addClass('disabledDiv');
     $('#listConfigurations').addClass('disabledDiv');
     $('#NavMenu').addClass('disabledDiv');
@@ -711,16 +760,28 @@ var CopySingleSite = function() {
         $('#CopySiteZone').addClass('divNucleo');
     });
 };
+/**
+ * CopySite.
+ * */
+var CopySite = function () {
 
-var CopySite = function() {
+    Trace("sites.js:CopySite.");
+
     if ($('#nameCopySite').val().length > 0) {
         CopyMethodSite($('#IdSite').data('idSite'), $('#nameCopySite').val());
     }
 
     CloseCopySite();
 };
+/**
+ * CopyMethodSite.
+ * @param {any} idSourceSite
+ * @param {any} nameTargetSite
+ */
+var CopyMethodSite = function (idSourceSite, nameTargetSite) {
 
-var CopyMethodSite = function(idSourceSite, nameTargetSite) {
+    Trace("sites.js:CopyMethodSite. source %s, target ", idSourceSite, nameTargetSite);
+
     $.ajax({
         type: 'COPY',
         dataType: 'json',
@@ -737,8 +798,13 @@ var CopyMethodSite = function(idSourceSite, nameTargetSite) {
         }
     });
 };
+/**
+ * CloseCopySite
+ * */
+var CloseCopySite = function () {
 
-var CloseCopySite = function() {
+    Trace("sites.js:CloseCopySite.");
+
     $('#CopySiteZone').animate({ width: '0px', height: '0px' }, 500, function() {
         $('#CopySiteZone').hide();
 
@@ -749,10 +815,33 @@ var CloseCopySite = function() {
     });
 };
 
+/** 20201103. From postSites.jade */
+/**
+ * 
+ * @param {any} element
+ * @param {any} f
+ */
+function CheckingAnyChange(element, f) {
+    f();//Llama directamente a GetActiveCfgAndActivate
+}
+/**
+ * ResetOldValues
+ * @param {any} element
+ */
+function ResetOldValue(element) {
 
+    Trace("sites.js:ResetOldValue. element ", element);
 
+    var tabs = [];
 
+    var myElement = document.getElementById(element)
+    if (myElement != null) {
+        tabs = myElement.getElementsByTagName("input");
 
-
-
-
+        for (var i = 0; i < tabs.length; i++) {
+            if (tabs[i].oldValue != null) {
+                tabs[i].oldValue = tabs[i].value
+            }
+        }
+    }
+}

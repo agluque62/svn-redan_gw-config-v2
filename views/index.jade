@@ -10,6 +10,8 @@ block content
 		var urlbackupservice = '#{BackupServiceDomain}';
 		var LoginTimeout = '#{LoginTimeout}';
 		var version = '#{Version}';
+		var bR16Mode ='#{R16Mode}';
+		var bLoadIndexControlEnabled ='#{LoadIndexControlEnabled}';
 		$(document).ready(function(){
 			// Localizacion de las variables parseadas.
 			$('#BodyRedan').data('perfil', userprofile);
@@ -18,5 +20,8 @@ block content
 			$('#BodyRedan').data('LoginTimeout',LoginTimeout);
 			$('#BodyRedan').data('version',version);
 
+			$('#BodyRedan').data('R16Mode',bR16Mode);
+			$('#BodyRedan').data('LoadIndexControlEnabled',bLoadIndexControlEnabled);
 			indexInitUserData(username, userprofile);
+			SetupOptionsForServer(bR16Mode, bLoadIndexControlEnabled);
 			});

@@ -137,7 +137,7 @@ passport.deserializeUser(function (id, cb) {
 });
 /*****/
 
-logging.Info('Program started. DEBUG = ', debug);
+logging.Info('Program started. DEBUG = ' + debug);
 var app = express();
 
 // view engine setup
@@ -277,27 +277,34 @@ app.get('/',
     isAuthenticated,
     function (req, res, next) {
         logging.Info(req.method, req.originalUrl);
-/** 20191007. AGL. Para acelerar RENDER Jade */
-		// if (mainTemplate === null)
-			// mainTemplate = require('jade').compileFile(mainTemplatePath);
-		res.write(mainTemplate({
+/** 20191007. AGL. Para acelerar RENDER Jade en produccion */
+        if (debug) {
+            res.render('index',
+                {
+                    LoginTimeout: config.Ulises.LoginTimeOut,
+                    Region: config.Ulises.Region,
+                    BackupServiceDomain: config.Ulises.BackupServiceDomain,
+                    Version: config.Ulises.Version,
+                    user: (req.user ? req.user : { name: 'noname', perfil: 64 }),
+                    session: ctrlSesiones.localSession,
+                    R16Mode: config.Ulises.R16Mode,
+                    LoadIndexControlEnabled: config.Ulises.LoadIndexControlEnabled
+                });
+        }
+        else {
+            res.write(mainTemplate({
                 LoginTimeout: config.Ulises.LoginTimeOut,
                 Region: config.Ulises.Region,
                 BackupServiceDomain: config.Ulises.BackupServiceDomain,
                 Version: config.Ulises.Version,
                 user: (req.user ? req.user : { name: 'noname', perfil: 64 }),
-                session: ctrlSesiones.localSession
-		}));
-		res.end();
-        // res.render('index',
-            // {
-                // LoginTimeout: config.Ulises.LoginTimeOut,
-                // Region: config.Ulises.Region,
-                // BackupServiceDomain: config.Ulises.BackupServiceDomain,
-                // Version: config.Ulises.Version,
-                // user: (req.user ? req.user : { name: 'noname', perfil: 64 }),
-                // session: ctrlSesiones.localSession
-            // });
+                session: ctrlSesiones.localSession,
+                R16Mode: config.Ulises.R16Mode,
+                LoadIndexControlEnabled: config.Ulises.LoadIndexControlEnabled
+            }));
+            res.end();
+        }
+
 /**************************************************************/
         logging.Info(req.method, req.originalUrl, 'OUT');
     });
@@ -391,7 +398,9 @@ var validateLocalConfig = ajv.compile(
             "logfile_sizefile": { "type": "integer" },
             "maxCycleTime": { "type": "integer" },
             "morgan": { "type": "boolean" },
-            "refreshTime": { "type": "integer" }
+            "refreshTime": { "type": "integer" },
+            "R16Mode": { "type": "boolean" },
+            "LoadIndexControlEnabled": { "type": "boolean" }
         },
         "required": [
             "LoginTimeOut", "morgan", "logfile_sizefile", "SubVersion", "dbhost",

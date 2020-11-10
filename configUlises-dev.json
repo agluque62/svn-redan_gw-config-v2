@@ -5,9 +5,9 @@
     "LoginSystemTrace": false,
     "Region": "Región Centro",
     "BackupServiceDomain": "192.168.0.212:8082",
-    "Version": "1.0",
-    "SubVersion": "6",
-    "Date": "15/01/2018",
+    "Version": "1.1",
+    "SubVersion": "1",
+    "Date": "11/11/2020",
     "NodeJS": "8.*.*",
     "MySQL": "5.7.17",
     "Files": [
@@ -76,13 +76,6 @@
       },
       {
         "Path": "/lib/",
-        "Name": "loggingDate.js",
-        "fileSizeInBytes": 5789,
-        "md5": "8eae856186214f0cc6592eb10665ed98",
-        "date": "5/10/2017"
-      },
-      {
-        "Path": "/lib/",
         "Name": "radioDestinations.js",
         "fileSizeInBytes": 14102,
         "md5": "9842bf3313347555911ba56f7bbb305d",
@@ -138,21 +131,23 @@
         "date": "5/10/2017"
       }
     ],
-    "dbhost": "192.168.0.212",
+    "dbhost": "localhost",
     "dbuser": "root",
     "dbpassword": "cd40",
     "dbdatabase": "ug5kv2",
-    "log2file": "silly",
+    "log2file": "info",
     "logfile_path": "./logs/ug5kserv.log",
     "logfile_maxfiles": 4,
     "logfile_sizefile": 1000000,
-    "log2con": "none",
+    "log2con": "info",
     "morgan": false,
     "maxCycleTime": 30000,
-    "refreshTime": 1000
+    "refreshTime": 1000,
+    "R16Mode": false,
+    "LoadIndexControlEnabled": false
   },
 	"MemorySupervisor": {
-		"Tick": 5000,
+		"Tick": 15000,
 		"PercentLimit": 115,
 		"ResetIntervalStart": "08:00 pm",
 		"ResetIntervalEnd": "06:00 am"

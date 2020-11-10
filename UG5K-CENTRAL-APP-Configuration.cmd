@@ -27,7 +27,7 @@ if errorlevel 2 goto instala-bdt
 goto basedatos
 :instala-bdt
 @echo "Actualizando Esquema de Base de Datos..."
-mysql.exe --host=localhost --user=root --password="U5K-G"  <  .\data_model\ug5kv2-schema.sql
+mysql.exe --host=localhost --user=root --password="U5K-G"  <  .\data_model\ug5kv2-schema-v1.sql
 @echo "Esquema de Base de Datos creado."
 
 :incidencias
